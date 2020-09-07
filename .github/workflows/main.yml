@@ -35,4 +35,7 @@ jobs:
         uses: actions/setup-node@v1.4.3
         with:
           node-version: 12.18.3
-      - run: yarn build
+      - name: Install Packages
+        run: yarn install 
+      - name: Build Artifacts
+        run: yarn build
