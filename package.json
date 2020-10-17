@@ -17,7 +17,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:docker": "docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 3000:3000 -e CHOKIDAR_USEPOLLING=true mujik-web:dev",
     "build": "react-scripts build",
+    "build:docker": "docker build -t mujik-web:dev .",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
