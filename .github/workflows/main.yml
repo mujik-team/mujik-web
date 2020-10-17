@@ -6,9 +6,11 @@ on:
 
 jobs:
   # Run basic tests.
-  test:
+  test_and_deploy:
     runs-on: ubuntu-latest
     steps:
+
+      # Checkout code and run tests.
       - uses: actions/checkout@v2
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.3
@@ -19,12 +21,7 @@ jobs:
       - name: Run Tests
         run: yarn test
 
-  # Deploy to ECS.      
-  deploy: 
-    runs-on: ubuntu-latest
-    name: Deploy
-
-    steps:
+      # Start deploying.
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
