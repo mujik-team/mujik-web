@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <div className="title">mujik</div>
-      <div className="sub-title">Currently in development.</div>
+      <div className="sub-title">Currently in development. Now continuously delivering features!</div>
     </div>
   );
 }
