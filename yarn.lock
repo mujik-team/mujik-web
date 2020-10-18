@@ -8364,6 +8364,11 @@ pretty-format@^26.4.2:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
+primereact@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/primereact/-/primereact-5.0.1.tgz#82162091abec3d4d7d7d563040b42a32f392a8f0"
+  integrity sha512-sBEx0KiS2PaSIT10Y9+3/frKbH4VKDk8fJch/kLoKMdPH+X6smKEj4BYzjjPYDi3W3bMpWIX6ANAzOL8ibvg8w==
+
 private@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
