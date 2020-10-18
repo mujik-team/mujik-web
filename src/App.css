@@ -2,9 +2,25 @@
 
 body {
   font-family: "Kumbh Sans", sans-serif;
-  background-color: #ffff64;
+  background-color: #282C34;
   text-align: center;
-  color: #282c34;
+  color: whitesmoke;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 100vh;
+}
+
+.router {
+  overflow-y: scroll;
+}
+
+.navbar {
+  background-color: #222325;
 }
 
 .title {
