@@ -6,7 +6,7 @@ function WelcomePage() {
   const authContext = useContext(AuthContext);
   return (
     <div>
-      <h2>mujik</h2>
+      <h1>mujik</h1>
       <h3>This site is currently in development.</h3>
       <Button
         onClick={async () => {
