@@ -1,0 +1,23 @@
+.tournamentDetailsContainer {
+  margin: 50px;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  grid-auto-rows: 300px;
+  gap: 20px;
+}
+
+.tournamentImage {
+  background: var(--card-color);
+  border-radius: 8px;
+}
+
+.tournamentInfo {
+  /* margin-left: 30px; */
+}
+
+.tournamentTitle {
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 500;
+}

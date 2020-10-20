@@ -1,11 +1,14 @@
 import React from "react";
 import styles from "./styles.module.css";
 import { InputText } from "primereact/inputtext";
+import { useHistory } from "react-router-dom";
 
 const tabs = ["Currently Running", "Ended"];
 const tabsYour = ["All", "Entered", "Following", "Ended"];
 
-function TournamentPage() {
+function TournamentBrowser() {
+  const history = useHistory();
+
   const headerBrowser = (
     <div>
       <div className={styles.title}>Official Tournaments</div>
@@ -22,8 +25,18 @@ function TournamentPage() {
   const yourtournaments = [];
 
   for (let i = 0; i < 8; i++) {
-    tournaments.push(<div className={styles.tournamentCard}></div>);
-    yourtournaments.push(<div className={styles.tournamentListCard}></div>);
+    tournaments.push(
+      <div
+        onClick={() => history.push(`/tournament/${i}`)}
+        className={styles.tournamentCard}
+      ></div>
+    );
+    yourtournaments.push(
+      <div
+        onClick={() => history.push(`/tournament/${i}`)}
+        className={styles.tournamentListCard}
+      ></div>
+    );
   }
 
   const tournamentBrowser = (
@@ -50,4 +63,4 @@ function TournamentPage() {
   );
 }
 
-export default TournamentPage;
+export default TournamentBrowser;
