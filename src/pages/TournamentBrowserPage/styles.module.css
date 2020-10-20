@@ -1,6 +1,6 @@
 .title {
-  font-size: 35px;
-  font-weight: bolder;
+  font-size: 45px;
+  font-weight: 500;
 }
 
 .container {
@@ -33,7 +33,7 @@
   cursor: pointer;
   border-radius: 8px;
   background-color: var(--card-color);
-  transition: 0.1s linear all;
+  transition: 0.2s ease-in all;
 }
 
 .tournamentCard:hover {
@@ -46,11 +46,11 @@
   cursor: pointer;
   border-radius: 8px;
   background-color: var(--card-color);
-  transition: 0.1s linear all;
+  transition: 0.1s ease-in all;
 }
 
 .tournamentListCard:hover {
-  webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
   -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
   box-shadow: inset 0px 0px 0px 2px var(--main-color);
 }

@@ -1,0 +1,84 @@
+.TournamentDetailsContainer {
+  margin: 0 50px;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  grid-auto-rows: 300px;
+  gap: 20px;
+}
+
+.tournamentImage {
+  background: var(--card-color);
+  border-radius: 8px;
+}
+
+.tournamentInfo {
+  /* margin-left: 30px; */
+}
+
+.tournamentTitle {
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.description {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 18px;
+  color: var(--text-inactive);
+}
+
+.tournamentSubmissionContainer {
+  margin: 50px;
+  display: grid;
+  grid-template-columns: 300px 400px 1fr;
+  gap: 20px;
+}
+
+.submissionDetails {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.tournamentSubmissionDate {
+  color: var(--text-inactive);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.enterTournamentButton {
+  cursor: pointer;
+  padding: 10px 70px;
+  font-family: "Poppins";
+  border-radius: 300px;
+  color: whitesmoke;
+  font-weight: 700;
+  font-size: 30px;
+  background-color: var(--card-color);
+  border: none;
+  transition: 0.1s ease-in all;
+}
+
+.enterTournamentButton:hover {
+  font-size: 32px;
+  color: black;
+  background-color: var(--main-color);
+}
+
+.tournamentSubmissionTimeLeft {
+  font-size: 50px;
+  font-weight: 600;
+}
+
+.restrictionCard {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.rulesCard {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  height: 200px;
+}
