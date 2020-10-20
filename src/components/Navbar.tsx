@@ -14,7 +14,7 @@ function Navbar() {
 
   return (
     <div className="navbar">
-      <h2>mujik</h2>
+      <div className="nav-title">mujik</div>
       <h4>Welcome {authContext.currentUser.username}!</h4>
       {routes.map((r) => (
         <Button onClick={() => history.push(r.route)}>{r.name}</Button>

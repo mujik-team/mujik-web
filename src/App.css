@@ -1,12 +1,38 @@
 @import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap");
 
+:root {
+  --main-bg-color: #282c34;
+  --secondary-bg-color: #222325;
+  --card-color: #21242a;
+  --main-color: #ffff64;
+  --text-primary: whitesmoke;
+  --text-inactive: #777777;
+}
+
+*:focus {
+  outline: 0;
+}
+
 body {
   font-family: "Kumbh Sans", sans-serif;
-  background-color: #282C34;
-  text-align: center;
+  background-color: var(--main-bg-color);
   color: whitesmoke;
   margin: 0;
   padding: 0;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 25px;
+  background-color: var(--card-color);
+  border: none;
+  color: var(--text-primary);
+
+  transition: 0.1s linear all;
+}
+
+input[type="text"]:focus {
+  box-shadow: inset 0px 0px 0px 2px var(--main-color);
 }
 
 .app {
@@ -20,7 +46,13 @@ body {
 }
 
 .navbar {
-  background-color: #222325;
+  background-color: var(--secondary-bg-color);
+}
+
+.nav-title {
+  color: var(--main-color);
+  margin-top: 30px;
+  font-size: 30px;
 }
 
 .title {
