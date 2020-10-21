@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import SideModal from "../../components/SideModal";
-import EnterTournamentModal from "./EnterTournamentModal";
+import EnterTournamentModal from "./components/EnterTournamentModal";
 import s from "./TournamentDetails.module.css";
 
 const details =
@@ -21,10 +21,15 @@ function TournamentDetails() {
       <SideModal isActive={showEntryModal} toggle={toggleModal}>
         <EnterTournamentModal />
       </SideModal>
+
       <div className={s.TournamentDetailsContainer}>
         <div className={s.tournamentImage}></div>
         <div className={s.tournamentInfo}>
           <div className={s.tournamentTitle}>Ultimate DnD Campaign</div>
+          <div className={s.createdByContainer}>
+            <div className={s.userProfilePic}></div>
+            <div className={s.username}>by mujikofficial</div>
+          </div>
           <div className={s.description}>{details}</div>
         </div>
       </div>
