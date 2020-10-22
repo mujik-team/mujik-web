@@ -20,6 +20,10 @@ const TournamentDetailsContainer = styled.div`
   gap: 20px;
 `;
 
+const BottomContainer = styled.div`
+  margin: 60px;
+`;
+
 const Image = styled.div`
   background: var(--card-color);
   border-radius: 8px;
@@ -77,7 +81,7 @@ function TournamentDetails() {
         </div>
       </TournamentDetailsContainer>
 
-      {bottomComponent[state]}
+      <BottomContainer>{bottomComponent[state]}</BottomContainer>
     </div>
   );
 }

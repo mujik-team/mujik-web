@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Button from "../../../components/Button";
+import SideModal from "../../../components/SideModal";
+import VoteModal from "./VoteModal";
 
-const Container = styled.div`
-  margin: 30px;
-`;
+const Container = styled.div``;
 
 const MixtapeGridContainer = styled.div`
+  margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
@@ -18,22 +20,76 @@ const MixtapeCard = styled.div`
   cursor: pointer;
   transition: 0.2s ease-in all;
 
-  &:hover {
+  &:hover,
+  &.selected {
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
   }
+`;
+
+const FloatRightContainer = styled.div`
+  display: block;
+  float: right;
+`;
+
+const VotesRemainingText = styled.span`
+  font-weight: 500;
+  font-size: 25px;
 `;
 
 function TournamentVote() {
   const cards = [];
 
+  const toggleModal = () => setShowVoteModal(!showVoteModal);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+
+  // Add a mixtape to the current selection.
+  const addMixtape = (id: string) =>
+    setSelectedMixtapes([...selectedMixtapes, id]);
+
+  // Remove mixtape from the current selection.
+  const removeMixtape = (id: string) =>
+    setSelectedMixtapes(selectedMixtapes.filter((i) => i !== id));
+
+  const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
+
   for (let i = 0; i < 30; i++) {
-    cards.push(<MixtapeCard />);
+    cards.push(
+      <MixtapeCard
+        className={selectedMixtapes.includes(`m-${i}`) ? "selected" : ""}
+        onClick={() => {
+          if (!selectedMixtapes.includes(`m-${i}`)) {
+            addMixtape(`m-${i}`);
+          } else {
+            removeMixtape(`m-${i}`);
+          }
+        }}
+      />
+    );
   }
 
   return (
     <Container>
-      <h2>Library</h2>
+      <SideModal isActive={showVoteModal} toggle={toggleModal}>
+        <VoteModal />
+      </SideModal>
+      <input placeholder="Search" type="text" />
+      <FloatRightContainer>
+        <VotesRemainingText>You have 9 votes remaining.</VotesRemainingText>
+        {selectedMixtapes.length > 0 ? (
+          <Button
+            style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "20px" }}
+            onClick={() => toggleModal()}
+          >
+            Vote
+          </Button>
+        ) : null}
+        <span></span>
+      </FloatRightContainer>
+
+      <br />
+      <br />
       <hr />
+
       <MixtapeGridContainer>{cards}</MixtapeGridContainer>
     </Container>
   );
