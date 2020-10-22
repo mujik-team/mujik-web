@@ -46,10 +46,6 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/library" component={LibraryPage} />
-          <Route 
-            path="/tournament/:tournamentId"
-            component={TournamentDetails}
-          />
           <Route path="/tournament" exact component={TournamentBrowser} />
           <Route
             path="/tournament/:tournamentId"
