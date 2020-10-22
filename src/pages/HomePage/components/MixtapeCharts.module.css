@@ -1,0 +1,54 @@
+.container {
+    /* margin: 30px; */
+    margin-top: 30px;
+    display: grid;
+    gap: 10px;
+    width: 75%;
+    padding: 20px;
+    grid-column-gap: 10px;
+    /* grid-template-rows: auto auto auto auto; */
+    /* grid-auto-flow: row; */
+}
+
+.mixtapeCharts {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+    width: 130%;
+}
+
+.mixtapeChartCard {
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: var(--card-color);
+    transition: 0.2s ease-in all;
+    width: 72px;
+    height: 72px;
+    padding: 10px;
+}
+
+.mixtapeChartCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+}
+
+/* .tabContainer {
+} */
+
+.tabTitle {
+    cursor: pointer;
+    user-select: none;
+    color: var(--text-inactive);
+    font-size: 16px;
+    font-weight: bold;
+    grid-row: 1;
+    padding: 30px;
+}
+
+.tabTitle:hover {
+    color: var(--primary-text);
+}
