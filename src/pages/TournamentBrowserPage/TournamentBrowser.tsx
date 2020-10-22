@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "./styles.module.css";
-import { InputText } from "primereact/inputtext";
+import styles from "./TournamentBrowser.module.css";
 import { useHistory } from "react-router-dom";
 
 const tabs = ["Currently Running", "Ended"];

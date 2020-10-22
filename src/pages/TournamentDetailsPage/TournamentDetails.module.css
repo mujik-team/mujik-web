@@ -12,6 +12,21 @@
   border-radius: 8px;
 }
 
+.userProfilePic {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: var(--card-color);
+  border-radius: 50px;
+}
+
+.username {
+  display: inline-block;
+  font-size: 1.5em;
+  font-weight: 500;
+  color: var(--text-inactive);
+}
+
 .tournamentInfo {
   /* margin-left: 30px; */
 }
@@ -31,7 +46,7 @@
 .tournamentSubmissionContainer {
   margin: 50px;
   display: grid;
-  grid-template-columns: 300px 400px 1fr;
+  grid-template-columns: 1fr 1fr 2fr;
   gap: 20px;
 }
 

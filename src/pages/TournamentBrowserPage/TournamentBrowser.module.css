@@ -14,7 +14,8 @@
 
 .tournamentBrowser {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-auto-rows: 200px;
   gap: 10px;
 
