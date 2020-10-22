@@ -16,7 +16,7 @@
   
   .mixtapeBrowser {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
     grid-gap: 1rem;
     padding: 10px;
   }
@@ -86,7 +86,8 @@
     align-self: flex-end;
     align-items: center;
     font-size: 13px;
-    font-weight: bold;
+    /* font-weight: bold; */
+    font-weight: 500; 
     color: var(--main-color);
     margin-right: 10px;
     margin-bottom: 10px;
@@ -99,7 +100,11 @@
     border-radius: 8px;
     background-color: var(--card-color);
     transition: 0.2s ease-in all;
-    height: 50px;
+    height: 350px;
+    margin-top: 117px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
     /* width: 200px; */
   }
   
@@ -108,8 +113,30 @@
     -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
   }
+
+  .mixtapeDisplayText {
+    font-size: 20px;
+    font-weight: 500; 
+    padding: 20px;
+    text-align: center;
+  }
+
+  .mixtapeImage{
+    cursor: pointer;
+    margin-top: 2px;
+    border-radius: 8px;
+    opacity: 1;
+    transition: 0.2s ease-in all;
+    width: 345px;
+    height: 345px;
+
+  }
   
-  
+  .userDetailsTag{
+    background-color:  #21242a;
+
+  }
+
   .tournamentListCard {
     cursor: pointer;
     border-radius: 8px;
@@ -125,6 +152,8 @@
   
   .usertournamentBrowser {
     padding: 20px;
+    display: flex;
+    justify-content: center;
   }
   
   .tabTitle {
@@ -132,7 +161,7 @@
     user-select: none;
     color: var(--text-inactive);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 500; 
     margin-right: 20px;
     /* padding: 5px; */
   }
