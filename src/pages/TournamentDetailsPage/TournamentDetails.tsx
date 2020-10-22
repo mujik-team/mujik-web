@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { tournaments } from "./data";
-import s from "./TournamentDetails.module.css";
 import styled from "styled-components";
 import TournamentSubmission from "./components/TournamentSubmission";
 import TournamentVote from "./components/TournamentVote";
@@ -21,6 +20,38 @@ const TournamentDetailsContainer = styled.div`
   gap: 20px;
 `;
 
+const Image = styled.div`
+  background: var(--card-color);
+  border-radius: 8px;
+`;
+
+const ProfilePicture = styled.div`
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: var(--card-color);
+  border-radius: 50px;
+`;
+
+const Username = styled.div`
+  display: inline-block;
+  font-size: 1.5em;
+  font-weight: 500;
+  color: var(--text-inactive);
+`;
+
+const Description = styled.div`
+  font-family: "Fira Sans", sans-serif;
+  font-size: 18px;
+  color: var(--text-inactive);
+`;
+
+const TournamentTitle = styled.div`
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 500;
+`;
+
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
   const tournament = tournaments[tournamentId as number];
@@ -35,14 +66,14 @@ function TournamentDetails() {
   return (
     <div>
       <TournamentDetailsContainer>
-        <div className={s.tournamentImage}></div>
-        <div className={s.tournamentInfo}>
-          <div className={s.tournamentTitle}>{tournament.title}</div>
-          <div className={s.createdByContainer}>
-            <div className={s.userProfilePic}></div>
-            <div className={s.username}>by {tournament.createdBy}</div>
+        <Image />
+        <div>
+          <TournamentTitle>{tournament.title}</TournamentTitle>
+          <div>
+            <ProfilePicture />
+            <Username>by {tournament.createdBy}</Username>
           </div>
-          <div className={s.description}>{tournament.description}</div>
+          <Description>{tournament.description}</Description>
         </div>
       </TournamentDetailsContainer>
 
