@@ -1,65 +1,83 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import SideModal from "../../components/SideModal";
-import EnterTournamentModal from "./components/EnterTournamentModal";
-import s from "./TournamentDetails.module.css";
+import { tournaments } from "./data";
+import styled from "styled-components";
+import TournamentSubmission from "./components/TournamentSubmission";
+import TournamentVote from "./components/TournamentVote";
 
-const details =
-  "This one here is for all of our boomers out there! You are tasked with creating the most boomer friendly playlist possible. Think drinking Monster on the weekend while mowing your lawn, think summer barbecues, think riding down the highway in your Ford pickup with the windows down.";
+enum TournamentState {
+  SUBMISSION = "submission",
+  VOTING = "voting",
+  ENDED = "ended",
+}
+
+const TournamentDetailsContainer = styled.div`
+  margin: 0 50px;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  grid-auto-rows: 300px;
+  gap: 20px;
+`;
+
+const Image = styled.div`
+  background: var(--card-color);
+  border-radius: 8px;
+`;
+
+const ProfilePicture = styled.div`
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: var(--card-color);
+  border-radius: 50px;
+`;
+
+const Username = styled.div`
+  display: inline-block;
+  font-size: 1.5em;
+  font-weight: 500;
+  color: var(--text-inactive);
+`;
+
+const Description = styled.div`
+  font-family: "Fira Sans", sans-serif;
+  font-size: 18px;
+  color: var(--text-inactive);
+`;
+
+const TournamentTitle = styled.div`
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 500;
+`;
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
+  const tournament = tournaments[tournamentId as number];
+  const state = tournament.state as TournamentState;
 
-  const toggleModal = () => {
-    setShowEntryModal(!showEntryModal);
+  const bottomComponent = {
+    submission: <TournamentSubmission />,
+    voting: <TournamentVote />,
+    ended: null,
   };
-
-  const [showEntryModal, setShowEntryModal] = useState(false);
 
   return (
     <div>
-      <SideModal isActive={showEntryModal} toggle={toggleModal}>
-        <EnterTournamentModal />
-      </SideModal>
-
-      <div className={s.TournamentDetailsContainer}>
-        <div className={s.tournamentImage}></div>
-        <div className={s.tournamentInfo}>
-          <div className={s.tournamentTitle}>Ultimate DnD Campaign</div>
-          <div className={s.createdByContainer}>
-            <div className={s.userProfilePic}></div>
-            <div className={s.username}>by mujikofficial</div>
+      <TournamentDetailsContainer>
+        <Image />
+        <div>
+          <TournamentTitle>{tournament.title}</TournamentTitle>
+          <div>
+            <ProfilePicture />
+            <Username>by {tournament.createdBy}</Username>
           </div>
-          <div className={s.description}>{details}</div>
+          <Description>{tournament.description}</Description>
         </div>
-      </div>
+      </TournamentDetailsContainer>
 
-      <div className={s.tournamentSubmissionContainer}>
-        <div className={s.tournamentSubmissionRestrictions}>
-          <h1>Mixtape Restrictions</h1>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-        </div>
-
-        <div className={s.tournamentRules}>
-          <h1>Rules</h1>
-          <div className={s.rulesCard}></div>
-        </div>
-
-        <div className={s.submissionDetails}>
-          <div className={s.tournamentSubmissionDate}>Ends Septemeber 28th</div>
-          <div className={s.tournamentSubmissionTimeLeft}>12D 13H 45M 30S</div>
-          <button
-            onClick={() => toggleModal()}
-            className={s.enterTournamentButton}
-          >
-            ENTER TOURNEY
-          </button>
-          <div>Unsure about something? Ask a question.</div>
-        </div>
-      </div>
+      {bottomComponent[state]}
     </div>
   );
 }
