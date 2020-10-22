@@ -1,65 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import SideModal from "../../components/SideModal";
-import EnterTournamentModal from "./components/EnterTournamentModal";
+import { tournaments } from "./data";
 import s from "./TournamentDetails.module.css";
+import styled from "styled-components";
+import TournamentSubmission from "./components/TournamentSubmission";
+import TournamentVote from "./components/TournamentVote";
 
-const details =
-  "This one here is for all of our boomers out there! You are tasked with creating the most boomer friendly playlist possible. Think drinking Monster on the weekend while mowing your lawn, think summer barbecues, think riding down the highway in your Ford pickup with the windows down.";
+enum TournamentState {
+  SUBMISSION = "submission",
+  VOTING = "voting",
+  ENDED = "ended",
+}
+
+const TournamentDetailsContainer = styled.div`
+  margin: 0 50px;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  grid-auto-rows: 300px;
+  gap: 20px;
+`;
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
+  const tournament = tournaments[tournamentId as number];
+  const state = tournament.state as TournamentState;
 
-  const toggleModal = () => {
-    setShowEntryModal(!showEntryModal);
+  const bottomComponent = {
+    submission: <TournamentSubmission />,
+    voting: <TournamentVote />,
+    ended: null,
   };
-
-  const [showEntryModal, setShowEntryModal] = useState(false);
 
   return (
     <div>
-      <SideModal isActive={showEntryModal} toggle={toggleModal}>
-        <EnterTournamentModal />
-      </SideModal>
-
-      <div className={s.TournamentDetailsContainer}>
+      <TournamentDetailsContainer>
         <div className={s.tournamentImage}></div>
         <div className={s.tournamentInfo}>
-          <div className={s.tournamentTitle}>Ultimate DnD Campaign</div>
+          <div className={s.tournamentTitle}>{tournament.title}</div>
           <div className={s.createdByContainer}>
             <div className={s.userProfilePic}></div>
-            <div className={s.username}>by mujikofficial</div>
+            <div className={s.username}>by {tournament.createdBy}</div>
           </div>
-          <div className={s.description}>{details}</div>
+          <div className={s.description}>{tournament.description}</div>
         </div>
-      </div>
+      </TournamentDetailsContainer>
 
-      <div className={s.tournamentSubmissionContainer}>
-        <div className={s.tournamentSubmissionRestrictions}>
-          <h1>Mixtape Restrictions</h1>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-          <div className={s.restrictionCard}></div>
-        </div>
-
-        <div className={s.tournamentRules}>
-          <h1>Rules</h1>
-          <div className={s.rulesCard}></div>
-        </div>
-
-        <div className={s.submissionDetails}>
-          <div className={s.tournamentSubmissionDate}>Ends Septemeber 28th</div>
-          <div className={s.tournamentSubmissionTimeLeft}>12D 13H 45M 30S</div>
-          <button
-            onClick={() => toggleModal()}
-            className={s.enterTournamentButton}
-          >
-            ENTER TOURNEY
-          </button>
-          <div>Unsure about something? Ask a question.</div>
-        </div>
-      </div>
+      {bottomComponent[state]}
     </div>
   );
 }
