@@ -22,13 +22,6 @@ const tabsYour = ["All", "Entered", "Following", "Ended"];
 function LibraryPage() {
 
 
-  const cities = [
-    'Artist',
-    'Song',
-    'Popularity',
-    'Reviews'
-];
-
   const headerBrowser = (
     <div>
       <span className={styles.title}>My Library</span>
@@ -38,7 +31,7 @@ function LibraryPage() {
         ))}
       </span>
       <div className="p-grid" style={{padding:'10px'}}>
-          <div className="p-col">
+          <div className="p-col" style={{display:'flex', justifyContent:'flex-start'}}>
               <span>
                 <input style={{width:'250px', height:'40px'}} placeholder="Search" type="text" />
                 </span>
@@ -63,15 +56,6 @@ function LibraryPage() {
     </div>
   );
 
-// <div style={{padding:'10px'}}>
-//         <span>
-//         <input style={{width:'250px', height:'40px'}} placeholder="Search" type="text" />
-//         </span>
-//         <span style={{marginLeft:'20px'}}>
-//           <Button className="p-button-rounded" style={{backgroundColor:'#ffff64'}}>
-//             <strong>New</strong>
-//           </Button>
-//         </span>
 
   const mixtapes = []
 
