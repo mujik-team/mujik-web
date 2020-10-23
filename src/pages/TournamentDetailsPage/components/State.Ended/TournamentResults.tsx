@@ -50,9 +50,14 @@ function TournamentResults() {
       </div>
       <div>
         <h1>Winners</h1>
+        <hr />
+        <h2>feelymcfeel</h2>
+        <MixtapeCard style={{ width: "100%", height: "80px" }} />
 
+        <h2>cptmango</h2>
         <MixtapeCard style={{ width: "100%", height: "80px" }} />
-        <MixtapeCard style={{ width: "100%", height: "80px" }} />
+
+        <h2>atharvafkadam</h2>
         <MixtapeCard style={{ width: "100%", height: "80px" }} />
       </div>
     </Container>
