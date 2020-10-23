@@ -3,12 +3,14 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import styled from "styled-components";
 import { AuthContext } from "../App";
+import Button from "./Button";
 const routes = [
   { name: "Library", route: "/library", icon: "music-circle" },
   { name: "Tournaments", route: "/tournament", icon: "trophy" },
 ];
 
 const Container = styled.div`
+  position: relative;
   background-color: var(--card-color);
   text-align: center;
 `;
@@ -84,6 +86,12 @@ function Navbar() {
           {r.name}
         </NavItem>
       ))}
+      <Button
+        onClick={() => authContext.logout()}
+        style={{ marginTop: "50px" }}
+      >
+        Logout
+      </Button>
     </Container>
   );
 }
