@@ -1,172 +1,133 @@
 .title {
-    font-size: 45px;
-    font-weight: 500;
-    padding: 10px;
-  }
-  
-  .container {
-    margin: 30px;
-    margin-top: 0px;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 20px;
-    grid-template-rows: 1fr;
-  }
-  
-  
-  .mixtapeBrowser {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-    grid-gap: 1rem;
-    padding: 10px;
-  }
+  font-size: 45px;
+  font-weight: 500;
+  padding: 10px;
+}
 
-  .mixtapeBrowser > div {
-    /* background: black; */
-    padding: 1rem;
-  }
-  
-  .mixtapeBrowser > div::before {
-    content: "";
-    padding-bottom: 100%;
-    display: block;
-  }
+.container {
+  margin: 30px;
+  margin-top: 0px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  grid-template-rows: 1fr;
+}
 
-  .yourtournamentBrowser {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: 60px;
-    gap: 10px;
-  }
-  
-  .mixtapeCard {
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: var(--card-color);
-    transition: 0.2s ease-in all;
-    /* width: 200px; */
-  }
-  
-  .mixtapeCard:hover {
-    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
+.mixtapeBrowser {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  grid-gap: 1rem;
+  padding: 10px;
+}
 
-  .progressBar{
-    width: 250px;
-    /* background-color:'#383838'; */
-    /* height:'10px'; */
-  }
+.mixtapeBrowser > div {
+  /* background: black; */
+  padding: 1rem;
+}
 
-  .userDetailsText{
-    margin-left: 8px;
-    margin-right: 8px;
-  }
+.mixtapeBrowser > div::before {
+  content: "";
+  padding-bottom: 100%;
+  display: block;
+}
 
-  .coinsText{
-    margin-left: 8px;
-    margin-right: 8px;
-    color: #FFD54F;
-  }
+.yourtournamentBrowser {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 60px;
+  gap: 10px;
+}
 
+.mixtapeCard {
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: var(--card-color);
+  transition: 0.2s ease-in all;
+  /* width: 200px; */
+}
 
-  .userDetailsDisplayCard {
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: var(--card-color);
-    transition: 0.2s ease-in all;
-    height: 35px;
-    /* width: 400px; */
-    width: fit-content;
-    display: flex;
-    opacity: 1;
-    /* justify-content: flex-end; */
-    align-self: flex-end;
-    align-items: center;
-    font-size: 13px;
-    /* font-weight: bold; */
-    font-weight: 500; 
-    color: var(--main-color);
-    margin-right: 10px;
-    margin-bottom: 10px;
-    /* margin: 30px; */
-    /* width: 200px; */
-  }
+.mixtapeCard:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  box-shadow: inset 0px 0px 0px 2px var(--main-color);
+}
 
-  .mixtapeDisplayCard {
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: var(--card-color);
-    transition: 0.2s ease-in all;
-    height: 350px;
-    margin-top: 117px;
-    width: 350px;
-    display: flex;
-    justify-content: center;
-    /* width: 200px; */
-  }
-  
-  .mixtapeDisplayCard:hover {
-    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
+.coinsText {
+  margin-left: 8px;
+  margin-right: 8px;
+  color: #ffd54f;
+}
 
-  .mixtapeDisplayText {
-    font-size: 20px;
-    font-weight: 500; 
-    padding: 20px;
-    text-align: center;
-  }
+.mixtapeDisplayCard {
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: var(--card-color);
+  transition: 0.2s ease-in all;
+  height: 350px;
+  margin-top: 117px;
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  /* width: 200px; */
+}
 
-  .mixtapeImage{
-    cursor: pointer;
-    margin-top: 2px;
-    border-radius: 8px;
-    opacity: 1;
-    transition: 0.2s ease-in all;
-    width: 345px;
-    height: 345px;
+.mixtapeDisplayCard:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  box-shadow: inset 0px 0px 0px 2px var(--main-color);
+}
 
-  }
-  
-  .userDetailsTag{
-    background-color:  #21242a;
+.mixtapeDisplayText {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 20px;
+  text-align: center;
+}
 
-  }
+.mixtapeImage {
+  cursor: pointer;
+  margin-top: 2px;
+  border-radius: 8px;
+  opacity: 1;
+  transition: 0.2s ease-in all;
+  width: 345px;
+  height: 345px;
+}
 
-  .tournamentListCard {
-    cursor: pointer;
-    border-radius: 8px;
-    background-color: var(--card-color);
-    transition: 0.1s ease-in all;
-  }
-  
-  .tournamentListCard:hover {
-    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
-  
-  .usertournamentBrowser {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .tabTitle {
-    cursor: pointer;
-    user-select: none;
-    color: var(--text-inactive);
-    font-size: 20px;
-    font-weight: 500; 
-    margin-right: 20px;
-    /* padding: 5px; */
-  }
-  
-  .tabTitle:hover {
-    color: var(--primary-text);
-  }
-  
+.userDetailsTag {
+  background-color: #21242a;
+}
+
+.tournamentListCard {
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: var(--card-color);
+  transition: 0.1s ease-in all;
+}
+
+.tournamentListCard:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  box-shadow: inset 0px 0px 0px 2px var(--main-color);
+}
+
+.usertournamentBrowser {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.tabTitle {
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-inactive);
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 20px;
+  /* padding: 5px; */
+}
+
+.tabTitle:hover {
+  color: var(--primary-text);
+}
