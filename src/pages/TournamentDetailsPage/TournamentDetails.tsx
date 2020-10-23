@@ -6,6 +6,7 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
+import FullScreenModal from "../../components/FullScreenModal";
 
 enum TournamentState {
   SUBMISSION = "submission",

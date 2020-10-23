@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
+import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
+import VoteSuccessModal from "./VoteSuccessModal";
 
 const Container = styled.div``;
 
@@ -39,8 +41,19 @@ const VotesRemainingText = styled.span`
 function TournamentVote() {
   const cards = [];
 
-  const toggleModal = () => setShowVoteModal(!showVoteModal);
+  const toggleShowVoteModal = () => setShowVoteModal(!showVoteModal);
   const [showVoteModal, setShowVoteModal] = useState(false);
+
+  const toggleShowVoteSuccessModal = () =>
+    setShowVoteSuccessModal(!showVoteSuccessModal);
+
+  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(true);
+
+  const submitVote = () => {
+    toggleShowVoteModal();
+    setTimeout({}, 200);
+    toggleShowVoteSuccessModal();
+  };
 
   // Add a mixtape to the current selection.
   const addMixtape = (id: string) =>
@@ -69,8 +82,14 @@ function TournamentVote() {
 
   return (
     <Container>
-      <SideModal isActive={showVoteModal} toggle={toggleModal}>
-        <VoteModal />
+      <FullScreenModal
+        isActive={showVoteSuccessModal}
+        toggle={toggleShowVoteSuccessModal}
+      >
+        <VoteSuccessModal />
+      </FullScreenModal>
+      <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
+        <VoteModal submit={submitVote} />
       </SideModal>
       <input placeholder="Search" type="text" />
       <FloatRightContainer>
@@ -78,7 +97,7 @@ function TournamentVote() {
         {selectedMixtapes.length > 0 ? (
           <Button
             style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "20px" }}
-            onClick={() => toggleModal()}
+            onClick={() => toggleShowVoteModal()}
           >
             Vote
           </Button>

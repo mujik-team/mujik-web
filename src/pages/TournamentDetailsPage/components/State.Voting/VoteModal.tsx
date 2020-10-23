@@ -46,7 +46,11 @@ const VoteButton = styled.div`
 
 const VoteStatusText = styled.div``;
 
-function VoteModal() {
+type Props = {
+  submit: () => any;
+};
+
+function VoteModal(props: Props) {
   return (
     <div>
       <Container>
@@ -62,7 +66,7 @@ function VoteModal() {
         </SelectedMixtapesGrid>
       </Container>
 
-      <VoteButton>Confirm Vote</VoteButton>
+      <VoteButton onClick={() => props.submit()}>Confirm Vote</VoteButton>
     </div>
   );
 }
