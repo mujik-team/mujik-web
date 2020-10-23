@@ -47,7 +47,7 @@ function TournamentVote() {
   const toggleShowVoteSuccessModal = () =>
     setShowVoteSuccessModal(!showVoteSuccessModal);
 
-  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(true);
+  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
 
   const submitVote = () => {
     toggleShowVoteModal();
