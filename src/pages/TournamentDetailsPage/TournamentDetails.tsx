@@ -2,9 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { tournaments } from "./data";
 import styled from "styled-components";
-import TournamentSubmission from "./components/TournamentSubmission";
-import TournamentVote from "./components/TournamentVote";
+import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
+import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
+import TournamentResults from "./components/State.Ended/TournamentResults";
 
 enum TournamentState {
   SUBMISSION = "submission",
@@ -84,7 +85,7 @@ function TournamentDetails() {
   const bottomComponent = {
     submission: <TournamentSubmission />,
     voting: <TournamentVote />,
-    ended: null,
+    ended: <TournamentResults />,
   };
 
   return (

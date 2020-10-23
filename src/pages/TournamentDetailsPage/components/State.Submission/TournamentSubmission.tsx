@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SideModal from "../../../components/SideModal";
+import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
 

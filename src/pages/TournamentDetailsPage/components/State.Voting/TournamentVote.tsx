@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../../components/Button";
-import SideModal from "../../../components/SideModal";
+import Button from "../../../../components/Button";
+import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 
 const Container = styled.div``;
