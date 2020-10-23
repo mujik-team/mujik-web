@@ -10,6 +10,8 @@ import weeknd from '../../Images/weeknd.png'
 import {SplitButton} from 'primereact/splitbutton';
 import { Dropdown } from 'primereact/dropdown';
 import {useState} from 'react'
+import { useHistory } from "react-router-dom";
+
 
 // const [sortingCriteria, setSortingCriteria] = useState()
 // import 'primeicons/raw-svg'
@@ -20,7 +22,7 @@ const tabsYour = ["All", "Entered", "Following", "Ended"];
 
 
 function LibraryPage() {
-
+  const history = useHistory()
 
   const headerBrowser = (
     <div>
@@ -61,7 +63,9 @@ function LibraryPage() {
 
   for (let i = 0; i < 25; i++) {
       mixtapes.push(
-          <div className={styles.mixtapeCard}></div>
+          <div className={styles.mixtapeCard}
+          onClick={() => history.push(`/mixtape/${i}`)} >
+          </div>
       );
   }
 
