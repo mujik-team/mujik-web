@@ -107,6 +107,11 @@ function MixtapeDetailsScreen(){
         </div>
     )
 
+    const songs = []
+    for(let i=0; i< mixtape.num_songs; i++){
+        songs.push(<div className={styles.mixtapeCard} style={{width:'100%', height:'45px'}}></div>)
+    }
+
     return (
         <div>
             {UserDetailsCard}
@@ -114,6 +119,15 @@ function MixtapeDetailsScreen(){
                 <img src={weeknd} className={styles.mixtapeImage}></img>
                 {mixapeDetails}
             </div>
+            <div style={{ display:'flex',justifyContent:'center'}}>
+            Labels        
+            </div>
+            <div style={{ display:'flex',justifyContent:'center'}}>
+                <div className={styles.mixtapelist}>
+                    {songs}
+                </div>
+            </div>
+            
         </div>
     )
 }
