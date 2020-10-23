@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import SideModal from "../../../components/SideModal";
+import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
 
 const Container = styled.div`
-  margin: 50px;
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
   gap: 20px;

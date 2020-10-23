@@ -1,77 +1,61 @@
 import styled from "styled-components";
-
 import React from "react";
 
-interface Props {
-  label?: string;
-}
-
-const Input = styled.input``;
-const Checkmark = styled.span`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-
-  &:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-`;
-const Label = styled.label`
-  display: block;
+const Container = styled.div`
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  background-color: var(--card-color-highlight);
-  font-weight: 500;
-  user-select: none;
 
-  & input {
-    position: absolute;
-    opacity: 0;
+  & label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
     cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-
-  &:hover ${Input} ~ ${Checkmark} {
-    background-color: #ccc;
-  }
-
-  & ${Input}:checked ~ ${Checkmark} {
-    background-color: var(--main-color);
-  }
-
-  & ${Input}:checked ~ ${Checkmark}:after {
-    display: block;
-  }
-
-  &:after {
-    content: "";
+    height: 28px;
+    left: 0;
     position: absolute;
-    display: none;
+    top: 0;
+    width: 28px;
+  }
+
+  & label:after {
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 7px;
+    opacity: 0;
+    position: absolute;
+    top: 8px;
+    transform: rotate(-45deg);
+    width: 12px;
+  }
+
+  & input[type="checkbox"] {
+    visibility: hidden;
+  }
+
+  & input[type="checkbox"]:checked + label {
+    background-color: #66bb6a;
+    border-color: #66bb6a;
+  }
+
+  & input[type="checkbox"]:checked + label:after {
+    opacity: 1;
   }
 `;
+
+type Props = {
+  label?: string;
+};
 
 function Checkbox(props: Props) {
   return (
-    <Label>
-      {props.label}
-      <Input type="checkbox"></Input>
-      <Checkmark></Checkmark>
-    </Label>
+    <div>
+      <Container>
+        <input type="checkbox" id="checkbox" />
+        <label htmlFor="checkbox"></label>
+      </Container>
+    </div>
   );
 }
 

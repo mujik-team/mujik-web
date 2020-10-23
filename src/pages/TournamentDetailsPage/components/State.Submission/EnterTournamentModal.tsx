@@ -1,5 +1,5 @@
 import React from "react";
-import Checkbox from "../../../components/Checkbox";
+import Checkbox from "../../../../components/Checkbox";
 import styles from "./EnterTournamentModal.module.css";
 
 function EnterTournamentModal() {
@@ -16,6 +16,7 @@ function EnterTournamentModal() {
         </div>
       </div>
       <Checkbox label="I have read the contest rules."></Checkbox>
+      <br />
       <Checkbox label="My mixtape meets restrictions."></Checkbox>
       <div className={styles.submitButton}>Submit</div>
     </div>

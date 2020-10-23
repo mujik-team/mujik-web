@@ -2,8 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { tournaments } from "./data";
 import styled from "styled-components";
-import TournamentSubmission from "./components/TournamentSubmission";
-import TournamentVote from "./components/TournamentVote";
+import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
+import TournamentVote from "./components/State.Voting/TournamentVote";
+import Button from "../../components/Button";
+import TournamentResults from "./components/State.Ended/TournamentResults";
 
 enum TournamentState {
   SUBMISSION = "submission",
@@ -11,13 +13,36 @@ enum TournamentState {
   ENDED = "ended",
 }
 
-const TournamentDetailsContainer = styled.div`
+const Container = styled.div`
   margin: 0 50px;
   margin-top: 60px;
   display: grid;
   grid-template-columns: 500px 1fr;
   grid-auto-rows: 300px;
   gap: 20px;
+`;
+
+const StateBasedContainer = styled.div`
+  margin: 60px;
+`;
+
+const TagContainer = styled.div`
+  height: 50px;
+  padding: 0 20px;
+  margin: auto;
+  display: inline-block;
+  border-radius: 8px;
+  background-color: var(--card-color);
+`;
+
+const Tag = styled.div`
+  display: inline-block;
+  border-radius: 99px;
+  padding: 4px 15px;
+  font-size: 12px;
+  background-color: #6c63ff;
+  letter-spacing: 2px;
+  font-weight: 600;
 `;
 
 const Image = styled.div`
@@ -60,24 +85,62 @@ function TournamentDetails() {
   const bottomComponent = {
     submission: <TournamentSubmission />,
     voting: <TournamentVote />,
-    ended: null,
+    ended: <TournamentResults />,
   };
 
   return (
     <div>
-      <TournamentDetailsContainer>
+      <Container>
         <Image />
         <div>
           <TournamentTitle>{tournament.title}</TournamentTitle>
           <div>
             <ProfilePicture />
-            <Username>by {tournament.createdBy}</Username>
+            <Username style={{ display: "inline-block" }}>
+              by {tournament.createdBy}
+            </Username>
+            <div style={{ display: "block", float: "right" }}>
+              <Button
+                style={{
+                  fontSize: "15px",
+                  fontWeight: "bold",
+                  padding: "10px 20px",
+                  marginRight: "20px",
+                }}
+              >
+                FOLLOW
+              </Button>
+
+              <TagContainer>
+                <img
+                  height="30"
+                  src="/icons/coin.svg"
+                  alt="mujik-coin"
+                  style={{
+                    paddingTop: "12px",
+                    marginRight: "5px",
+                  }}
+                ></img>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                >
+                  300K
+                </span>
+
+                <Tag>DOUBLE XP</Tag>
+                <Tag style={{ backgroundColor: "#FF6464" }}>NEW</Tag>
+              </TagContainer>
+            </div>
           </div>
+
           <Description>{tournament.description}</Description>
         </div>
-      </TournamentDetailsContainer>
+      </Container>
 
-      {bottomComponent[state]}
+      <StateBasedContainer>{bottomComponent[state]}</StateBasedContainer>
     </div>
   );
 }
