@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
+import { Dropdown } from "primereact/dropdown";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
@@ -28,13 +29,43 @@ const MixtapeCard = styled.div`
   }
 `;
 
+const SortDropdown = styled(Dropdown)`
+  font-family: "Fira Sans";
+  background: var(--card-color);
+  border: none;
+  border-radius: 99px;
+  width: 100px;
+  text-align: center;
+  height: 35px;
+
+  &.p-focus.p-dropdown {
+    border: none;
+    box-shadow: none;
+  }
+
+  & .p-dropdown-trigger {
+    display: none;
+  }
+  & .p-dropdown-panel {
+    background: var(--card-color);
+    border: none;
+    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.253);
+  }
+
+  & .p-component,
+  & .p-dropdown-label {
+    font-family: "Fira Sans";
+    font-size: 15px;
+  }
+`;
+
 const FloatRightContainer = styled.div`
   display: block;
   float: right;
 `;
 
 const VotesRemainingText = styled.span`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 25px;
 `;
 
@@ -53,6 +84,7 @@ function TournamentVote() {
     toggleShowVoteModal();
     setTimeout({}, 200);
     toggleShowVoteSuccessModal();
+    setSelectedMixtapes([]);
   };
 
   // Add a mixtape to the current selection.
@@ -64,6 +96,14 @@ function TournamentVote() {
     setSelectedMixtapes(selectedMixtapes.filter((i) => i !== id));
 
   const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
+  const options = [
+    { label: "Title", value: "name" },
+    { label: "Length", value: "length" },
+    { label: "Date Added", value: "submit" },
+    { label: "Random", value: "random" },
+  ];
+
+  const [sortBy, setSortBy] = useState("");
 
   for (let i = 0; i < 30; i++) {
     cards.push(
@@ -94,14 +134,31 @@ function TournamentVote() {
       <input placeholder="Search" type="text" />
       <FloatRightContainer>
         <VotesRemainingText>You have 9 votes remaining.</VotesRemainingText>
+        <span style={{ fontSize: "25px", margin: "0 15px" }}>Sort By</span>
+        <SortDropdown
+          value={sortBy}
+          onChange={(e: any) => setSortBy(e.value)}
+          options={options}
+        />
         {selectedMixtapes.length > 0 ? (
           <Button
-            style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "20px" }}
+            style={{
+              fontSize: "40px",
+              padding: "0, 20px",
+              color: "black",
+              backgroundColor: "var(--main-color)",
+              boxShadow: "0 0 30px 3px rgba(0,0,0, .15)",
+              fontWeight: "bold",
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+            }}
             onClick={() => toggleShowVoteModal()}
           >
             Vote
           </Button>
         ) : null}
+
         <span></span>
       </FloatRightContainer>
 

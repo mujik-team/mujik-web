@@ -8,9 +8,9 @@ const Container = styled.div`
 const SelectedMixtapesGrid = styled.div`
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 140px);
-  grid-auto-rows: 140px;
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, 120px);
+  grid-auto-rows: 120px;
+  gap: 10px;
 `;
 
 const MixtapeCard = styled.div`
