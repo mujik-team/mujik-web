@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import SearchBar from "../SearchBar";
+import SortDropdown from "../SortDropdown";
 
 const Container = styled.div`
   display: grid;
@@ -43,8 +45,10 @@ function TournamentResults() {
   return (
     <Container>
       <div>
-        <input placeholder="Search" type="text" />
-        <FloatRightContainer>Sort By</FloatRightContainer>
+        <SearchBar />
+        <FloatRightContainer>
+          <SortDropdown />
+        </FloatRightContainer>
         <hr />
         <MixtapeResultsGridContainer>{mixtapes}</MixtapeResultsGridContainer>
       </div>

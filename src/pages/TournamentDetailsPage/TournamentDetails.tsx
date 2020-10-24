@@ -74,7 +74,8 @@ const Description = styled.div`
 
 const TournamentTitle = styled.div`
   margin-top: 20px;
-  font-size: 40px;
+  margin-bottom: 10px;
+  font-size: 50px;
   font-weight: 500;
 `;
 
@@ -95,6 +96,10 @@ function TournamentDetails() {
         <Image />
         <div>
           <TournamentTitle>{tournament.title}</TournamentTitle>
+
+          <Description style={{ marginBottom: "20px" }}>
+            {tournament.description}
+          </Description>
           <div>
             <ProfilePicture />
             <Username
@@ -155,10 +160,6 @@ function TournamentDetails() {
               </TagContainer>
             </div>
           </div>
-
-          <Description style={{ marginTop: "20px" }}>
-            {tournament.description}
-          </Description>
         </div>
       </Container>
 

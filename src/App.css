@@ -20,6 +20,10 @@ h1 {
   font-weight: 500;
 }
 
+hr {
+  color: #555b66;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   background-color: var(--main-bg-color);

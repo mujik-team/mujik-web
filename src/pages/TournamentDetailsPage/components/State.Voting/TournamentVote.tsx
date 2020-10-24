@@ -6,7 +6,8 @@ import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
-import { InputText } from "primereact/inputtext";
+import SortDropdown from "../SortDropdown";
+import SearchBar from "../SearchBar";
 
 const Container = styled.div``;
 
@@ -27,55 +28,6 @@ const MixtapeCard = styled.div`
   &:hover,
   &.selected {
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
-`;
-
-const SearchBar = styled(InputText)`
-  font-family: "Fira Sans";
-  font-size: 16px;
-  margin-right: 10px;
-  background-color: var(--card-color);
-  border: none;
-  height: 35px;
-  border-radius: 8px;
-
-  * {
-    border: none;
-    box-shadow: none;
-  }
-`;
-
-const SortDropdown = styled(Dropdown)`
-  font-family: "Fira Sans";
-  background: var(--card-color);
-  border: none;
-  border-radius: 8px;
-  width: 120px;
-  text-align: center;
-
-  &.p-focus.p-dropdown {
-    border: none;
-    box-shadow: none;
-  }
-
-  & .p-dropdown-trigger {
-    display: none;
-  }
-  & .p-dropdown-panel {
-    background: var(--card-color);
-    border: none;
-    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.144);
-  }
-
-  & .p-component,
-  & .p-dropdown-label {
-    font-family: "Fira Sans";
-    font-size: 16px;
-  }
-
-  & .p-dropdown-label {
-    /* margin-top: 2px; */
-    font-weight: bold;
   }
 `;
 
