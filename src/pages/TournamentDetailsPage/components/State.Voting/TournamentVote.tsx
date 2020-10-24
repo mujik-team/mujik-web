@@ -6,6 +6,7 @@ import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
+import { InputText } from "primereact/inputtext";
 
 const Container = styled.div``;
 
@@ -29,14 +30,28 @@ const MixtapeCard = styled.div`
   }
 `;
 
+const SearchBar = styled(InputText)`
+  font-family: "Fira Sans";
+  font-size: 16px;
+  margin-right: 10px;
+  background-color: var(--card-color);
+  border: none;
+  height: 35px;
+  border-radius: 8px;
+
+  * {
+    border: none;
+    box-shadow: none;
+  }
+`;
+
 const SortDropdown = styled(Dropdown)`
   font-family: "Fira Sans";
   background: var(--card-color);
   border: none;
-  border-radius: 99px;
-  width: 100px;
+  border-radius: 8px;
+  width: 120px;
   text-align: center;
-  height: 35px;
 
   &.p-focus.p-dropdown {
     border: none;
@@ -49,19 +64,35 @@ const SortDropdown = styled(Dropdown)`
   & .p-dropdown-panel {
     background: var(--card-color);
     border: none;
-    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.253);
+    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.144);
   }
 
   & .p-component,
   & .p-dropdown-label {
     font-family: "Fira Sans";
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  & .p-dropdown-label {
+    /* margin-top: 2px; */
+    font-weight: bold;
   }
 `;
 
 const FloatRightContainer = styled.div`
-  display: block;
-  float: right;
+  text-align: right;
+`;
+
+const VoteButton = styled(Button)`
+  font-size: 30px;
+  padding: 0 20px;
+  color: black;
+  background-color: var(--main-color);
+  box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.25);
+  font-weight: bold;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 `;
 
 const VotesRemainingText = styled.span`
@@ -131,39 +162,38 @@ function TournamentVote() {
       <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
         <VoteModal submit={submitVote} />
       </SideModal>
-      <input placeholder="Search" type="text" />
-      <FloatRightContainer>
-        <VotesRemainingText>You have 9 votes remaining.</VotesRemainingText>
-        <span style={{ fontSize: "25px", margin: "0 15px" }}>Sort By</span>
-        <SortDropdown
-          value={sortBy}
-          onChange={(e: any) => setSortBy(e.value)}
-          options={options}
-        />
-        {selectedMixtapes.length > 0 ? (
-          <Button
-            style={{
-              fontSize: "40px",
-              padding: "0, 20px",
-              color: "black",
-              backgroundColor: "var(--main-color)",
-              boxShadow: "0 0 30px 3px rgba(0,0,0, .15)",
-              fontWeight: "bold",
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-            }}
-            onClick={() => toggleShowVoteModal()}
-          >
-            Vote
-          </Button>
-        ) : null}
 
-        <span></span>
-      </FloatRightContainer>
+      <div style={{ display: "grid", gridTemplateColumns: "250px 100px 1fr" }}>
+        <div className="p-input-icon-left">
+          <i
+            style={{ fontSize: "20px", top: "30%" }}
+            className="pi mdi mdi-magnify"
+          ></i>
+          <SearchBar />
+        </div>
+        <div className="p-float-label">
+          <SortDropdown
+            id="sort-dropdown"
+            value={sortBy}
+            onChange={(e: any) => setSortBy(e.value)}
+            options={options}
+          />
+          <label htmlFor="sort-dropdown">Sort By</label>
+        </div>
 
-      <br />
-      <br />
+        <FloatRightContainer>
+          <VotesRemainingText style={{ marginRight: "20px" }}>
+            You have 9 votes remaining.
+          </VotesRemainingText>
+          {/* <span style={{ fontSize: "25px", margin: "0 15px" }}>Sort By</span> */}
+          {selectedMixtapes.length > 0 ? (
+            <VoteButton onClick={() => toggleShowVoteModal()}>Vote</VoteButton>
+          ) : null}
+
+          <span></span>
+        </FloatRightContainer>
+      </div>
+
       <hr />
 
       <MixtapeGridContainer>{cards}</MixtapeGridContainer>

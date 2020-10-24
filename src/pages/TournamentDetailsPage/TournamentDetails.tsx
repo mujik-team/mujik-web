@@ -6,7 +6,6 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import FullScreenModal from "../../components/FullScreenModal";
 
 enum TournamentState {
   SUBMISSION = "submission",
@@ -37,6 +36,7 @@ const TagContainer = styled.div`
 `;
 
 const Tag = styled.div`
+  user-select: none;
   display: inline-block;
   border-radius: 99px;
   padding: 4px 15px;
@@ -97,16 +97,25 @@ function TournamentDetails() {
           <TournamentTitle>{tournament.title}</TournamentTitle>
           <div>
             <ProfilePicture />
-            <Username style={{ display: "inline-block" }}>
+            <Username
+              style={{
+                marginLeft: "10px",
+                display: "inline-block",
+                position: "relative",
+                bottom: "20px",
+              }}
+            >
               by {tournament.createdBy}
             </Username>
-            <div style={{ display: "block", float: "right" }}>
+            <div style={{ position: "relative", float: "right" }}>
               <Button
                 style={{
+                  position: "relative",
                   fontSize: "15px",
                   fontWeight: "bold",
                   padding: "10px 20px",
-                  marginRight: "20px",
+                  marginRight: "10px",
+                  top: "9px",
                 }}
               >
                 FOLLOW
@@ -114,30 +123,42 @@ function TournamentDetails() {
 
               <TagContainer>
                 <img
-                  height="30"
+                  height="20"
                   src="/icons/coin.svg"
                   alt="mujik-coin"
                   style={{
-                    paddingTop: "12px",
+                    position: "relative",
+                    top: "25%",
                     marginRight: "5px",
                   }}
                 ></img>
-                <span
+                <div
                   style={{
+                    position: "relative",
+                    display: "inline-block",
+                    top: "20%",
                     fontWeight: "bold",
                     fontSize: "20px",
+                    marginRight: "20px",
                   }}
                 >
                   300K
+                </div>
+                <span style={{ position: "relative", top: "12%" }}>
+                  <Tag>DOUBLE XP</Tag>
+                  <Tag
+                    style={{ backgroundColor: "#FF6464", marginLeft: "5px" }}
+                  >
+                    NEW
+                  </Tag>
                 </span>
-
-                <Tag>DOUBLE XP</Tag>
-                <Tag style={{ backgroundColor: "#FF6464" }}>NEW</Tag>
               </TagContainer>
             </div>
           </div>
 
-          <Description>{tournament.description}</Description>
+          <Description style={{ marginTop: "20px" }}>
+            {tournament.description}
+          </Description>
         </div>
       </Container>
 

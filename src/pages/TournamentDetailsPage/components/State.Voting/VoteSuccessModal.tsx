@@ -9,7 +9,7 @@ const Container = styled.div`
 const MessageContainer = styled.div`
   display: block;
   float: right;
-  margin-top: 150px;
+  margin-top: 180px;
   margin-left: 30px;
 `;
 
