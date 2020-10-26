@@ -1,0 +1,41 @@
+.registerCardsContainer {
+    margin: 30px;
+}
+
+.registerItems {
+    display: grid;
+    margin-top: 20px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 50px;
+    gap: 10px;
+  }  
+
+.inputCard {
+    cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 6px;
+    transition: 0.2s ease-in all;
+    height: 45px;
+    width: 257px;
+  }
+  
+  .inputCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
+
+  .longInputCard {
+    cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 6px;
+    transition: 0.2s ease-in all;
+    height: 150px;
+    width: 611px;
+  }
+
+  .longInputCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
