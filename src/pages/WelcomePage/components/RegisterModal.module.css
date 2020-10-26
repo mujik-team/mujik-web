@@ -1,13 +1,11 @@
-.registerCardsContainer {
-    margin: 30px;
-}
 
 .registerItems {
     display: grid;
-    margin-top: 20px;
-    grid-template-columns: 1fr;
+    grid-template-columns: 55% 45%;
     grid-auto-rows: 50px;
-    gap: 10px;
+    gap: 45px;
+    margin: 30px;
+    margin-top: 300px;
   }  
 
 .inputCard {
@@ -38,4 +36,23 @@
     -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
     -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
+
+  .registerButton {
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    width: 100%;
+    padding: 30px 0;
+    background-color: var(--card-color);
+    position: absolute;
+    bottom: 0;
+    transition: 0.2s ease-in all;
+  }
+  
+  .registerButton:hover {
+    background-color: var(--main-color);
+    color: black;
   }

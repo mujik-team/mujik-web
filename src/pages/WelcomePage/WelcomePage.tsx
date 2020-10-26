@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../App";
 import { Button } from "primereact/button";
-import SideModal from "../../components/SideModal";
 import RegisterModal from "./components/RegisterModal";
+import styles from "./WelcomePage.module.css";
+
 
 function WelcomePage() {
   const authContext = useContext(AuthContext);
@@ -15,9 +16,9 @@ function WelcomePage() {
 
   return (
     <div>
-      <SideModal isActive={showRegisterModal} toggle={toggleModal}>
-        <RegisterModal />
-      </SideModal>
+      <div>
+        <RegisterModal isActive={showRegisterModal} toggle={toggleModal}/>
+      </div>
       <h1>mujik</h1>
       <h3>This site is currently in development.</h3>
       <Button
