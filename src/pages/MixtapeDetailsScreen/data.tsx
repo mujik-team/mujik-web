@@ -7,7 +7,33 @@ export const mixtapes = [
         "This one here is for all of our boomers out there! You are tasked with creating the most boomer friendly playlist possible. Think drinking Monster on the weekend while mowing your lawn, think summer barbecues, think riding down the highway in your Ford pickup with the windows down.",
       duration: 280,
       num_songs: 6,
-      followers: 3000
+      followers: 3000,
+      songs: [
+        {
+          title: 'I feel it coming',
+          artist: 'The Weeknd',
+          duration: '145',
+          album: 'Starboy',
+        },
+        {
+          title: 'False Alarm',
+          artist: 'The Weeknd',
+          duration: '432',
+          album: 'Starboy',
+        },
+        {
+          title: 'Blinding Lights',
+          artist: 'The Weeknd',
+          duration: '445',
+          album: 'After Hours',
+        },
+        {
+          title: 'Heartless',
+          artist: 'The Weeknd',
+          duration: '249',
+          album: 'After Hours',
+        }
+      ]
     },
     {
       title: "Sadboi Hours",

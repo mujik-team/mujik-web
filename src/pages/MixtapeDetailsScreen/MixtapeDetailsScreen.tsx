@@ -9,6 +9,8 @@ import weeknd from '../../Images/weeknd.png'
 import { ToggleButton } from 'primereact/togglebutton';
 import Button from '../../components/Button';
 import { Fieldset } from 'primereact/fieldset';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 import {Button as PrimeButton} from 'primereact/button'
 
@@ -73,7 +75,7 @@ function MixtapeDetailsScreen(){
     )
 
     const description = (
-        <div className="p-d-inline" style={{color:'#777777', marginTop:'5px'}}>{mixtape.description}</div>
+        <div className="p-d-inline" style={{color:'#777777', marginTop:'5px', textAlign:'left'}}>{mixtape.description}</div>
     )
 
     const buttons = (
@@ -107,9 +109,17 @@ function MixtapeDetailsScreen(){
         </div>
     )
 
+
     const songs = []
     for(let i=0; i< mixtape.num_songs; i++){
-        songs.push(<div className={styles.mixtapeCard} style={{width:'100%', height:'45px'}}></div>)
+        songs.push(<div className="p-grid" id={styles.songCard} style={{marginLeft:'20px', marginRight:'20px'}}>
+        <div className="p-col-fixed" style={{ width: '50px'}}></div>
+        <div className="p-col">Title</div>
+        <div className="p-col">Artist</div>
+        <div className="p-col">Album</div>
+        <div className="p-col">Duration</div>
+    </div>)
+        // songs.push(<div id={styles.mixtapeCard}></div>)
     }
 
     return (
@@ -119,11 +129,17 @@ function MixtapeDetailsScreen(){
                 <img src={weeknd} className={styles.mixtapeImage}></img>
                 {mixapeDetails}
             </div>
-            <div style={{ display:'flex',justifyContent:'center'}}>
-            Labels        
+            <div>
+                <div className="p-grid" style={{marginLeft:'20px', marginRight:'20px'}}>
+                    <div className="p-col-fixed" style={{ width: '50px'}}></div>
+                    <div className="p-col">Title</div>
+                    <div className="p-col">Artist</div>
+                    <div className="p-col">Album</div>
+                    <div className="p-col">Duration</div>
+                </div>
             </div>
-            <div style={{ display:'flex',justifyContent:'center'}}>
-                <div className={styles.mixtapelist}>
+            <div>
+                <div>
                     {songs}
                 </div>
             </div>

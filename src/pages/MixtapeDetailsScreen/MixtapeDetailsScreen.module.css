@@ -25,11 +25,19 @@
     grid-template-rows: 1fr;
   }
   
-  .mixtapelist {
-    margin-top: 20px;
+  .columns{
+    display: grid;
+    /* margin-left: auto; */
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: auto;
+    /* margin: 20px; */
+  }
+
+  .mixtapelistItem {
+    /* margin-top: 20px; */
   display: grid;
-  /* grid-template-columns: 1fr; */
-  grid-auto-columns: auto;
+  grid-template-columns: 1fr;
+  /* grid-auto-columns: 1fr; */
   grid-auto-rows: 60px;
   gap: 0px;
   width: 97%;
@@ -38,17 +46,19 @@
   }
 
 
-  .mixtapeCard {
+  #songCard {
     cursor: pointer;
     border-radius: 8px;
     background-color: var(--card-color);
     transition: 0.2s ease-in all;
-    display: grid;
-    
+    /* display: grid; */
+    /* width:100%;
+    height:45px; */
+    margin-bottom: 20px;
     /* width: 200px; */
   }
   
-  .mixtapeCard:hover {
+  #songCard:hover {
     -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
     -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
