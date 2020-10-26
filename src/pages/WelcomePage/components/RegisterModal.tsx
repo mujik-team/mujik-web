@@ -53,7 +53,6 @@ function RegisterModal(props: Props) {
       <Modal onClick={(e: any) => e.stopPropagation()} className="side-modal">
         <div>
           <div className={styles.registerCardsContainer}>
-            This is the registeration modal.
             <div className={styles.registerItems}>
               <div>
                 <span>Username</span>
@@ -76,7 +75,7 @@ function RegisterModal(props: Props) {
                 <div className={styles.longInputCard}></div>
               </div>
             </div>
-            <div className={styles.registerButton}>Register</div>
+            <div className={styles.registerButton}>Create New Account</div>
           </div>
         </div>
       </Modal>
