@@ -7,6 +7,8 @@ import coin from '../../Images/coin.png'
 import user from '../../Images/undraw_male_avatar_323b.svg'
 import weeknd from '../../Images/weeknd.png'
 import pause from '../../Images/pause-button-svgrepo-com.svg'
+import calendar from '../../Images/calendar.svg'
+import clock from '../../Images/clock.svg'
 import { ToggleButton } from 'primereact/togglebutton';
 import Button from '../../components/Button';
 import { Fieldset } from 'primereact/fieldset';
@@ -140,6 +142,7 @@ function MixtapeDetailsScreen(){
                 <div className="p-col">{props.title}</div>
                 <div className="p-col">{props.artist}</div>
                 <div className="p-col">{props.album}</div>
+                <div className="p-col">{"10/23/24"}</div>
                 <div className="p-col">{props.duration}</div>
             </div>
         )
@@ -148,11 +151,11 @@ function MixtapeDetailsScreen(){
     const songs = []
     for(let i=0; i< mixtape.songs.length; i++){
         const song = mixtape.songs[i]
-        songs.push(songCard({song_num: i, title: song.title, artist: song.artist, album: song.album, duration: song.duration}))
+        songs.push(songCard({song_num: i, title: song.title, artist: song.artist, album: song.album, date: song.date, duration: song.duration }))
     }
 
 
-
+    
     return (
         <div>
             {UserDetailsCard}
@@ -167,7 +170,8 @@ function MixtapeDetailsScreen(){
                     <div className="p-col">TITLE</div>
                     <div className="p-col">ARTIST</div>
                     <div className="p-col">ALBUM</div>
-                    <div className="p-col">DURATION</div>
+                    <div className="p-col"><img src={calendar} style={{width:'15px'}}></img></div>
+                    <div className="p-col"><img src={clock} style={{height:'15px'}}></img></div>
                 </div>
                 <div className="p-grid" id={styles.line} style={{marginLeft:'20px', marginRight:'20px'}}></div>                
             </div>

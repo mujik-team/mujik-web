@@ -8,6 +8,7 @@ export const mixtapes = [
       duration: 280,
       num_songs: 6,
       followers: 3000,
+      date: "10/12/23",
       songs: [
         {
           title: 'I feel it coming',
@@ -43,6 +44,7 @@ export const mixtapes = [
       duration: 280,
       num_songs: 9,
       followers: 3000,
+      date: '10/12/23',
         songs: [
           {
             title: 'I feel it coming',
@@ -78,6 +80,7 @@ export const mixtapes = [
       duration: 280,
       num_songs: 12,
       followers: 3000,
+      date: '10/12/23',
       songs: [
         {
           title: 'I feel it coming',
