@@ -45,11 +45,21 @@
   /* align-items: center; */
   }
 
+  #line{
+    position: relative;
+    width: 97%;
+    /* width: 1562px; */
+    height: 0px;
+    
+    border: 1px solid #424854;
+    margin-bottom: 20px;
+    opacity: 0.4;
+  }
 
   #songCard {
     cursor: pointer;
     border-radius: 8px;
-    background-color: var(--card-color);
+    background-color: #2E323A;
     transition: 0.2s ease-in all;
     /* display: grid; */
     /* width:100%;

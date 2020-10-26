@@ -6,11 +6,13 @@ import { ProgressBar } from 'primereact/progressbar';
 import coin from '../../Images/coin.png'
 import user from '../../Images/undraw_male_avatar_323b.svg'
 import weeknd from '../../Images/weeknd.png'
+import pause from '../../Images/pause-button-svgrepo-com.svg'
 import { ToggleButton } from 'primereact/togglebutton';
 import Button from '../../components/Button';
 import { Fieldset } from 'primereact/fieldset';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+// import songCard from './components/songCard';
 
 import {Button as PrimeButton} from 'primereact/button'
 
@@ -55,6 +57,8 @@ function MixtapeDetailsScreen(){
 
     const details = [mixtape.createdBy,mixtape.num_songs + " songs", mixtape.duration + " minutes",  mixtape.followers + " Followers"]
 
+    const [currentSongSelected, setcurrentSongSelected] = useState(null)
+    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({num:null, play:false})
     const [playState, setPlayState] = useState(true)
     const [followState, setFollowState] = useState(true)
 
@@ -109,18 +113,45 @@ function MixtapeDetailsScreen(){
         </div>
     )
 
+    const songCard = (props: any) => {
+        let showplay = null
+        let playSong = false
+        if (props.song_num == currentSongSelected){
+            showplay = true
+        }
+        if (props.song_num == currentlyPlayingSong.num){
+            playSong = !currentlyPlayingSong.play
+        }
+        return (
+            <div className="p-grid" id={styles.songCard} style={{marginLeft:'20px', marginRight:'20px'}}
+            onMouseOver={() => {setcurrentSongSelected(props.song_num); console.log(currentSongSelected)}}
+            onMouseLeave={() => {setcurrentSongSelected(null); console.log(currentSongSelected)}}>
+                <div className="p-col-fixed" style={{ width: '70px'}}>
+                {
+                    showplay ? 
+                    <div onClick={() => setCurrentlyPlayingSong({num: props.song_num, play: !currentlyPlayingSong.play})}
+                        style={{width:'25px', height: '25px', borderRadius:'80px', fontSize:'15px', alignSelf:'flex-end', marginRight: '20px',
+                        textAlign:'center', color:'yellow'}}>
+                        {playSong ? '| |': '▶'}
+                    </div>
+                    : ""
+                }
+                </div>
+                <div className="p-col">{props.title}</div>
+                <div className="p-col">{props.artist}</div>
+                <div className="p-col">{props.album}</div>
+                <div className="p-col">{props.duration}</div>
+            </div>
+        )
+    }
 
     const songs = []
-    for(let i=0; i< mixtape.num_songs; i++){
-        songs.push(<div className="p-grid" id={styles.songCard} style={{marginLeft:'20px', marginRight:'20px'}}>
-        <div className="p-col-fixed" style={{ width: '50px'}}></div>
-        <div className="p-col">Title</div>
-        <div className="p-col">Artist</div>
-        <div className="p-col">Album</div>
-        <div className="p-col">Duration</div>
-    </div>)
-        // songs.push(<div id={styles.mixtapeCard}></div>)
+    for(let i=0; i< mixtape.songs.length; i++){
+        const song = mixtape.songs[i]
+        songs.push(songCard({song_num: i, title: song.title, artist: song.artist, album: song.album, duration: song.duration}))
     }
+
+
 
     return (
         <div>
@@ -130,13 +161,15 @@ function MixtapeDetailsScreen(){
                 {mixapeDetails}
             </div>
             <div>
-                <div className="p-grid" style={{marginLeft:'20px', marginRight:'20px'}}>
-                    <div className="p-col-fixed" style={{ width: '50px'}}></div>
-                    <div className="p-col">Title</div>
-                    <div className="p-col">Artist</div>
-                    <div className="p-col">Album</div>
-                    <div className="p-col">Duration</div>
+                <div className="p-grid" style={{marginLeft:'20px', marginRight:'20px', marginBottom: '5px',
+            fontFamily:'Poppins', color:'#777777', fontWeight:300, fontSize: '15px'}}>
+                    <div className="p-col-fixed" style={{ width: '70px'}}>  </div>
+                    <div className="p-col">TITLE</div>
+                    <div className="p-col">ARTIST</div>
+                    <div className="p-col">ALBUM</div>
+                    <div className="p-col">DURATION</div>
                 </div>
+                <div className="p-grid" id={styles.line} style={{marginLeft:'20px', marginRight:'20px'}}></div>                
             </div>
             <div>
                 <div>
