@@ -1,0 +1,23 @@
+.title {
+    font-size: 85px;
+    line-height: 127.5px;
+    margin-left: 50px;
+}
+
+.landingContainer {
+    margin-top: 225px;
+    margin-left: 50px;
+    width: 582px;
+    font-size: 32px;
+    font: poppins;
+}
+
+.login {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.registerButton {
+    margin-left: 50px;
+    margin-top: 20px;
+}
