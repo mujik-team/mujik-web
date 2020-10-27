@@ -10,6 +10,7 @@ import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import * as authService from "./services/auth/authService";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
 import MixtapeDetailsScreen from './pages/MixtapeDetailsScreen/MixtapeDetailsScreen';
+import UserProfileScreen from './pages/UserProfile/UserProfileScreen'
 import AppHeader from "./components/AppHeader";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
@@ -58,6 +59,7 @@ function App() {
             path="/tournament/:tournamentId"
             component={TournamentDetails}
           />
+          <Route path="/user/:userId" component={UserProfileScreen} />
         </Switch>
       </div>
     </div>
