@@ -8,13 +8,17 @@ interface Props {
 }
 
 const Modal = styled.div`
-  position: fixed;
-  background-color: var(--main-bg-color);
-  height: 800px;
-  width: 800px;
+  display: flex;
   margin: auto;
-  transition: 0.3s ease-in-out all;
+  margin-top: 100px;
+  border-radius: 8px;
+  height: 500px;
+  width: 800px;
+  /* transform: scale(0.9); */
+
+  background-color: var(--main-bg-color);
   box-shadow: -5px 0px 30px 5px #00000060;
+  transition: 0.2s ease-in all;
 `;
 
 const Container = styled.div`
@@ -27,7 +31,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   position: fixed;
-  transition: 0.3s ease-in-out all;
+  transition: 0.2s ease-in all;
 
   &.active {
     opacity: 1;
@@ -36,7 +40,7 @@ const Container = styled.div`
   }
 
   &.active > ${Modal} {
-    transform: translateX(0%);
+    /* transform: scale(1); */
   }
 `;
 
