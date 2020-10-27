@@ -87,7 +87,10 @@ function Navbar() {
         </NavItem>
       ))}
       <Button
-        onClick={() => authContext.logout()}
+        onClick={() => {
+          authContext.logout();
+          history.push("/");
+        }}
         style={{ marginTop: "50px" }}
       >
         Logout

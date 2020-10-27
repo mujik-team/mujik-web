@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
+import { Dropdown } from "primereact/dropdown";
+import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
+import VoteSuccessModal from "./VoteSuccessModal";
+import SortDropdown from "../SortDropdown";
+import SearchBar from "../SearchBar";
 
 const Container = styled.div``;
 
@@ -27,20 +32,43 @@ const MixtapeCard = styled.div`
 `;
 
 const FloatRightContainer = styled.div`
-  display: block;
-  float: right;
+  text-align: right;
+`;
+
+const VoteButton = styled(Button)`
+  font-size: 30px;
+  padding: 0 20px;
+  color: black;
+  background-color: var(--main-color);
+  box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.25);
+  font-weight: bold;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 `;
 
 const VotesRemainingText = styled.span`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 25px;
 `;
 
 function TournamentVote() {
   const cards = [];
 
-  const toggleModal = () => setShowVoteModal(!showVoteModal);
+  const toggleShowVoteModal = () => setShowVoteModal(!showVoteModal);
   const [showVoteModal, setShowVoteModal] = useState(false);
+
+  const toggleShowVoteSuccessModal = () =>
+    setShowVoteSuccessModal(!showVoteSuccessModal);
+
+  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
+
+  const submitVote = () => {
+    toggleShowVoteModal();
+    setTimeout({}, 200);
+    toggleShowVoteSuccessModal();
+    setSelectedMixtapes([]);
+  };
 
   // Add a mixtape to the current selection.
   const addMixtape = (id: string) =>
@@ -51,6 +79,14 @@ function TournamentVote() {
     setSelectedMixtapes(selectedMixtapes.filter((i) => i !== id));
 
   const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
+  const options = [
+    { label: "Title", value: "name" },
+    { label: "Length", value: "length" },
+    { label: "Date Added", value: "submit" },
+    { label: "Random", value: "random" },
+  ];
+
+  const [sortBy, setSortBy] = useState("");
 
   for (let i = 0; i < 30; i++) {
     cards.push(
@@ -69,25 +105,47 @@ function TournamentVote() {
 
   return (
     <Container>
-      <SideModal isActive={showVoteModal} toggle={toggleModal}>
-        <VoteModal />
+      <FullScreenModal
+        isActive={showVoteSuccessModal}
+        toggle={toggleShowVoteSuccessModal}
+      >
+        <VoteSuccessModal />
+      </FullScreenModal>
+      <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
+        <VoteModal submit={submitVote} />
       </SideModal>
-      <input placeholder="Search" type="text" />
-      <FloatRightContainer>
-        <VotesRemainingText>You have 9 votes remaining.</VotesRemainingText>
-        {selectedMixtapes.length > 0 ? (
-          <Button
-            style={{ fontSize: "20px", fontWeight: "bold", marginLeft: "20px" }}
-            onClick={() => toggleModal()}
-          >
-            Vote
-          </Button>
-        ) : null}
-        <span></span>
-      </FloatRightContainer>
 
-      <br />
-      <br />
+      <div style={{ display: "grid", gridTemplateColumns: "250px 100px 1fr" }}>
+        <div className="p-input-icon-left">
+          <i
+            style={{ fontSize: "20px", top: "30%" }}
+            className="pi mdi mdi-magnify"
+          ></i>
+          <SearchBar />
+        </div>
+        <div className="p-float-label">
+          <SortDropdown
+            id="sort-dropdown"
+            value={sortBy}
+            onChange={(e: any) => setSortBy(e.value)}
+            options={options}
+          />
+          <label htmlFor="sort-dropdown">Sort By</label>
+        </div>
+
+        <FloatRightContainer>
+          <VotesRemainingText style={{ marginRight: "20px" }}>
+            You have 9 votes remaining.
+          </VotesRemainingText>
+          {/* <span style={{ fontSize: "25px", margin: "0 15px" }}>Sort By</span> */}
+          {selectedMixtapes.length > 0 ? (
+            <VoteButton onClick={() => toggleShowVoteModal()}>Vote</VoteButton>
+          ) : null}
+
+          <span></span>
+        </FloatRightContainer>
+      </div>
+
       <hr />
 
       <MixtapeGridContainer>{cards}</MixtapeGridContainer>

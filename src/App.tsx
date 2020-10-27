@@ -9,7 +9,8 @@ import { AuthState } from "./services/auth/types";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import * as authService from "./services/auth/authService";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
-import MixtapeDetailsScreen from "./pages/MixtapeDetailsScreen/MixtapeDetailsScreen";
+import MixtapeDetailsScreen from './pages/MixtapeDetailsScreen/MixtapeDetailsScreen';
+import AppHeader from "./components/AppHeader";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -42,6 +43,7 @@ function App() {
 
   const app = (
     <div className="app">
+      <AppHeader />
       <Navbar />
       <div className="router">
         <Switch>
