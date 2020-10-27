@@ -1,34 +1,29 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../App";
+import { useHistory } from "react-router-dom";
 import { Button } from "primereact/button";
-import RegisterModal from "./components/RegisterModal";
-import styles from "./WelcomePage.module.css";
-
+// import styles from "./WelcomePage.module.css";
+import LoginPage from "../LoginPage/LoginPage";
 
 function WelcomePage() {
-  const authContext = useContext(AuthContext);
 
-  const toggleModal = () => {
-    setRegisterModal(!showRegisterModal);
-  };
+  const history = useHistory();
+  const [showLogin, setLogin] = useState(false);
 
-  const [showRegisterModal, setRegisterModal] = useState(false);
+  const landing = () => (
+    <div>
+      <h1> mujik </h1> 
+      <h3> This site is currently in development. This is the landing page.</h3> 
+      <Button
+        onClick={() => setLogin(true)}
+      >
+      Login
+      </Button>
+    </div>
+  );
 
   return (
     <div>
-      <div>
-        <RegisterModal isActive={showRegisterModal} toggle={toggleModal}/>
-      </div>
-      <h1>mujik</h1>
-      <h3>This site is currently in development.</h3>
-      <Button
-        onClick={async () => {
-          await authContext.login("mckillagorilla", "reallygoodpass");
-        }}
-      >
-        Login
-      </Button>
-      <Button onClick={() => toggleModal()}>Register</Button>
+        {showLogin ? <LoginPage /> : landing()}
     </div>
   );
 }
