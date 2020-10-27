@@ -163,7 +163,7 @@ function MixtapeDetailsScreen(){
     
     return (
         <div>
-            {UserDetailsCard}
+            {/* {UserDetailsCard} */}
             <div className={styles.container}>
                 <img src={weeknd} className={styles.mixtapeImage}></img>
                 {mixapeDetails}
