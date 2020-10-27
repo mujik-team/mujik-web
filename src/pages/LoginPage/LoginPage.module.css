@@ -1,0 +1,33 @@
+.loginItems {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* grid-auto-rows: 50px; */
+    gap: 45px;
+    margin: 30px;    
+    margin-top: 225px;
+    margin-left: 50px;
+}
+
+.inputCard {
+    cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 6px;
+    transition: 0.2s ease-in all;
+    height: 60px;
+    width: 400px;
+  }
+  
+  .inputCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
+
+.buttonContainer {
+      margin: 20px;
+      margin-left: 50px;
+  }
+
+.button {
+    margin: 40px;
+}

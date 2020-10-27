@@ -1,7 +1,17 @@
 import React from "react";
 import styles from "./libraryScreen.module.css";
-import "primeflex/primeflex.css";
-import { Button } from "primereact/button";
+import 'primeflex/primeflex.css'
+import { Button } from 'primereact/button';
+import { ProgressBar } from 'primereact/progressbar';
+import coin from '../../Images/coin.png'
+import user from '../../Images/undraw_male_avatar_323b.svg'
+import { InputText } from 'primereact/inputtext';
+import weeknd from '../../Images/weeknd.png'
+import {SplitButton} from 'primereact/splitbutton';
+import { Dropdown } from 'primereact/dropdown';
+import {useState} from 'react'
+import { useHistory } from "react-router-dom";
+
 
 // const [sortingCriteria, setSortingCriteria] = useState()
 // import 'primeicons/raw-svg'
@@ -11,6 +21,8 @@ const tabsYour = ["All", "Entered", "Following", "Ended"];
 // <input style={{width:'250px', height:'40px'}} placeholder="Search" type="text" />
 
 function LibraryPage() {
+  const history = useHistory()
+
   const headerBrowser = (
     <div>
       <span className={styles.title}>My Library</span>
@@ -77,7 +89,11 @@ function LibraryPage() {
   const mixtapes = [];
 
   for (let i = 0; i < 25; i++) {
-    mixtapes.push(<div className={styles.mixtapeCard}></div>);
+      mixtapes.push(
+          <div className={styles.mixtapeCard}
+          onClick={() => history.push(`/mixtape/${i}`)} >
+          </div>
+      );
   }
 
   const mixtapesBrowser = (

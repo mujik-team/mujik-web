@@ -1,0 +1,58 @@
+
+.registerItems {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    grid-auto-rows: 50px;
+    gap: 45px;
+    margin: 30px;
+    margin-top: 300px;
+  }  
+
+.inputCard {
+    cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 6px;
+    transition: 0.2s ease-in all;
+    height: 45px;
+    width: 257px;
+  }
+  
+  .inputCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
+
+  .longInputCard {
+    cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 6px;
+    transition: 0.2s ease-in all;
+    height: 150px;
+    width: 611px;
+  }
+
+  .longInputCard:hover {
+    -webkit-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    -moz-box-shadow: inset 0px 0px 0px 2px var(--main-color);
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
+
+  .registerButton {
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    width: 100%;
+    padding: 30px 0;
+    background-color: var(--card-color);
+    position: absolute;
+    bottom: 0;
+    transition: 0.2s ease-in all;
+  }
+  
+  .registerButton:hover {
+    background-color: var(--main-color);
+    color: black;
+  }

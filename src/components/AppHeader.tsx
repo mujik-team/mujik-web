@@ -1,6 +1,7 @@
 import { ProgressBar } from "primereact/progressbar";
 import React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const UserCoinsText = styled.span``;
 
@@ -28,6 +29,7 @@ const UserDetailsContainer = styled.div`
 `;
 
 function AppHeader() {
+  const history = useHistory()
   const UserDetailsCard = (
     <div
       style={{ display: "flex", justifyContent: "flex-end", margin: "20px" }}
@@ -48,7 +50,7 @@ function AppHeader() {
         <UserCoinsText>30000</UserCoinsText>
       </UserDetailsContainer>
       <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
-        <img src="/images/avatar_placeholder.svg" width="45px"></img>
+        <img src="/images/avatar_placeholder.svg" width="45px" style={{cursor:'pointer'}} onClick={() => history.push(`/user/0`)}></img>
         <span className="p-badge">3</span>
       </span>
     </div>
