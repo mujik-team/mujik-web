@@ -131,10 +131,15 @@ function MixtapeDetailsScreen(){
                 <div className="p-col-fixed" style={{ width: '70px'}}>
                 {
                     showplay ? 
-                    <div onClick={() => setCurrentlyPlayingSong({num: props.song_num, play: !currentlyPlayingSong.play})}
-                        style={{width:'25px', height: '25px', borderRadius:'80px', fontSize:'15px', alignSelf:'flex-end', marginRight: '20px',
-                        textAlign:'center', color:'yellow'}}>
-                        {playSong ? '| |': '▶'}
+                    <div>
+                        <span onClick={() => setCurrentlyPlayingSong({num: props.song_num, play: !currentlyPlayingSong.play})}
+                            style={{width:'25px', height: '25px', borderRadius:'80px', fontSize:'15px', alignSelf:'flex-end', marginRight: '20px',
+                            textAlign:'center', color:'yellow'}}>
+                            {playSong ? '| |': '▶'}
+                        </span>
+                        <span>
+                            ...
+                        </span>
                     </div>
                     : ""
                 }
