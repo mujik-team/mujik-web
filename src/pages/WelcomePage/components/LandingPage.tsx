@@ -10,9 +10,9 @@ function LandingPage(props: any) {
       <div className={styles.landingContainer}>
         Welcome to mujik, a place to find a mixtape for any moment, feeling or vibe.
       </div>
-      <div className={styles.registerButton}>
+      <Button className={styles.registerButton} onClick={() => props.setLogin(true)}>
         Register
-      </div>
+      </Button>
       <div className={styles.login}>
         Already have an account? <Button className={styles.loginButton}
         onClick={() => props.setLogin(true)}> Login </Button>

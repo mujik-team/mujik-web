@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 // import styles from "./WelcomePage.module.css";
 import LoginPage from "../LoginPage/LoginPage";
 import LandingPage from "./components/LandingPage";
