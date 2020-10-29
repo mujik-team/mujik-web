@@ -72,7 +72,7 @@ function MixtapeCharts() {
         ></div>
         <div className="details">
           <div className="song-title">{mixtapes[i].name}</div>
-          {/* <div className="song-artist">{mixtapes[i].createdBy?}</div> */}
+          <div className="song-artist">{mixtapes[i].createdBy}</div>
         </div>
       </ChartItem>
     );

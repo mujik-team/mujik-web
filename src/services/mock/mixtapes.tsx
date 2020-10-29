@@ -1,10 +1,5 @@
 export default [
   {
-    name: "Cool Mixtape",
-    image: "coolmixtape.jpg",
-    createdBy: "badHunny",
-  },
-  {
     name: "Breakup Jams",
     image: "breakup.png",
     createdBy: "AtharvaFKadam",
