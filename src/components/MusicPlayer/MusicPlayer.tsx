@@ -9,7 +9,7 @@ const Container = styled.div`
   right: 0;
   background-color: var(--card-color);
   width: ${(props: Props) => (props.showPlayer ? "100%" : "200px")};
-  height: 150px;
+  height: 120px;
   box-shadow: ${(props: Props) =>
     props.showPlayer ? "-2px 0 20px 2px rgba(0, 0, 0, 0.3)" : ""};
 
@@ -39,11 +39,9 @@ const VolumeProgressBar = styled(ProgressBar)`
 `;
 
 const MixtapeCoverArt = styled.img`
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: ${(props: IsShowing) => (props.showPlayer ? "30px" : "70px")};
   border-radius: 4px;
-
-  /* width: ${(props: IsShowing) => (props.showPlayer ? "100px" : "200px")}; */
 `;
 
 const PlaybackIcon = styled.span`
@@ -81,7 +79,7 @@ function MusicPlayer(props: Props) {
       </div>
 
       {props.showPlayer && (
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "20px" }}>
           <div style={{ textAlign: "center" }}>
             <PlaybackIcon className={`mdi mdi-skip-previous`}></PlaybackIcon>
             <PlaybackIcon className={`mdi mdi-play`}></PlaybackIcon>
@@ -93,7 +91,12 @@ function MusicPlayer(props: Props) {
 
       {props.showPlayer && (
         <div
-          style={{ marginTop: "50px", marginRight: "20px", textAlign: "right" }}
+          style={{
+            marginTop: "30px",
+            marginRight: "20px",
+            textAlign: "right",
+            fontSize: "15px",
+          }}
         >
           <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
           <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>

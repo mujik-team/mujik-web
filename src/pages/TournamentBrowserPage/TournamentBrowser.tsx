@@ -12,6 +12,7 @@ const TournamentGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1rem;
+  padding-bottom: 100px;
 `;
 
 const Header = styled.div`

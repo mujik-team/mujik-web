@@ -66,14 +66,16 @@ const Username = styled.div`
 `;
 
 const Description = styled.div`
+  width: 70%;
   font-family: "Fira Sans", sans-serif;
-  font-size: 18px;
+  font-size: 20px;
+  margin-top: 10px;
   color: var(--text-inactive);
 `;
 
 const TournamentTitle = styled.div`
   margin-top: 20px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font-size: 50px;
   font-weight: 500;
 `;
@@ -95,10 +97,6 @@ function TournamentDetails() {
         <Image />
         <div>
           <TournamentTitle>{tournament.title}</TournamentTitle>
-
-          <Description style={{ marginBottom: "20px" }}>
-            {tournament.description}
-          </Description>
           <div>
             <ProfilePicture />
             <Username
@@ -159,6 +157,10 @@ function TournamentDetails() {
               </TagContainer>
             </div>
           </div>
+
+          <Description style={{ marginBottom: "20px" }}>
+            {tournament.description}
+          </Description>
         </div>
       </Container>
 
