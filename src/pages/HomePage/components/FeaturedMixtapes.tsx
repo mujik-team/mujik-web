@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom";
 import styles from "./FeaturedMixtapes.module.css";
 
 function FeaturedMixtapes() {
-  const history = useHistory()
+  const history = useHistory();
 
-  const featured = []
+  const featured = [];
 
   for (let i = 0; i < 4; i++) {
     featured.push(

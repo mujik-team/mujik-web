@@ -9,9 +9,10 @@ import { AuthState } from "./services/auth/types";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import * as authService from "./services/auth/authService";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
-import MixtapeDetailsScreen from './pages/MixtapeDetailsScreen/MixtapeDetailsScreen';
-import UserProfileScreen from './pages/UserProfile/UserProfileScreen'
+import MixtapeDetailsScreen from "./pages/MixtapeDetailsScreen/MixtapeDetailsScreen";
+import UserProfileScreen from "./pages/UserProfile/UserProfileScreen";
 import AppHeader from "./components/AppHeader";
+import RewardsPage from "./pages/RewardsPage/RewardsPage";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -51,14 +52,12 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/library" component={LibraryPage} />
           <Route path="/tournament" exact component={TournamentBrowser} />
-          <Route 
-            path="/mixtape/:mixtapeId"
-            component={MixtapeDetailsScreen}
-          />
+          <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsScreen} />
           <Route
             path="/tournament/:tournamentId"
             component={TournamentDetails}
           />
+          <Route path="/rewards" component={RewardsPage}></Route>
           <Route path="/user/:userId" component={UserProfileScreen} />
         </Switch>
       </div>

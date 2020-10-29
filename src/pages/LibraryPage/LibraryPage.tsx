@@ -6,6 +6,7 @@ import SortDropdown from "../../components/Input/SortDropdown";
 import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import NewMixtapeModal from "./components/NewMixtapeModal";
+import "primeflex/primeflex.css";
 
 const tabs = ["All", "By Me", "By Others"];
 const options = [
