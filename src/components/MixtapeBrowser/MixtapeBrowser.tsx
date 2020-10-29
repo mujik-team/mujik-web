@@ -41,7 +41,7 @@ const MixtapeCard = styled.div`
 `;
 
 const Header = styled.div`
-  margin-bottom: 50px;
+  padding-bottom: 50px;
 `;
 
 const LeftHeader = styled.div`

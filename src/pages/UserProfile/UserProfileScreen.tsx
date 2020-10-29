@@ -6,7 +6,7 @@ import mixtapes from "../../services/mock/mixtapes";
 import ProfileDetails from "./components/ProfileDetails";
 
 const Container = styled.div`
-  margin: 50px;
+  margin: 0 50px;
 `;
 
 const UserContentContainer = styled.div`
