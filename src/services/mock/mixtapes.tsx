@@ -1,99 +1,94 @@
 export default [
   {
-    name: "Cool Mixtape",
-    createdBy: "coolboi68",
-    image: "coolmixtape.jpg",
-  },
-  {
     name: "Breakup Jams",
-    image: "breakup.png"
+    image: "breakup.png",
   },
   {
     name: "Bi Vibes",
-    image: "blonde.jpg"
+    image: "blonde.jpg",
   },
   {
     name: "Cuffing Season",
-    image: "cuffing.png"
+    image: "cuffing.png",
   },
   {
     name: "Teen Angst",
-    image: "teenAngst.png"
+    image: "teenAngst.png",
   },
   {
     name: "Spy Time",
-    image: "spy.jpg"
+    image: "spy.jpg",
   },
   {
     name: "Best One",
-    image: "best.jpg"
+    image: "best.jpg",
   },
   {
     name: "Sexy Times",
-    image: "sexy.jpg"
+    image: "sexy.jpg",
   },
   {
     name: "halloween",
-    image: "spooky.jpg"
+    image: "spooky.jpg",
   },
   {
     name: "That one girl from 13 reasons why",
-    image: "reasonswhy.jpg"
+    image: "reasonswhy.jpg",
   },
   {
     name: "Ed-Sheeran: Add",
-    image: "add.jpg"
+    image: "add.jpg",
   },
   {
     name: "Ed-Sheeran: Divide",
-    image: "divide.jpg"
+    image: "divide.jpg",
   },
   {
     name: "Ed-Sheeran: Multiply",
-    image: "multiply.jpg"
+    image: "multiply.jpg",
   },
   {
     name: "Beatles",
-    image: "beatles.jpg"
+    image: "beatles.jpg",
   },
   {
     name: "Romance with Arijit Singh",
-    image: "arijitromantic.jpg"
+    image: "arijitromantic.jpg",
   },
   {
     name: "Electro Beats",
-    image: "electro-beats.jpg"
+    image: "electro-beats.jpg",
   },
   {
     name: "Frank Sinatra Classics",
-    image: "franksinatra.jpg"
+    image: "franksinatra.jpg",
   },
   {
     name: "Best of Lorde",
-    image: "lorde.jpg"
+    image: "lorde.jpg",
   },
   {
     name: "Best of Pink Floyd",
-    image: "pinkfloyd.jpg"
+    image: "pinkfloyd.jpg",
   },
   {
     name: "Romance - Classical",
-    image: "romanticclassical.jpeg"
+    image: "romanticclassical.jpeg",
   },
   {
     name: "Shawn Mendes - Illuminate",
-    image: "shawnmendes.jpg"
+    image: "shawnmendes.jpg",
   },
   {
     name: "Tame Impala",
-    image: "tameimpala.jpg"
+    image: "tameimpala.jpg",
   },
   {
     name: "Tyler: Flower Boy",
-    image: "tyler.webp"
+    image: "tyler.webp",
   },
   {
     name: "Tyler the Creator",
-    image: "tyler2.png"
+    image: "tyler2.png",
   },
 ];

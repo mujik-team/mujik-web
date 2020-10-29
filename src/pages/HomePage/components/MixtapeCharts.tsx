@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import mixtapes from "../../../services/mock/mixtapes";
 
 const Container = styled.div``;
 const TopChartGrid = styled.div`
@@ -23,7 +24,7 @@ const ChartItem = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 4px;
-    background-image: url("/images/weeknd.png");
+    /* background-image: url("/images/weeknd.png"); */
     background-position: center;
     background-size: cover;
   }
@@ -63,10 +64,15 @@ function MixtapeCharts() {
     items.push(
       <ChartItem>
         <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
-        <div className="mixtape-image"></div>
+        <div
+          style={{
+            backgroundImage: `url(/images/mixtapes/${mixtapes[i].image})`,
+          }}
+          className="mixtape-image"
+        ></div>
         <div className="details">
-          <div className="song-title">Starboy</div>
-          <div className="song-artist">The Weeknd</div>
+          <div className="song-title">{mixtapes[i].name}</div>
+          {/* <div className="song-artist">{mixtapes[i].createdBy?}</div> */}
         </div>
       </ChartItem>
     );
@@ -79,6 +85,7 @@ function MixtapeCharts() {
           <span className="filter">{f}</span>
         ))}
       </Filters>
+      <hr style={{ margin: "15px 40px" }} />
       <TopChartGrid>{items}</TopChartGrid>
     </Container>
   );

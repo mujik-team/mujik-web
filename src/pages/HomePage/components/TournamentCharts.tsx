@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import tournaments from "../../../services/mock/tournaments";
 
 const Container = styled.div``;
 
@@ -73,6 +74,14 @@ const TournamentCard = styled.div`
 function TournamentCharts() {
   const filters = ["Popular", "Bounty Size"];
 
+  const cards = tournaments.map((t) => (
+    <TournamentCard
+      style={{ backgroundImage: `url(/images/tournaments/${t.image})` }}
+    >
+      <span>{t.title}</span>
+    </TournamentCard>
+  ));
+
   return (
     <Container>
       <Filters>
@@ -80,12 +89,7 @@ function TournamentCharts() {
           <span className="filter">{f}</span>
         ))}
       </Filters>
-      <TournamentGrid>
-        <TournamentCard />
-        <TournamentCard />
-        <TournamentCard />
-        <TournamentCard />
-      </TournamentGrid>
+      <TournamentGrid>{cards}</TournamentGrid>
     </Container>
   );
 }
