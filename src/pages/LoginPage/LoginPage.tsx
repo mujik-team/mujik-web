@@ -1,8 +1,17 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../App";
-import { Button } from "primereact/button";
+import Button from "../../components/Button";
 import RegisterModal from "./components/RegisterModal";
 import styles from "./LoginPage.module.css";
+import styled from "styled-components";
+
+
+const LoginButton = styled(Button)`
+  margin: 50px;
+  height: 75px;
+  width: 275px;
+  border-radius: 0px;
+`;
 
 function LoginPage() {
 
@@ -16,7 +25,7 @@ function LoginPage() {
 
   return (
     <div>
-      <div style={{ fontSize: "85px", marginLeft: "50px", marginTop: "30px"}}>
+      <div style={{ fontSize: "85px", marginLeft: "50px", marginTop: "30px"}} className={styles.bananaColor}>
         mujik
       </div>
       <div>
@@ -36,10 +45,10 @@ function LoginPage() {
         </div>
       </div>
       <div style={{ margin: "30px", marginLeft: "50px" }}>
-        Forgot your password? Reset it here.
+        Forgot your password? Reset it <span style={{ textDecoration: "underline"}} className={styles.bananaColor}>here</span>.
       </div>
       <div className={styles.buttonContainer}>
-        <Button
+        <LoginButton
           style={{ margin: "30px", borderRadius: "8px", width: "120px", justifyContent: "center"}}
           className={styles.buttonLogin}
           onClick={async () => {
@@ -47,8 +56,8 @@ function LoginPage() {
           }}
         >
           Login
-        </Button>
-        <Button style={{ margin: "30px", borderRadius: "8px", width: "120px", justifyContent: "center" }} onClick={() => toggleModal()}>Register</Button>
+        </LoginButton>
+        <LoginButton style={{ margin: "30px", borderRadius: "8px", width: "120px", justifyContent: "center" }} onClick={() => toggleModal()}>Register</LoginButton>
       </div>
     </div>
   );
