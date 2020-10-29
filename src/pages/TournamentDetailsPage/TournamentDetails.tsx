@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { tournaments } from "./data";
+import tournaments from "../../services/mock/tournaments";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
 import TournamentVote from "./components/State.Voting/TournamentVote";

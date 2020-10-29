@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { mixtapes } from "./data";
-import styles from "./MixtapeDetailsScreen.module.css";
+import styles from "./MixtapeDetailsPage.module.css";
 import { ProgressBar } from "primereact/progressbar";
 import coin from "../../Images/coin.png";
 import user from "../../Images/undraw_male_avatar_323b.svg";

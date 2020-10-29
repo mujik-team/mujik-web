@@ -9,8 +9,8 @@ import { AuthState } from "./services/auth/types";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import * as authService from "./services/auth/authService";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
-import MixtapeDetailsScreen from "./pages/MixtapeDetailsScreen/MixtapeDetailsScreen";
-import UserProfileScreen from "./pages/UserProfile/UserProfileScreen";
+import MixtapeDetailsScreen from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
+import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
 
