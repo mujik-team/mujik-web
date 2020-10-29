@@ -64,7 +64,9 @@ function MixtapeBrowser(props: Props) {
   const history = useHistory();
 
   const [sortBy, setSortBy] = useState("");
-  const cards = props.mixtapes?.map((m) => <MixtapeCard />);
+  const cards = props.mixtapes?.map((m, i) => (
+    <MixtapeCard onClick={() => history.push(`/mixtape/${i}`)} />
+  ));
   return (
     <Container>
       <Header>

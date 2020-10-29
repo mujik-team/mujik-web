@@ -8,12 +8,9 @@ import Feed from "./components/Feed";
 function HomePage() {
   return (
     <div>
-      <div  className={styles.container}>
-        <div className={styles.searchBar}>
-          <input placeholder="Search" type="text" />
-        </div>
+      <div className={styles.container}>
         <div className={styles.featuredMixtapesContainer}>
-          <FeaturedMixtapes/>
+          <FeaturedMixtapes />
         </div>
         <div className={styles.bottomContainer}>
           <div className={styles.mixtapeChartsContainer}>

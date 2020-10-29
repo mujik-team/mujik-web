@@ -13,6 +13,7 @@ import MixtapeDetailsScreen from "./pages/MixtapeDetailsPage/MixtapeDetailsPage"
 import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
+import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -31,6 +32,8 @@ function App() {
     setAuthState({ ...authState, currentUser: null, isLoggedIn: false });
   };
 
+  const [showPlayer, setShowPlayer] = useState(false);
+
   const [authState, setAuthState] = useState({
     isLoggedIn: false,
     currentUser: null,
@@ -46,6 +49,10 @@ function App() {
   const app = (
     <div className="app">
       <Navbar />
+      <MusicPlayer
+        showPlayer={showPlayer}
+        toggle={() => setShowPlayer(!showPlayer)}
+      />
       <div className="router">
         <AppHeader />
         <Switch>

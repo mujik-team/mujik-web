@@ -8,6 +8,7 @@ import "primeflex/primeflex.css";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import mixtapes from "../../services/mock/mixtapes";
 import styled from "styled-components";
+import Button from "../../components/Button";
 
 const tabs = ["All", "By Me", "By Others"];
 
@@ -39,7 +40,11 @@ function LibraryPage() {
       </div>
       <div className={styles.mixtapeDisplayText}>Best of The Weeknd</div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <img src="/images/avatar_placeholder.svg" width="30px"></img>
+        <img
+          alt="user-avatar"
+          src="/images/avatar_placeholder.svg"
+          width="30px"
+        ></img>
         <span
           className="p-tag p-tag-rounded"
           style={{
@@ -81,7 +86,14 @@ function LibraryPage() {
 
   const LeftHeader = (
     <div>
-      <TextInput />
+      <div className="p-input-icon-left">
+        <i
+          style={{ fontSize: "20px", top: "45%" }}
+          className="pi mdi mdi-magnify"
+        ></i>
+        <TextInput />
+      </div>
+      <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
     </div>
   );
 
