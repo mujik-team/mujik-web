@@ -1,6 +1,7 @@
 export default [
   {
     name: "Cool Mixtape",
+    createdBy: "coolboi68",
     image: "coolmixtape.jpg",
   },
   {},
