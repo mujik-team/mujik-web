@@ -45,9 +45,9 @@ function App() {
 
   const app = (
     <div className="app">
-      <AppHeader />
       <Navbar />
       <div className="router">
+        <AppHeader />
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/library" component={LibraryPage} />
