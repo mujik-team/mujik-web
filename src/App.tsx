@@ -43,7 +43,7 @@ function App() {
 
   // Enable auto-login
   useEffect(() => {
-    login("mckillagorilla", "coolpassword");
+    // login("mckillagorilla", "coolpassword");
   }, []);
 
   const app = (
