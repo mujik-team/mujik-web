@@ -1,1 +1,20 @@
-export default [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+export default [
+  {
+    name: "Cool Mixtape",
+    image: "coolmixtape.jpg",
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+];

@@ -18,14 +18,6 @@ export default [
     state: "voting",
   },
   {
-    title: "When You're Just Done",
-    image: "done.jpg",
-    type: "community",
-    createdBy: "mr.obama",
-    description: "I'm just done mayne...",
-    state: "voting",
-  },
-  {
     title: "Sadboi Hours",
     image: "kermit-sad.jpg",
     type: "community",
@@ -35,12 +27,38 @@ export default [
     state: "ended",
   },
   {
+    title: "Spooky Metal Music",
+    image: "ghost.jpg",
+    type: "community",
+    createdBy: "spookyskelly",
+    description:
+      "I'm sure you guys have heard of the band Ghost. While they are definitely in a league of their own, what are some artists/songs/albums that I should listen to next.",
+    state: "submission",
+  },
+  {
+    title: "When You're Just Done",
+    image: "done.jpg",
+    type: "community",
+    createdBy: "mr.obama",
+    description: "I'm just done mayne...",
+    state: "voting",
+  },
+  {
     title: "Ultimate Gopnik Muzak",
     image: "gopnik.jpg",
     type: "community",
     createdBy: "hardbassman",
     description:
-      "When you're just feeling sad and want to feel even more sad by listening to sad music. Give me your most depressing mixtape!!! I am gonna be using this when ",
-    state: "ended",
+      "If you don't know about the Gopnik Lifestyle then you shouldn't continue further than this sentence. I would like a playlist with the hardest of hardbass to dance to while eating my sunflower seeds and filling myself up with vodka.",
+    state: "submission",
+  },
+  {
+    title: "Leaving This World",
+    image: "psych.jpg",
+    type: "community",
+    createdBy: "1wtrees",
+    description:
+      "Hi. I'm about to try some really strong shrooms for the very first time. So what's some music I should listen to while I'm going through my 'journey'? I'll be trying to stick to Psych Rock but I'm open to whatever you guys have for me.",
+    state: "submission",
   },
 ];

@@ -11,6 +11,7 @@ function HomePage() {
       <div className={styles.container}>
         <div className={styles.featuredMixtapesContainer}>
           <FeaturedMixtapes />
+          <hr style={{ margin: "0 30px", marginBottom: "50px" }} />
         </div>
         <div className={styles.bottomContainer}>
           <div className={styles.mixtapeChartsContainer}>
