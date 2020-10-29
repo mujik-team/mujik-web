@@ -11,21 +11,16 @@ const UserDetailsContainer = styled.div`
   background-color: var(--card-color);
   transition: 0.2s ease-in all;
   height: 35px;
-  /* width: 400px; */
   width: fit-content;
   display: flex;
-  opacity: 1;
-  /* justify-content: flex-end; */
   align-self: flex-end;
   align-items: center;
   font-size: 13px;
-  /* font-weight: bold; */
   font-weight: 500;
   color: var(--main-color);
   margin-right: 10px;
   margin-bottom: 10px;
-  /* margin: 30px; */
-  /* width: 200px; */
+  padding: 20px;
 `;
 
 function AppHeader() {
@@ -49,8 +44,8 @@ function AppHeader() {
             color="#ffff64"
           />
         </span>
-        <span style={{ marginLeft: "10px" }}>
-          <img src="/icons/coin.svg" width="20px"></img>
+        <span style={{ margin: "0 10px" }}>
+          <img src="/icons/coin.svg" width="18px"></img>
         </span>
         <UserCoinsText>30000</UserCoinsText>
       </UserDetailsContainer>

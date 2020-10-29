@@ -1,25 +1,38 @@
 import React from "react";
 import Button from "../../../components/Button";
 import styles from "./LandingPage.module.css";
+import styled from "styled-components";
+
+const LoginButton = styled(Button)`
+  margin: 50px;
+  height: 75px;
+  width: 175px;
+  border-radius: 0px;
+`;
+
+const SplashImage = styled.img`
+  position: absolute;
+  right: -200px;
+  bottom: 0;
+  filter: grayscale(100%);
+  transform: scaleX(-100%);
+  height: 95vh;
+`;
 
 function LandingPage(props: any) {
-
   return (
-    <div>
-      <div className={styles.title}>mujik</div> 
+    <div className={styles.container}>
+      <div className={styles.title}>mujik</div>
       <div className={styles.landingContainer}>
-        Welcome to mujik, a place to find a mixtape for any moment, feeling or vibe.
+        Welcome to mujik, a place to find a mixtape for any <b>moment</b>,{" "}
+        <b>feeling</b> or <b>vibe</b>.
       </div>
-      <Button className={styles.registerButton} onClick={() => props.setLogin(true)}>
-        Register
-      </Button>
-      <div className={styles.login}>
-        Already have an account? <Button className={styles.loginButton}
-        onClick={() => props.setLogin(true)}> Login </Button>
-      </div>
+      <LoginButton onClick={() => props.setLogin(true)}>
+        <span className={styles.loginSpan}>Login</span>
+      </LoginButton>
+      <SplashImage src="/images/daftpunk.png"></SplashImage>
     </div>
   );
-
 }
 
 export default LandingPage;

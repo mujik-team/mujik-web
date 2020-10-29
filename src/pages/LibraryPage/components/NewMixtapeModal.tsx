@@ -22,13 +22,13 @@ const Tags = styled(TagInput)`
 `;
 
 const IsPrivateCheckbox = styled(Checkbox)`
-  /* display: inline-block; */
-  float: right;
+  display: block;
+  /* float: right; */
 `;
 
 const InputArea = styled(TextArea)`
   width: 100%;
-  height: 150px;
+  height: 100px;
   margin-bottom: 30px;
 `;
 
@@ -60,8 +60,8 @@ const CreateMixtapeButton = styled.div`
 const MixtapeCoverImage = styled.div`
   background-color: var(--card-color);
   margin: auto;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   border-radius: 8px;
   margin-bottom: 50px;
   /* box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.212); */
@@ -85,7 +85,7 @@ function NewMixtapeModal() {
         <Tags value={tags} onChange={(e) => setTags(e.value)} />
 
         <div style={{ display: "inline-block", marginTop: "20px" }}>
-          {/* <span>Private</span> */}
+          <span>Private</span>
           <IsPrivateCheckbox label="Private" />
         </div>
       </Container>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TextInput from "../../../../components/Input/TextInput";
-import SortDropdown from "../../../../components/Input/SortDropdown";
+import MixtapeBrowser from "../../../../components/MixtapeBrowser/MixtapeBrowser";
 
 const Container = styled.div`
   display: grid;
@@ -42,15 +42,20 @@ function TournamentResults() {
     mixtapes.push(<MixtapeCard />);
   }
 
+  const SearchBar = (
+    <div className="p-input-icon-left">
+      <i
+        style={{ fontSize: "20px", top: "45%" }}
+        className="pi mdi mdi-magnify"
+      ></i>
+      <TextInput />
+    </div>
+  );
+
   return (
     <Container>
       <div>
-        <TextInput />
-        <FloatRightContainer>
-          <SortDropdown />
-        </FloatRightContainer>
-        <hr />
-        <MixtapeResultsGridContainer>{mixtapes}</MixtapeResultsGridContainer>
+        <MixtapeBrowser LeftHeaderContent={SearchBar} mixtapes={mixtapes} />
       </div>
       <div>
         <h1>Winners</h1>

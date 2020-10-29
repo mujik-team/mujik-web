@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import styles from "./libraryScreen.module.css";
-import Button from "../../components/Button";
 import { useHistory } from "react-router-dom";
-import SortDropdown from "../../components/Input/SortDropdown";
 import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import NewMixtapeModal from "./components/NewMixtapeModal";
 import "primeflex/primeflex.css";
+import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
+import mixtapes from "../../services/mock/mixtapes";
+import styled from "styled-components";
+import Button from "../../components/Button";
 
 const tabs = ["All", "By Me", "By Others"];
-const options = [
-  { label: "Title", value: "name" },
-  { label: "Length", value: "length" },
-  { label: "Date Added", value: "submit" },
-  { label: "Random", value: "random" },
-];
+
+const Container = styled.div``;
 
 function LibraryPage() {
   const history = useHistory();
@@ -25,65 +23,14 @@ function LibraryPage() {
     setShowNewMixtapeModal(!showNewMixtapeModal);
 
   const headerBrowser = (
-    <div>
+    <div style={{ marginBottom: "30px" }}>
       <span className={styles.title}>My Library</span>
-      <span style={{ marginLeft: "50px" }}>
+      <span style={{ marginLeft: "30px" }}>
         {tabs.map((t) => (
           <span className={styles.tabTitle}>{t}</span>
         ))}
       </span>
-      <div className="p-grid" style={{ padding: "10px" }}>
-        <div
-          className="p-col"
-          style={{ display: "flex", justifyContent: "flex-start" }}
-        >
-          <span>
-            <TextInput />
-          </span>
-          <span style={{ marginLeft: "20px" }}>
-            <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
-          </span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <div className="p-float-label">
-            <SortDropdown
-              id="sort-dropdown"
-              options={options}
-              value={sortBy}
-              onChange={(e: any) => setSortBy(e.value)}
-            />
-            <label htmlFor="sort-dropdown">Sort By</label>
-          </div>
-          <Button
-            style={{
-              borderRadius: "30px",
-              borderColor: "#21242a",
-              backgroundColor: "#21242a",
-              color: "white",
-              marginLeft: "20px",
-              fontSize: "20px",
-            }}
-          >
-            Layout
-          </Button>
-        </div>
-      </div>
     </div>
-  );
-
-  const mixtapes = [];
-
-  for (let i = 0; i < 25; i++) {
-    mixtapes.push(
-      <div
-        className={styles.mixtapeCard}
-        onClick={() => history.push(`/mixtape/${i}`)}
-      ></div>
-    );
-  }
-
-  const mixtapesBrowser = (
-    <div className={styles.mixtapeBrowser}>{mixtapes}</div>
   );
 
   const mixtapeDisplayDetails = (
@@ -93,7 +40,11 @@ function LibraryPage() {
       </div>
       <div className={styles.mixtapeDisplayText}>Best of The Weeknd</div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <img src="/images/avatar_placeholder.svg" width="30px"></img>
+        <img
+          alt="user-avatar"
+          src="/images/avatar_placeholder.svg"
+          width="30px"
+        ></img>
         <span
           className="p-tag p-tag-rounded"
           style={{
@@ -128,15 +79,26 @@ function LibraryPage() {
             backgroundColor: "#21242a",
             color: "white",
           }}
-        >
-          ...
-        </span>
+        ></span>
       </div>
     </div>
   );
 
-  return (
+  const LeftHeader = (
     <div>
+      <div className="p-input-icon-left">
+        <i
+          style={{ fontSize: "20px", top: "45%" }}
+          className="pi mdi mdi-magnify"
+        ></i>
+        <TextInput />
+      </div>
+      <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
+    </div>
+  );
+
+  return (
+    <Container>
       <div className={styles.container}>
         <SideModal
           isActive={showNewMixtapeModal}
@@ -146,14 +108,13 @@ function LibraryPage() {
         </SideModal>
         <div>
           {headerBrowser}
-          <hr />
-          {mixtapesBrowser}
+          <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} />
         </div>
         <div className={styles.usertournamentBrowser}>
           {mixtapeDisplayDetails}
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

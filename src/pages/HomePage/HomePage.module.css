@@ -1,45 +1,45 @@
 .title {
-    font-size: 45px;
-    font-weight: 500;
-  }
+  font-size: 45px;
+  font-weight: 500;
+}
 
 .searchBar {
-    padding-top: 20px;
-    padding-left: 30px;
+  padding-top: 20px;
+  padding-left: 30px;
 }
 
 .mixtapesTitle {
-    font-size: 45px;
-    font-weight: 500;
-    margin-left: 40px;
-  }
+  font-size: 45px;
+  font-weight: 500;
+  margin-left: 40px;
+}
 
 .tournamentsTitle {
-    font-size: 45px;
-    font-weight: 500;
-    margin-left: 30px;  
+  font-size: 45px;
+  font-weight: 500;
+  /* margin-left: 30px;   */
 }
 
 .feedTitle {
-    font-size: 45px;
-    font-weight: 500;
-    margin-left: 30px;  
+  font-size: 45px;
+  font-weight: 500;
+  margin-left: 30px;
 }
 
 .container {
-    display: grid;
+  display: grid;
 }
 
 .mixtapeChartsContainer {
-    margin: 0px;
+  margin: 0px;
 }
 
 .featuredTournamentsContainer {
-    margin: 0px;
+  margin: 0px;
 }
 
 .bottomContainer {
-    display: grid;
-    align-content: space-evenly;
-    grid-template-columns: 1.25fr 1fr 0.75fr;
+  display: grid;
+  align-content: space-evenly;
+  grid-template-columns: 1.25fr 1fr 0.75fr;
 }

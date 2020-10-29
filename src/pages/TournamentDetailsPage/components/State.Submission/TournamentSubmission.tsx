@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
+import FullScreenModal from "../../../../components/FullScreenModal";
+import SubmitSuccessModal from "./SubmitSuccessModal";
 
 const Container = styled.div`
   display: grid;
@@ -58,16 +60,34 @@ const JumboButton = styled.button`
 `;
 
 function TournamentSubmission() {
-  const toggleModal = () => {
+  const toggleSubmitModal = () => {
     setShowEntryModal(!showEntryModal);
   };
 
+  const toggleSubmitSuccessModal = () =>
+    setShowSubmitSuccessModal(!showSubmitSuccessModal);
+
   const [showEntryModal, setShowEntryModal] = useState(false);
+
+  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
+
+  const submitMixtape = () => {
+    toggleSubmitModal();
+    setTimeout({}, 200);
+    toggleSubmitSuccessModal();
+  };
 
   return (
     <Container>
-      <SideModal isActive={showEntryModal} toggle={toggleModal}>
-        <EnterTournamentModal />
+      <FullScreenModal
+        isActive={showSubmitSuccessModal}
+        toggle={toggleSubmitSuccessModal}
+      >
+        <SubmitSuccessModal />
+      </FullScreenModal>
+
+      <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
+        <EnterTournamentModal submit={submitMixtape} />
       </SideModal>
       <div>
         <h1>Mixtape Restrictions</h1>
@@ -87,7 +107,9 @@ function TournamentSubmission() {
         <SubmissionDate>Ends Septemeber 28th</SubmissionDate>
         <SubmissionTimeLeft>12D 13H 45M 30S</SubmissionTimeLeft>
 
-        <JumboButton onClick={() => toggleModal()}>ENTER TOURNEY</JumboButton>
+        <JumboButton onClick={() => toggleSubmitModal()}>
+          ENTER TOURNEY
+        </JumboButton>
         <div>Unsure about something? Ask a question.</div>
       </TournamentStatusContainer>
     </Container>

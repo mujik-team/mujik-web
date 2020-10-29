@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import FullScreenModal from "../../components/FullScreenModal";
 import SideModal from "../../components/SideModal";
+import RedeemSuccessModal from "./components/RedeemSuccessModal";
 import RewardDetailsModal from "./components/RewardDetailsModal";
 import { Rewards } from "./data";
 
@@ -49,25 +51,50 @@ function RewardsPage() {
   const [showRewardDetailsModal, setShowRewardDetailsModal] = useState(false);
   const [selectedReward, setSelectedReward] = useState(-1);
 
+  const [showRedeemSuccessModal, setShowRedeemSuccessModal] = useState(false);
+
+  const redeemSuccess = () => {
+    toggleShowRewardDetailsModal();
+    setTimeout({}, 200);
+    toggleShowRedeemSuccessModal();
+  };
+
   const RewardCards = Rewards.map((r, i) => (
     <RewardCard
       onClick={() => {
         setSelectedReward(i);
-        toggle();
+        toggleShowRewardDetailsModal();
       }}
     >
       <img src={`/images/logos/${r.image}`}></img>
     </RewardCard>
   ));
 
-  const toggle = () => {
+  const toggleShowRewardDetailsModal = () => {
     setShowRewardDetailsModal(!showRewardDetailsModal);
+  };
+
+  const toggleShowRedeemSuccessModal = () => {
+    setShowRedeemSuccessModal(!showRedeemSuccessModal);
   };
 
   return (
     <Container>
-      <SideModal isActive={showRewardDetailsModal} toggle={toggle}>
-        <RewardDetailsModal reward_details={Rewards[selectedReward]} />
+      <FullScreenModal
+        isActive={showRedeemSuccessModal}
+        toggle={toggleShowRedeemSuccessModal}
+      >
+        <RedeemSuccessModal />
+      </FullScreenModal>
+
+      <SideModal
+        isActive={showRewardDetailsModal}
+        toggle={toggleShowRewardDetailsModal}
+      >
+        <RewardDetailsModal
+          submitRedeem={redeemSuccess}
+          reward_details={Rewards[selectedReward]}
+        />
       </SideModal>
       <Title>Redeem Rewards</Title>
       <Description>
