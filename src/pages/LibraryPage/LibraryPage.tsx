@@ -19,7 +19,7 @@ function LibraryPage() {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
 
-  const [showNewMixtapeModal, setShowNewMixtapeModal] = useState(true);
+  const [showNewMixtapeModal, setShowNewMixtapeModal] = useState(false);
   const toggleShowNewMixtapeModal = () =>
     setShowNewMixtapeModal(!showNewMixtapeModal);
 
