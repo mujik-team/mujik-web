@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
-import { Dropdown } from "primereact/dropdown";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
-import SortDropdown from "../SortDropdown";
-import SearchBar from "../SearchBar";
+import SortDropdown from "../../../../components/Input/SortDropdown";
+import TextInput from "../../../../components/Input/TextInput";
 
 const Container = styled.div``;
 
@@ -121,7 +120,7 @@ function TournamentVote() {
             style={{ fontSize: "20px", top: "30%" }}
             className="pi mdi mdi-magnify"
           ></i>
-          <SearchBar />
+          <TextInput />
         </div>
         <div className="p-float-label">
           <SortDropdown
@@ -137,7 +136,6 @@ function TournamentVote() {
           <VotesRemainingText style={{ marginRight: "20px" }}>
             You have 9 votes remaining.
           </VotesRemainingText>
-          {/* <span style={{ fontSize: "25px", margin: "0 15px" }}>Sort By</span> */}
           {selectedMixtapes.length > 0 ? (
             <VoteButton onClick={() => toggleShowVoteModal()}>Vote</VoteButton>
           ) : null}

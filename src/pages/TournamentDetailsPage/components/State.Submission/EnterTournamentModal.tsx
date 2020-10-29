@@ -1,5 +1,5 @@
 import React from "react";
-import Checkbox from "../../../../components/Checkbox";
+import Checkbox from "../../../../components/Input/Checkbox";
 import styles from "./EnterTournamentModal.module.css";
 
 function EnterTournamentModal() {

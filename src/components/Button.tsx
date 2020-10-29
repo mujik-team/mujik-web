@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -6,8 +5,8 @@ const Button = styled.button`
   font-weight: 500;
   border: none;
   padding: 5px 15px;
-  border-radius: 999px;
   cursor: pointer;
+  border-radius: 8px;
   color: whitesmoke;
   transition: 0.1s ease-in all;
   background-color: var(--card-color);

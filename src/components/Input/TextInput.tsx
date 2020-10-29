@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { InputText } from "primereact/inputtext";
 
-const SearchBar = styled(InputText)`
+const TextInput = styled(InputText)`
   font-family: "Fira Sans";
   font-size: 16px;
   margin-right: 10px;
@@ -10,10 +10,9 @@ const SearchBar = styled(InputText)`
   height: 35px;
   border-radius: 8px;
 
-  * {
-    border: none;
-    box-shadow: none;
+  & {
+    box-shadow: none !important;
   }
 `;
 
-export default SearchBar;
+export default TextInput;

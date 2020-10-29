@@ -13,13 +13,13 @@ const options = ["Title", "Length", "Date Added", "Random"];
 
 function DropdownSelect() {
   return (
-    <Container>
+    <div className="p-float-label">
       <select>
         {options.map((option, index) => {
           return <option value={index}>{option}</option>;
         })}
       </select>
-    </Container>
+    </div>
   );
 }
 

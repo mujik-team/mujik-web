@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./libraryScreen.module.css";
-import 'primeflex/primeflex.css'
-import { Button } from 'primereact/button';
-import { ProgressBar } from 'primereact/progressbar';
-import coin from '../../Images/coin.png'
-import user from '../../Images/undraw_male_avatar_323b.svg'
-import { InputText } from 'primereact/inputtext';
-import weeknd from '../../Images/weeknd.png'
-import {SplitButton} from 'primereact/splitbutton';
-import { Dropdown } from 'primereact/dropdown';
-import {useState} from 'react'
+import Button from "../../components/Button";
 import { useHistory } from "react-router-dom";
-
-
-// const [sortingCriteria, setSortingCriteria] = useState()
-// import 'primeicons/raw-svg'
+import SortDropdown from "../../components/Input/SortDropdown";
+import TextInput from "../../components/Input/TextInput";
+import SideModal from "../../components/SideModal";
+import NewMixtapeModal from "./components/NewMixtapeModal";
+import "primeflex/primeflex.css";
 
 const tabs = ["All", "By Me", "By Others"];
-const tabsYour = ["All", "Entered", "Following", "Ended"];
-// <input style={{width:'250px', height:'40px'}} placeholder="Search" type="text" />
+const options = [
+  { label: "Title", value: "name" },
+  { label: "Length", value: "length" },
+  { label: "Date Added", value: "submit" },
+  { label: "Random", value: "random" },
+];
 
 function LibraryPage() {
-  const history = useHistory()
+  const history = useHistory();
+  const [sortBy, setSortBy] = useState("");
+
+  const [showNewMixtapeModal, setShowNewMixtapeModal] = useState(false);
+  const toggleShowNewMixtapeModal = () =>
+    setShowNewMixtapeModal(!showNewMixtapeModal);
 
   const headerBrowser = (
     <div>
@@ -37,38 +38,22 @@ function LibraryPage() {
           style={{ display: "flex", justifyContent: "flex-start" }}
         >
           <span>
-            <input
-              style={{ width: "250px", height: "40px" }}
-              placeholder="Search"
-              type="text"
-            />
+            <TextInput />
           </span>
           <span style={{ marginLeft: "20px" }}>
-            <Button
-              className="p-button-rounded"
-              style={{ backgroundColor: "#ffff64" }}
-            >
-              <strong>New</strong>
-            </Button>
+            <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
           </span>
         </div>
-        <div
-          className="p-col"
-          style={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          <span style={{ fontSize: "20px", marginTop: "5px" }}>Sort By</span>
-          <Button
-            style={{
-              borderRadius: "30px",
-              borderColor: "#21242a",
-              backgroundColor: "#21242a",
-              color: "white",
-              marginLeft: "20px",
-              fontSize: "20px",
-            }}
-          >
-            Title
-          </Button>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div className="p-float-label">
+            <SortDropdown
+              id="sort-dropdown"
+              options={options}
+              value={sortBy}
+              onChange={(e: any) => setSortBy(e.value)}
+            />
+            <label htmlFor="sort-dropdown">Sort By</label>
+          </div>
           <Button
             style={{
               borderRadius: "30px",
@@ -89,11 +74,12 @@ function LibraryPage() {
   const mixtapes = [];
 
   for (let i = 0; i < 25; i++) {
-      mixtapes.push(
-          <div className={styles.mixtapeCard}
-          onClick={() => history.push(`/mixtape/${i}`)} >
-          </div>
-      );
+    mixtapes.push(
+      <div
+        className={styles.mixtapeCard}
+        onClick={() => history.push(`/mixtape/${i}`)}
+      ></div>
+    );
   }
 
   const mixtapesBrowser = (
@@ -152,8 +138,15 @@ function LibraryPage() {
   return (
     <div>
       <div className={styles.container}>
+        <SideModal
+          isActive={showNewMixtapeModal}
+          toggle={toggleShowNewMixtapeModal}
+        >
+          <NewMixtapeModal />
+        </SideModal>
         <div>
           {headerBrowser}
+          <hr />
           {mixtapesBrowser}
         </div>
         <div className={styles.usertournamentBrowser}>
