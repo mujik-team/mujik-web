@@ -32,7 +32,7 @@ body {
   padding: 0;
 }
 
-input[type="text"] {
+/* input[type="text"] {
   padding: 8px 12px;
   border-radius: 25px;
   background-color: var(--card-color);
@@ -44,7 +44,7 @@ input[type="text"] {
 
 input[type="text"]:focus {
   box-shadow: inset 0px 0px 0px 2px var(--main-color);
-}
+} */
 
 .app {
   display: grid;

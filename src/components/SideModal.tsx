@@ -49,9 +49,7 @@ function SideModal(props: Props) {
       }}
       className={`side-modal-container ${props.isActive ? "active" : ""}`}
     >
-      <Modal onClick={(e: any) => e.stopPropagation()} className="side-modal">
-        {props.children}
-      </Modal>
+      <Modal onClick={(e: any) => e.stopPropagation()}>{props.children}</Modal>
     </Container>
   );
 }

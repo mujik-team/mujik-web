@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SearchBar from "../SearchBar";
+import TextInput from "../../../../components/TextInput";
 import SortDropdown from "../SortDropdown";
 
 const Container = styled.div`
@@ -45,7 +45,7 @@ function TournamentResults() {
   return (
     <Container>
       <div>
-        <SearchBar />
+        <TextInput />
         <FloatRightContainer>
           <SortDropdown />
         </FloatRightContainer>

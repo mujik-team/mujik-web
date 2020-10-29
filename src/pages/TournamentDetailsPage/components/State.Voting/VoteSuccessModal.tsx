@@ -29,6 +29,7 @@ function VoteSuccessModal() {
       <img
         style={{ marginTop: "60px" }}
         height="300"
+        alt="thank_you"
         src="/images/thank_you.svg"
       ></img>
       <MessageContainer>
