@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import tournaments from "../../../services/mock/tournaments";
 
@@ -74,8 +75,11 @@ const TournamentCard = styled.div`
 function TournamentCharts() {
   const filters = ["Popular", "Bounty Size"];
 
-  const cards = tournaments.map((t) => (
+  const history = useHistory();
+
+  const cards = tournaments.slice(2).map((t, i) => (
     <TournamentCard
+      onClick={() => history.push(`/tournament/${i}`)}
       style={{ backgroundImage: `url(/images/tournaments/${t.image})` }}
     >
       <span>{t.title}</span>
