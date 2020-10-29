@@ -29,10 +29,15 @@ const UserDetailsContainer = styled.div`
 `;
 
 function AppHeader() {
-  const history = useHistory()
+  const history = useHistory();
   const UserDetailsCard = (
     <div
-      style={{ display: "flex", justifyContent: "flex-end", margin: "20px" }}
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        marginTop: "20px",
+        marginRight: "15px",
+      }}
     >
       <UserDetailsContainer>
         <span style={{ margin: "0 8px" }}>LEVEL 3</span>
@@ -50,16 +55,17 @@ function AppHeader() {
         <UserCoinsText>30000</UserCoinsText>
       </UserDetailsContainer>
       <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
-        <img src="/images/avatar_placeholder.svg" width="45px" style={{cursor:'pointer'}} onClick={() => history.push(`/user/0`)}></img>
+        <img
+          src="/images/avatar_placeholder.svg"
+          width="45px"
+          style={{ cursor: "pointer" }}
+          onClick={() => history.push(`/user/0`)}
+        ></img>
         <span className="p-badge">3</span>
       </span>
     </div>
   );
-  return (
-    <div style={{ position: "absolute", top: "10px", right: "5px" }}>
-      {UserDetailsCard}
-    </div>
-  );
+  return <div style={{}}>{UserDetailsCard}</div>;
 }
 
 export default AppHeader;
