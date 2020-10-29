@@ -1,5 +1,5 @@
 .title {
-    font-size: 85px;
+    font-size: 72px;
     line-height: 127.5px;
     margin-left: 50px;
 }
@@ -17,11 +17,14 @@
     margin-top: 20px;
 }
 
-.registerButton {
-    margin-left: 50px;
-    margin-top: 20px;
+.loginSpan {
+    font-size: 36px;
 }
 
-.registerButton {
-    border-radius: 8px;
+.container {
+    color: black;
+    background-color: #FFFF64;
+    width: 100vw;
+    min-height: 100vh;
+    /* font-family: Fira-Sans; */
 }
