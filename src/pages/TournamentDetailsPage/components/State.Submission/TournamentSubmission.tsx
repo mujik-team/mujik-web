@@ -69,7 +69,7 @@ function TournamentSubmission() {
 
   const [showEntryModal, setShowEntryModal] = useState(false);
 
-  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(true);
+  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
 
   const submitMixtape = () => {
     toggleSubmitModal();
