@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styles from "./libraryScreen.module.css";
 import Button from "../../components/Button";
 import { useHistory } from "react-router-dom";
-import SortDropdown from "../TournamentDetailsPage/components/SortDropdown";
-import TextInput from "../../components/TextInput";
+import SortDropdown from "../../components/Input/SortDropdown";
+import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import NewMixtapeModal from "./components/NewMixtapeModal";
 

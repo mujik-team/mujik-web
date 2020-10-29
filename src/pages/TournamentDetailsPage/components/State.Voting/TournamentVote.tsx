@@ -5,8 +5,8 @@ import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
-import SortDropdown from "../SortDropdown";
-import TextInput from "../../../../components/TextInput";
+import SortDropdown from "../../../../components/Input/SortDropdown";
+import TextInput from "../../../../components/Input/TextInput";
 
 const Container = styled.div``;
 

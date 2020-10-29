@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Checkbox from "../../../components/Input/Checkbox";
 import TagInput from "../../../components/Input/TagInput";
-import TextArea from "../../../components/TextArea";
-import TextInput from "../../../components/TextInput";
+import TextArea from "../../../components/Input/TextArea";
+import TextInput from "../../../components/Input/TextInput";
 
 const Container = styled.div`
   margin: 50px;

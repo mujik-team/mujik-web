@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import TextInput from "../../../../components/TextInput";
-import SortDropdown from "../SortDropdown";
+import TextInput from "../../../../components/Input/TextInput";
+import SortDropdown from "../../../../components/Input/SortDropdown";
 
 const Container = styled.div`
   display: grid;
