@@ -15,7 +15,7 @@ enum TournamentState {
 
 const Container = styled.div`
   margin: 0 50px;
-  margin-top: 60px;
+  /* margin-top: 60px; */
   display: grid;
   grid-template-columns: 500px 1fr;
   grid-auto-rows: 300px;
