@@ -3,6 +3,15 @@ import styles from "./HomePage.module.css";
 import FeaturedMixtapes from "./components/FeaturedMixtapes";
 import MixtapeCharts from "./components/MixtapeCharts";
 import TournamentCharts from "./components/TournamentCharts";
+import styled from "styled-components";
+
+const FeedCard = styled.div`
+  background-color: var(--card-color);
+  border-radius: 8px;
+  width: 300px;
+  height: 80px;
+  margin: 15px 30px;
+`;
 
 function HomePage() {
   return (
@@ -27,6 +36,9 @@ function HomePage() {
           <div>
             <div className={styles.feedContainer}>
               <div className={styles.feedTitle}>Feed</div>
+              <FeedCard />
+              <FeedCard />
+              <FeedCard />
             </div>
           </div>
         </div>

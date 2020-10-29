@@ -3,19 +3,20 @@ import styled from "styled-components";
 
 const Container = styled.div`
   user-select: none;
+  text-align: center;
   margin: 30px;
 `;
 
 const MessageContainer = styled.div`
   display: block;
   float: right;
-  margin-top: 180px;
-  margin-left: 30px;
 `;
 
 const Message = styled.div`
   font-size: 35px;
   font-weight: 400;
+  margin-top: 20px;
+  margin-right: 80px;
 `;
 
 const SubMessage = styled.div`
@@ -28,18 +29,24 @@ function RedeemSuccessModal() {
     <Container>
       <img
         style={{ marginTop: "60px" }}
-        height="300"
+        height="200"
         alt="thank_you"
-        src="/images/thank_you.svg"
+        src="/images/celebrate.svg"
       ></img>
       <MessageContainer>
-        <Message>Thanks for Voting!</Message>
-        <SubMessage>
-          You still have{" "}
-          <span style={{ fontWeight: "bold", color: "var(--main-color)" }}>
-            6 votes remaining.
+        <Message>
+          You redeemed
+          <span
+            style={{
+              marginLeft: "10px",
+              fontWeight: "bold",
+              color: "var(--main-color)",
+            }}
+          >
+            1 Month of Spotify
           </span>
-        </SubMessage>
+        </Message>
+        <SubMessage></SubMessage>
       </MessageContainer>
     </Container>
   );

@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { randomMixtapes } from "../../services/random";
 import SortDropdown from "../Input/SortDropdown";
 
 type Props = {
@@ -27,6 +28,7 @@ const MixtapeCard = styled.div`
 
   /* background-image: url("/images/weeknd.png"); */
   background-position: center;
+  background-size: cover;
 
   &:hover,
   &.selected {
@@ -64,8 +66,11 @@ function MixtapeBrowser(props: Props) {
   const history = useHistory();
 
   const [sortBy, setSortBy] = useState("");
-  const cards = props.mixtapes?.map((m, i) => (
-    <MixtapeCard onClick={() => history.push(`/mixtape/${i}`)} />
+  const cards = randomMixtapes().map((m, i) => (
+    <MixtapeCard
+      style={{ backgroundImage: `url(/images/mixtapes/${m.image})` }}
+      onClick={() => history.push(`/mixtape/0`)}
+    />
   ));
   return (
     <Container>

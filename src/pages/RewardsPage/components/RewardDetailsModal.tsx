@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type Props = {
   reward_details?: any;
+  submitRedeem: any;
 };
 
 const Container = styled.div`
@@ -57,7 +58,7 @@ function RewardDetailsModal(props: Props) {
         <RewardOptionCard />
       </RewardOptionsGrid>
 
-      <RedeemButton>Redeem</RedeemButton>
+      <RedeemButton onClick={() => props.submitRedeem()}>Redeem</RedeemButton>
     </Container>
   ) : null;
 }

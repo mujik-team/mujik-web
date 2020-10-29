@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import mixtapes from "../../../services/mock/mixtapes";
+import { randomMixtapes } from "../../../services/random";
 
 const Container = styled.div``;
 const TopChartGrid = styled.div`
@@ -55,19 +56,6 @@ const Filters = styled.div`
   }
 `;
 
-const shuffledMixtapes = mixtapes;
-
-shuffleArray(shuffledMixtapes);
-
-function shuffleArray(array: any[]) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
-
 function MixtapeCharts() {
   const items = [];
 
@@ -79,7 +67,9 @@ function MixtapeCharts() {
         <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
         <div
           style={{
-            backgroundImage: `url(/images/mixtapes/${shuffledMixtapes[i].image})`,
+            backgroundImage: `url(/images/mixtapes/${
+              randomMixtapes()[i].image
+            })`,
           }}
           className="mixtape-image"
         ></div>
