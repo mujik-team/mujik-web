@@ -1,35 +1,56 @@
 import React from "react";
 import styles from "./TournamentBrowser.module.css";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import tournaments from "../../services/mock/tournaments";
+import TournamentCard from "./TournamentCard";
 
 const tabs = ["Currently Running", "Ended"];
 const tabsYour = ["All", "Entered", "Following", "Ended"];
+
+const TournamentGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding-bottom: 100px;
+`;
+
+const Header = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Filter = styled.span`
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-inactive);
+  margin-right: 20px;
+
+  &:hover {
+    color: whitesmoke;
+  }
+`;
 
 function TournamentBrowser() {
   const history = useHistory();
 
   const headerBrowser = (
-    <div>
-      <div className={styles.title}>Official Tournaments</div>
-      <div>
-        {tabs.map((t) => (
-          <span className={styles.tabTitle}>{t}</span>
-        ))}
+    <Header>
+      <div style={{ marginBottom: "20px" }} className={styles.title}>
+        <span style={{ marginRight: "20px" }}>Tournaments</span>
+        <span>
+          {tabs.map((t) => (
+            <Filter>{t}</Filter>
+          ))}
+        </span>
       </div>
-      <input placeholder="Search" type="text" />
-    </div>
+      <hr />
+    </Header>
   );
 
-  const tournaments = [];
   const yourtournaments = [];
 
   for (let i = 0; i < 8; i++) {
-    tournaments.push(
-      <div
-        onClick={() => history.push(`/tournament/${i}`)}
-        className={styles.tournamentCard}
-      ></div>
-    );
     yourtournaments.push(
       <div
         onClick={() => history.push(`/tournament/${i}`)}
@@ -39,7 +60,16 @@ function TournamentBrowser() {
   }
 
   const tournamentBrowser = (
-    <div className={styles.tournamentBrowser}>{tournaments}</div>
+    <TournamentGrid>
+      {tournaments.map((t, i) => (
+        <TournamentCard
+          tournament={t}
+          onClick={() => history.push(`/tournament/${i}`)}
+        >
+          <span>{t.title}</span>
+        </TournamentCard>
+      ))}
+    </TournamentGrid>
   );
 
   return (

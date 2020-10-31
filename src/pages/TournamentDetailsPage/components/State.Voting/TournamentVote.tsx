@@ -117,7 +117,7 @@ function TournamentVote() {
       <div style={{ display: "grid", gridTemplateColumns: "250px 100px 1fr" }}>
         <div className="p-input-icon-left">
           <i
-            style={{ fontSize: "20px", top: "30%" }}
+            style={{ fontSize: "20px", top: "45%" }}
             className="pi mdi mdi-magnify"
           ></i>
           <TextInput />

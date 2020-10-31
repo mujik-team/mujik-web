@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans&family=Poppins:wght@400;500;700&display=swap");
 
 :root {
-  --main-bg-color: #282c34;
+  --main-bg-color: #26282d;
   --secondary-bg-color: #222325;
-  --card-color: #21242a;
-  --card-color-highlight: #282c34;
+  --card-color: #191c21;
+  --card-color-highlight: #333334;
   --main-color: #ffff64;
   --text-primary: whitesmoke;
   --text-inactive: #777777;
@@ -20,11 +20,12 @@ h1 {
 }
 
 hr {
-  color: #555b66;
+  color: #555b66 !important;
 }
 
 body {
   font-family: "Poppins", sans-serif;
+  overflow: hidden;
   background-color: var(--main-bg-color);
   color: whitesmoke;
   margin: 0;

@@ -6,7 +6,7 @@ import { AuthContext } from "../App";
 import Button from "./Button";
 const routes = [
   { name: "Library", route: "/library", icon: "music-circle" },
-  { name: "Rewards", route: "/rewards", icon: "seal"},
+  { name: "Rewards", route: "/rewards", icon: "seal" },
   { name: "Tournaments", route: "/tournament", icon: "trophy" },
 ];
 

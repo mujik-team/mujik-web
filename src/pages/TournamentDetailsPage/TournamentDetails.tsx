@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { tournaments } from "./data";
+import tournaments from "../../services/mock/tournaments";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
 import TournamentVote from "./components/State.Voting/TournamentVote";
@@ -15,7 +15,6 @@ enum TournamentState {
 
 const Container = styled.div`
   margin: 0 50px;
-  margin-top: 60px;
   display: grid;
   grid-template-columns: 500px 1fr;
   grid-auto-rows: 300px;
@@ -67,14 +66,16 @@ const Username = styled.div`
 `;
 
 const Description = styled.div`
+  width: 70%;
   font-family: "Fira Sans", sans-serif;
-  font-size: 18px;
+  font-size: 20px;
+  margin-top: 10px;
   color: var(--text-inactive);
 `;
 
 const TournamentTitle = styled.div`
   margin-top: 20px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font-size: 50px;
   font-weight: 500;
 `;
@@ -96,10 +97,6 @@ function TournamentDetails() {
         <Image />
         <div>
           <TournamentTitle>{tournament.title}</TournamentTitle>
-
-          <Description style={{ marginBottom: "20px" }}>
-            {tournament.description}
-          </Description>
           <div>
             <ProfilePicture />
             <Username
@@ -160,6 +157,10 @@ function TournamentDetails() {
               </TagContainer>
             </div>
           </div>
+
+          <Description style={{ marginBottom: "20px" }}>
+            {tournament.description}
+          </Description>
         </div>
       </Container>
 
