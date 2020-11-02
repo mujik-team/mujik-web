@@ -1,0 +1,15 @@
+# pull official alpine base image
+FROM node:14-alpine
+
+# set working directory
+WORKDIR /app
+
+# install app dependencies
+COPY package.json ./
+RUN yarn install --silent
+
+# add app
+COPY . ./
+
+# start the app
+CMD ["yarn", "start"]
