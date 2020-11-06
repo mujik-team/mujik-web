@@ -14,6 +14,7 @@ import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
+import { ToastContainer, Slide } from "react-toastify";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -22,6 +23,7 @@ export const AuthContext: React.Context<AuthState> = React.createContext(
 function App() {
   const login = async (u: string, p: string) => {
     const user = await authService.login(u, p);
+
     if (user) {
       setAuthState({ ...authState, currentUser: user, isLoggedIn: true });
     }
@@ -43,7 +45,7 @@ function App() {
 
   // Enable auto-login
   useEffect(() => {
-    // login("mckillagorilla", "coolpassword");
+    login("mango", "password");
   }, []);
 
   const app = (
@@ -53,6 +55,7 @@ function App() {
         showPlayer={showPlayer}
         toggle={() => setShowPlayer(!showPlayer)}
       />
+
       <div className="router">
         <AppHeader />
         <Switch>
@@ -75,6 +78,11 @@ function App() {
     <BrowserRouter>
       <AuthContext.Provider value={authState}>
         {authState.isLoggedIn ? app : <WelcomePage />}
+        <ToastContainer
+          position={"bottom-right"}
+          autoClose={3000}
+          transition={Slide}
+        />
       </AuthContext.Provider>
     </BrowserRouter>
   );
