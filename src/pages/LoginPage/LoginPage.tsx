@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../App";
 import Button from "../../components/Button";
-import RegisterModal from "./components/RegisterModal";
 import styles from "./LoginPage.module.css";
 import styled from "styled-components";
+import TextInput from "../../components/Input/TextInput";
+import SideModal from "../../components/SideModal";
+import RegisterModal from "./components/RegisterModal";
 
 const LoginButton = styled(Button)`
   margin: 50px;
@@ -19,6 +21,24 @@ const Marshmellow = styled.img`
   right: 20px;
 `;
 
+const FormTitle = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+`;
+
+const SiteTitle = styled.div`
+  font-size: 85px;
+  margin-left: 50px;
+  margin-top: 30px;
+  color: #ffff64;
+`;
+
+const LoginInput = styled(TextInput)`
+  font-size: 30px;
+  height: 50px;
+`;
+
 function LoginPage() {
   const authContext = useContext(AuthContext);
 
@@ -28,28 +48,33 @@ function LoginPage() {
 
   const [showRegisterModal, setRegisterModal] = useState(false);
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div>
       <Marshmellow src="/images/marshmellow.svg" />
-      <div
-        style={{ fontSize: "85px", marginLeft: "50px", marginTop: "30px" }}
-        className={styles.bananaColor}
-      >
-        mujik
-      </div>
-      <div>
-        <RegisterModal isActive={showRegisterModal} toggle={toggleModal} />
-      </div>
+      <SiteTitle>mujik</SiteTitle>
+      <SideModal isActive={showRegisterModal} toggle={toggleModal}>
+        <RegisterModal toggle={toggleModal} />
+      </SideModal>
 
-      <div className={styles.loginDetailsContainer}>
+      <div>
         <div className={styles.loginItems}>
           <div>
-            <span>Username</span>
-            <div className={styles.inputCard}></div>
+            <FormTitle>Username</FormTitle>
+            <LoginInput
+              value={username}
+              onChange={(e: any) => setUsername(e.target.value)}
+            />
           </div>
           <div>
-            <span>Password</span>
-            <div className={styles.inputCard}></div>
+            <FormTitle>Password</FormTitle>
+            <LoginInput
+              value={password}
+              onChange={(e: any) => setPassword(e.target.value)}
+              type="password"
+            />
           </div>
         </div>
       </div>
@@ -73,12 +98,12 @@ function LoginPage() {
           }}
           className={styles.buttonLogin}
           onClick={async () => {
-            await authContext.login("mckillagorilla", "reallygoodpass");
+            await authContext.login(username, password);
           }}
         >
           Login
         </LoginButton>
-        <LoginButton
+        <Button
           style={{
             margin: "30px",
             borderRadius: "8px",
@@ -88,7 +113,7 @@ function LoginPage() {
           onClick={() => toggleModal()}
         >
           Register
-        </LoginButton>
+        </Button>
       </div>
     </div>
   );

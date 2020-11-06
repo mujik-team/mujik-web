@@ -7,6 +7,7 @@ import ProfileDetails from "./components/ProfileDetails";
 
 const Container = styled.div`
   margin: 0 50px;
+  padding-bottom: 50px;
 `;
 
 const UserContentContainer = styled.div`

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { AuthContext } from "../../../App";
 import Button from "../../../components/Button";
 
 const Container = styled.div`
@@ -84,21 +85,43 @@ const FollowButton = styled(Button)`
   font-size: 18px;
 `;
 
+const EditProfileButton = styled.i`
+  cursor: pointer;
+  font-size: 30px;
+  margin-left: 15px;
+  color: var(--text-inactive);
+  transition: 0.2s linear all;
+
+  &:hover {
+    color: whitesmoke;
+  }
+`;
+
 function ProfileDetails() {
-  const username = "mr.obama";
-  const Artists = ["Pink Floyd", "Tame Impala", "Rolling Stones"];
+  const context = useContext(AuthContext);
+  const { username, profile } = context.currentUser;
+  const Artists = [
+    "Pink Floyd",
+    "Tame Impala",
+    "Rolling Stones",
+    "Kendrick Lamar",
+    "Haircuts for Men",
+  ];
   const Genres = ["Rock", "Psych Rock", "Pop"];
 
   return (
     <Container>
       <ProfilePicture>
         <LevelBadge>
-          <span style={{ paddingTop: "20px" }}>43</span>
+          <span style={{ paddingTop: "20px" }}>{profile.level}</span>
         </LevelBadge>
       </ProfilePicture>
 
       <DetailsContainer>
-        <Username>{username}</Username>
+        <Username>
+          {username}
+          <EditProfileButton className="mdi mdi-pencil" />
+        </Username>
         <FollowDetails>
           <span className="num">3989</span>
           <span>Followers</span>

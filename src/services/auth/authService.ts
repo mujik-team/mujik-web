@@ -2,12 +2,12 @@ import { api } from "../api";
 import { toast } from "react-toastify";
 
 export async function login(username: string, password: string) {
-  try {
-    const { data } = await api.post("/login", { username, password });
+  const { data } = await api.post("/login", { username, password });
 
+  if (data?.result === "OK") {
     toast.dark(`👋 Welcome ${username}!`);
     return data.payload.user;
-  } catch (err) {
+  } else {
     toast.error(`🤔 Please check credentials.`);
     return null;
   }
