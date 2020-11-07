@@ -1,6 +1,7 @@
 export type AuthState = {
-    isLoggedIn: boolean;
-    currentUser?: any;
-    login: (u: string, p: string) => any;
-    logout: () => any;
-  };
+  isLoggedIn: boolean;
+  currentUser?: any;
+  update(): any;
+  login: (u: string, p: string) => any;
+  logout: () => any;
+};

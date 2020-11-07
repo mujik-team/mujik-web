@@ -15,6 +15,7 @@ import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 import { ToastContainer, Slide } from "react-toastify";
+import { getUser } from "./services/user/userService";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -29,6 +30,11 @@ function App() {
     }
   };
 
+  const update = async (newUser: any) => {
+    const user = await getUser(localStorage.getItem("username")!);
+    setAuthState({ ...authState, currentUser: user, isLoggedIn: true });
+  };
+
   const logout = async () => {
     await authService.logout();
     setAuthState({ ...authState, currentUser: null, isLoggedIn: false });
@@ -39,13 +45,19 @@ function App() {
   const [authState, setAuthState] = useState({
     isLoggedIn: false,
     currentUser: null,
+    update,
     login,
     logout,
   } as AuthState);
 
   // Enable auto-login
   useEffect(() => {
-    login("mango", "password");
+    if (authService.checkIfLoggedIn()) {
+      login(
+        localStorage.getItem("username")!,
+        localStorage.getItem("password")!
+      );
+    }
   }, []);
 
   const app = (
@@ -68,7 +80,7 @@ function App() {
             component={TournamentDetails}
           />
           <Route path="/rewards" component={RewardsPage}></Route>
-          <Route path="/user/:userId" component={UserProfileScreen} />
+          <Route path="/user/:username" component={UserProfileScreen} />
         </Switch>
       </div>
     </div>

@@ -5,7 +5,6 @@ import * as userService from "../../../services/user/userService";
 import { toast } from "react-toastify";
 
 import { Steps } from "primereact/steps";
-import TournamentSubmission from "../../TournamentDetailsPage/components/State.Submission/TournamentSubmission";
 
 const Container = styled.div`
   margin: 30px;
@@ -82,6 +81,10 @@ function RegisterModal(props: Props) {
     const user = await userService.register({ username, password, email });
     if (user) {
       props.toggle();
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmationPassword("");
     }
   };
 

@@ -1,7 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import Button from "../../../components/Button";
+import SideModal from "../../../components/SideModal";
+import { followUser, getUser } from "../../../services/user/userService";
+import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 
 const Container = styled.div`
   display: grid;
@@ -97,59 +101,108 @@ const EditProfileButton = styled.i`
   }
 `;
 
+const UserBio = styled.div`
+  margin-top: 15px;
+  font-family: "Fira Sans";
+  font-size: 20px;
+  color: var(--text-inactive);
+`;
+
 function ProfileDetails() {
   const context = useContext(AuthContext);
-  const { username, profile } = context.currentUser;
-  const Artists = [
-    "Pink Floyd",
-    "Tame Impala",
-    "Rolling Stones",
-    "Kendrick Lamar",
-    "Haircuts for Men",
-  ];
-  const Genres = ["Rock", "Psych Rock", "Pop"];
+
+  const toggleEditProfile = () => {
+    setShowEditProfile(!showEditProfile);
+  };
+  const [showEditProfile, setShowEditProfile] = useState(false);
+
+  const { username } = useParams() as any;
+
+  const [user, setuser] = useState(null as any);
+
+  const [isFollow, setisFollow] = useState(null as any);
+
+  const updateUser = async () => {
+    const user = await getUser(username);
+    setuser(user);
+    setloading(false);
+  };
+
+  useEffect(() => {
+    updateUser();
+  }, []);
+
+  const [loading, setloading] = useState(true);
 
   return (
-    <Container>
-      <ProfilePicture>
-        <LevelBadge>
-          <span style={{ paddingTop: "20px" }}>{profile.level}</span>
-        </LevelBadge>
-      </ProfilePicture>
+    <div>
+      {loading ? (
+        "Loading"
+      ) : (
+        <Container>
+          <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
+            <EditUserProfileDetailsModal
+              user={context.currentUser}
+              toggle={toggleEditProfile}
+            />
+          </SideModal>
 
-      <DetailsContainer>
-        <Username>
-          {username}
-          <EditProfileButton className="mdi mdi-pencil" />
-        </Username>
-        <FollowDetails>
-          <span className="num">3989</span>
-          <span>Followers</span>
-        </FollowDetails>
-        <FollowDetails>
-          <span className="num">73</span>
-          <span>Following</span>
-        </FollowDetails>
-        <FollowButton>FOLLOW</FollowButton>
-      </DetailsContainer>
+          <ProfilePicture>
+            <LevelBadge>
+              <span style={{ paddingTop: "20px" }}>{user.profile.level}</span>
+            </LevelBadge>
+          </ProfilePicture>
 
-      <TagsContainer>
-        <div>
-          <TagTitle>Favorite Artists</TagTitle>
-          {Artists.map((a) => (
-            <Tag>{a}</Tag>
-          ))}
-        </div>
-        <br />
+          <DetailsContainer>
+            <Username>
+              {username}
+              {username === context.currentUser.username && (
+                <EditProfileButton
+                  onClick={() => toggleEditProfile()}
+                  className="mdi mdi-pencil"
+                />
+              )}
+            </Username>
+            <FollowDetails>
+              <span className="num">{user.profile.totalFollowers}</span>
+              <span>Followers</span>
+            </FollowDetails>
+            <FollowDetails>
+              <span className="num">{user.profile.totalFollowing}</span>
+              <span>Following</span>
+            </FollowDetails>
+            {username !== context.currentUser.username && (
+              <FollowButton onClick={() => followUser(user.username, true)}>
+                FOLLOW
+              </FollowButton>
+            )}
 
-        <div>
-          <TagTitle>Favorite Genres</TagTitle>
-          {Genres.map((a) => (
-            <Tag>{a}</Tag>
-          ))}
-        </div>
-      </TagsContainer>
-    </Container>
+            <UserBio>
+              {user.profile.bio
+                ? user.profile.bio
+                : "User has not added an 'About Me' yet."}
+            </UserBio>
+          </DetailsContainer>
+
+          <TagsContainer>
+            <div>
+              <TagTitle>Favorite Artists</TagTitle>
+              {user.profile.favArtist?.map((a: any) => (
+                <Tag>{a}</Tag>
+              ))}
+            </div>
+            <br />
+
+            <div>
+              <TagTitle>Favorite Genres</TagTitle>
+              {user.profile.favGenres?.map((a: any) => (
+                <Tag>{a}</Tag>
+              ))}
+            </div>
+          </TagsContainer>
+        </Container>
+      )}
+    </div>
   );
 }
 

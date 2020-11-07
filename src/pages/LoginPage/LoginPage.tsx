@@ -6,6 +6,7 @@ import styled from "styled-components";
 import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import RegisterModal from "./components/RegisterModal";
+import ResetCredentialsModal from "./components/ResetCredentialsModal";
 
 const LoginButton = styled(Button)`
   margin: 50px;
@@ -42,11 +43,23 @@ const LoginInput = styled(TextInput)`
 function LoginPage() {
   const authContext = useContext(AuthContext);
 
-  const toggleModal = () => {
-    setRegisterModal(!showRegisterModal);
+  const toggleRegisterModal = () => {
+    setModalToShow(0);
+    setShowModal(!showModal);
   };
 
-  const [showRegisterModal, setRegisterModal] = useState(false);
+  const toggleResetModal = () => {
+    setModalToShow(1);
+    setShowModal(!showModal);
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalToShow, setModalToShow] = useState(0);
+
+  const Modals = [
+    <RegisterModal toggle={toggleRegisterModal} />,
+    <ResetCredentialsModal toggle={toggleResetModal} />,
+  ];
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -55,8 +68,8 @@ function LoginPage() {
     <div>
       <Marshmellow src="/images/marshmellow.svg" />
       <SiteTitle>mujik</SiteTitle>
-      <SideModal isActive={showRegisterModal} toggle={toggleModal}>
-        <RegisterModal toggle={toggleModal} />
+      <SideModal isActive={showModal} toggle={() => setShowModal(!showModal)}>
+        {Modals[modalToShow]}
       </SideModal>
 
       <div>
@@ -81,7 +94,8 @@ function LoginPage() {
       <div style={{ margin: "30px", marginLeft: "50px" }}>
         Forgot your password? Reset it{" "}
         <span
-          style={{ textDecoration: "underline" }}
+          onClick={() => toggleResetModal()}
+          style={{ textDecoration: "underline", cursor: "pointer" }}
           className={styles.bananaColor}
         >
           here
@@ -103,17 +117,17 @@ function LoginPage() {
         >
           Login
         </LoginButton>
-        <Button
+        <LoginButton
           style={{
             margin: "30px",
             borderRadius: "8px",
             width: "120px",
             justifyContent: "center",
           }}
-          onClick={() => toggleModal()}
+          onClick={() => toggleRegisterModal()}
         >
           Register
-        </Button>
+        </LoginButton>
       </div>
     </div>
   );

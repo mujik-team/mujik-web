@@ -57,7 +57,7 @@ const Filters = (
 );
 
 function UserProfileScreen() {
-  const { mixtapeId } = useParams() as any;
+  const { username } = useParams() as any;
 
   return (
     <Container>
