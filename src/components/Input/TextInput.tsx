@@ -13,6 +13,10 @@ const TextInput = styled(InputText)`
   & {
     box-shadow: none !important;
   }
+
+  &:focus {
+    box-shadow: inset 0px 0px 0px 2px var(--main-color) !important;
+  }
 `;
 
 export default TextInput;

@@ -5,6 +5,7 @@ import { ProgressBar } from "primereact/progressbar";
 const Container = styled.div`
   position: absolute;
   bottom: 0;
+  z-index: 3;
   left: 0;
   right: 0;
   background-color: var(--card-color);

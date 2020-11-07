@@ -1,7 +1,8 @@
 import { ProgressBar } from "primereact/progressbar";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../App";
 
 const UserCoinsText = styled.span``;
 
@@ -25,6 +26,7 @@ const UserDetailsContainer = styled.div`
 
 function AppHeader() {
   const history = useHistory();
+  const authContext = useContext(AuthContext);
   const UserDetailsCard = (
     <div
       style={{
@@ -54,7 +56,9 @@ function AppHeader() {
           src="/images/avatar_placeholder.svg"
           width="45px"
           style={{ cursor: "pointer" }}
-          onClick={() => history.push(`/user/0`)}
+          onClick={() =>
+            history.push(`/user/${authContext.currentUser.username}`)
+          }
         ></img>
         <span className="p-badge">3</span>
       </span>

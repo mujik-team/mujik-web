@@ -7,6 +7,7 @@ import ProfileDetails from "./components/ProfileDetails";
 
 const Container = styled.div`
   margin: 0 50px;
+  padding-bottom: 50px;
 `;
 
 const UserContentContainer = styled.div`
@@ -56,7 +57,7 @@ const Filters = (
 );
 
 function UserProfileScreen() {
-  const { mixtapeId } = useParams() as any;
+  const { username } = useParams() as any;
 
   return (
     <Container>

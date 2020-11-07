@@ -11,7 +11,8 @@ const Button = styled.button`
   transition: 0.1s ease-in all;
   background-color: var(--card-color);
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: black;
     background-color: var(--main-color);
   }
