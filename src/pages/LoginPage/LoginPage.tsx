@@ -9,10 +9,11 @@ import RegisterModal from "./components/RegisterModal";
 import ResetCredentialsModal from "./components/ResetCredentialsModal";
 
 const LoginButton = styled(Button)`
-  margin: 50px;
-  height: 75px;
-  width: 275px;
+  font-weight: 500;
+  font-size: 25px;
+  padding: 10px 20px;
   border-radius: 0px;
+  margin-right: 20px;
 `;
 
 const Marshmellow = styled.img`
@@ -102,30 +103,15 @@ function LoginPage() {
         </span>
         .
       </div>
-      <div className={styles.buttonContainer}>
+      <div style={{ marginLeft: "50px" }}>
         <LoginButton
-          style={{
-            margin: "30px",
-            borderRadius: "8px",
-            width: "120px",
-            justifyContent: "center",
-          }}
-          className={styles.buttonLogin}
           onClick={async () => {
             await authContext.login(username, password);
           }}
         >
           Login
         </LoginButton>
-        <LoginButton
-          style={{
-            margin: "30px",
-            borderRadius: "8px",
-            width: "120px",
-            justifyContent: "center",
-          }}
-          onClick={() => toggleRegisterModal()}
-        >
+        <LoginButton onClick={() => toggleRegisterModal()}>
           Register
         </LoginButton>
       </div>
