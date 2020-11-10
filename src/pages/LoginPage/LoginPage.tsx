@@ -8,39 +8,6 @@ import SideModal from "../../components/SideModal";
 import RegisterModal from "./components/RegisterModal";
 import ResetCredentialsModal from "./components/ResetCredentialsModal";
 
-const LoginButton = styled(Button)`
-  font-weight: 500;
-  font-size: 25px;
-  padding: 10px 20px;
-  border-radius: 0px;
-  margin-right: 20px;
-`;
-
-const Marshmellow = styled.img`
-  position: absolute;
-  height: 85vh;
-  bottom: 0;
-  right: 20px;
-`;
-
-const FormTitle = styled.div`
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 10px;
-`;
-
-const SiteTitle = styled.div`
-  font-size: 85px;
-  margin-left: 50px;
-  margin-top: 30px;
-  color: #ffff64;
-`;
-
-const LoginInput = styled(TextInput)`
-  font-size: 30px;
-  height: 50px;
-`;
-
 function LoginPage() {
   const authContext = useContext(AuthContext);
 
@@ -120,3 +87,36 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
+const LoginButton = styled(Button)`
+  font-weight: 500;
+  font-size: 25px;
+  padding: 10px 20px;
+  border-radius: 0px;
+  margin-right: 20px;
+`;
+
+const Marshmellow = styled.img`
+  position: absolute;
+  height: 85vh;
+  bottom: 0;
+  right: 20px;
+`;
+
+const FormTitle = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+`;
+
+const SiteTitle = styled.div`
+  font-size: 85px;
+  margin-left: 50px;
+  margin-top: 30px;
+  color: #ffff64;
+`;
+
+const LoginInput = styled(TextInput)`
+  font-size: 30px;
+  height: 50px;
+`;

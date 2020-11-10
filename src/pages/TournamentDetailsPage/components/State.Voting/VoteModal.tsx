@@ -1,6 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
+function VoteModal(props: Props) {
+  return (
+    <div>
+      <Container>
+        <h2>After you confirm your vote, you will have 6 votes remaining.</h2>
+
+        <h1>Your Selections</h1>
+        <hr />
+        <SelectedMixtapesGrid>
+          <MixtapeCard />
+          <MixtapeCard />
+          <MixtapeCard />
+          <MixtapeCard />
+        </SelectedMixtapesGrid>
+      </Container>
+
+      <VoteButton onClick={() => props.submit()}>Confirm Vote</VoteButton>
+    </div>
+  );
+}
+
+export default VoteModal;
+
 const Container = styled.div`
   margin: 30px;
 `;
@@ -49,26 +72,3 @@ const VoteStatusText = styled.div``;
 type Props = {
   submit: () => any;
 };
-
-function VoteModal(props: Props) {
-  return (
-    <div>
-      <Container>
-        <h2>After you confirm your vote, you will have 6 votes remaining.</h2>
-
-        <h1>Your Selections</h1>
-        <hr />
-        <SelectedMixtapesGrid>
-          <MixtapeCard />
-          <MixtapeCard />
-          <MixtapeCard />
-          <MixtapeCard />
-        </SelectedMixtapesGrid>
-      </Container>
-
-      <VoteButton onClick={() => props.submit()}>Confirm Vote</VoteButton>
-    </div>
-  );
-}
-
-export default VoteModal;

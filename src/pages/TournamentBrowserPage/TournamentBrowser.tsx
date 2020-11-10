@@ -5,32 +5,6 @@ import styled from "styled-components";
 import tournaments from "../../services/mock/tournaments";
 import TournamentCard from "./TournamentCard";
 
-const tabs = ["Currently Running", "Ended"];
-const tabsYour = ["All", "Entered", "Following", "Ended"];
-
-const TournamentGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
-  padding-bottom: 100px;
-`;
-
-const Header = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Filter = styled.span`
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--text-inactive);
-  margin-right: 20px;
-
-  &:hover {
-    color: whitesmoke;
-  }
-`;
-
 function TournamentBrowser() {
   const history = useHistory();
 
@@ -93,3 +67,29 @@ function TournamentBrowser() {
 }
 
 export default TournamentBrowser;
+
+const tabs = ["Currently Running", "Ended"];
+const tabsYour = ["All", "Entered", "Following", "Ended"];
+
+const TournamentGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding-bottom: 100px;
+`;
+
+const Header = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Filter = styled.span`
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-inactive);
+  margin-right: 20px;
+
+  &:hover {
+    color: whitesmoke;
+  }
+`;

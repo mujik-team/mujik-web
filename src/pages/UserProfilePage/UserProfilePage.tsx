@@ -5,6 +5,27 @@ import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import mixtapes from "../../services/mock/mixtapes";
 import ProfileDetails from "./components/ProfileDetails";
 
+function UserProfileScreen() {
+  return (
+    <Container>
+      <ProfileDetails />
+      <UserContentContainer>
+        <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
+        <TournamentWins>
+          <span className="title">Your Wins</span>
+          <hr />
+          <TournamentCard />
+          <TournamentCard />
+          <TournamentCard />
+          <TournamentCard />
+        </TournamentWins>
+      </UserContentContainer>
+    </Container>
+  );
+}
+
+export default UserProfileScreen;
+
 const Container = styled.div`
   margin: 0 50px;
   padding-bottom: 50px;
@@ -55,24 +76,3 @@ const Filters = (
     <Filter>All</Filter>
   </div>
 );
-
-function UserProfileScreen() {
-  return (
-    <Container>
-      <ProfileDetails />
-      <UserContentContainer>
-        <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
-        <TournamentWins>
-          <span className="title">Your Wins</span>
-          <hr />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-        </TournamentWins>
-      </UserContentContainer>
-    </Container>
-  );
-}
-
-export default UserProfileScreen;

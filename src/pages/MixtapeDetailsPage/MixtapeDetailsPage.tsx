@@ -10,7 +10,8 @@ import calendar from "../../Images/calendar.svg";
 import clock from "../../Images/clock.svg";
 import Button from "../../components/Button";
 
-import { Button as PrimeButton } from "primereact/button";
+import SideModal from "../../components/SideModal";
+import AddSongModal from "./components/AddSongModal";
 
 function MixtapeDetailsScreen() {
   const { mixtapeId } = useParams() as any;
@@ -110,14 +111,6 @@ function MixtapeDetailsScreen() {
       <Button
         className={styles.ButtonStyling}
         onClick={() => setPlayState(!playState)}
-        style={{
-          width: "100px",
-          height: "40px",
-          borderRadius: "5px",
-          fontSize: "15px",
-          alignSelf: "flex-end",
-          marginRight: "20px",
-        }}
       >
         {playState ? "Play" : "Pause"}
       </Button>
@@ -125,44 +118,15 @@ function MixtapeDetailsScreen() {
         <Button
           className={styles.ButtonStyling}
           onClick={() => setFollowState(!followState)}
-          style={{
-            width: "100px",
-            height: "40px",
-            borderRadius: "5px",
-            fontSize: "15px",
-            alignSelf: "flex-end",
-            marginRight: "20px",
-          }}
         >
           {followState ? "Follow" : "Following"}
         </Button>
       )}
-      <PrimeButton
-        icon="pi pi-bookmark"
-        className="p-button-rounded"
-        style={{
-          alignSelf: "flex-end",
-          backgroundColor: "#21242a",
-          borderColor: "#21242a",
-          color: "white",
-        }}
-      >
-        +
-      </PrimeButton>
-      <PrimeButton
-        icon="fas fa-ellipsis-h"
-        className="p-button-rounded"
-        style={{
-          alignSelf: "flex-end",
-          marginLeft: "20px",
-          backgroundColor: "#21242a",
-          borderColor: "#21242a",
-          color: "white",
-          textAlign: "center",
-        }}
-      >
-        ...
-      </PrimeButton>
+      <Button style={{ borderRadius: "50px" }}>
+        <i className="mdi mdi-heart-plus-outline"></i>
+      </Button>
+
+      <Button onClick={() => toggleModal()}>...</Button>
     </div>
   );
 
@@ -251,6 +215,11 @@ function MixtapeDetailsScreen() {
     );
   }
 
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <div>
       {/* {UserDetailsCard} */}
@@ -258,6 +227,9 @@ function MixtapeDetailsScreen() {
         <img src={weeknd} className={styles.mixtapeImage}></img>
         {mixapeDetails}
       </div>
+      <SideModal isActive={showModal} toggle={toggleModal}>
+        <AddSongModal />
+      </SideModal>
       <div>
         <div
           className="p-grid"

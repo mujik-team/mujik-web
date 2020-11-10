@@ -1,29 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
-  user-select: none;
-  text-align: center;
-  margin: 30px;
-`;
-
-const MessageContainer = styled.div`
-  display: block;
-  float: right;
-`;
-
-const Message = styled.div`
-  font-size: 35px;
-  font-weight: 400;
-  margin-top: 20px;
-  margin-right: 80px;
-`;
-
-const SubMessage = styled.div`
-  font-size: 20px;
-  color: var(--text-inactive);
-`;
-
 function RedeemSuccessModal() {
   return (
     <Container>
@@ -53,3 +30,26 @@ function RedeemSuccessModal() {
 }
 
 export default RedeemSuccessModal;
+
+const Container = styled.div`
+  user-select: none;
+  text-align: center;
+  margin: 30px;
+`;
+
+const MessageContainer = styled.div`
+  display: block;
+  float: right;
+`;
+
+const Message = styled.div`
+  font-size: 35px;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-right: 80px;
+`;
+
+const SubMessage = styled.div`
+  font-size: 20px;
+  color: var(--text-inactive);
+`;

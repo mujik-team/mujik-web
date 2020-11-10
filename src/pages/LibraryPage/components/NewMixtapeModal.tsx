@@ -5,6 +5,35 @@ import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 
+function NewMixtapeModal() {
+  const [tags, setTags] = useState([] as any[]);
+
+  return (
+    <div>
+      <Container>
+        <MixtapeCoverImage />
+
+        <InputLabel>Title</InputLabel>
+        <Input />
+
+        <InputLabel>Description</InputLabel>
+        <InputArea />
+
+        <InputLabel>Tags</InputLabel>
+        <Tags value={tags} onChange={(e) => setTags(e.value)} />
+
+        <div style={{ display: "inline-block", marginTop: "20px" }}>
+          <span>Private</span>
+          <IsPrivateCheckbox label="Private" />
+        </div>
+      </Container>
+      <CreateMixtapeButton>Create Mixtape</CreateMixtapeButton>
+    </div>
+  );
+}
+
+export default NewMixtapeModal;
+
 const Container = styled.div`
   margin: 50px;
   /* width: 450px; */
@@ -66,32 +95,3 @@ const MixtapeCoverImage = styled.div`
   margin-bottom: 50px;
   /* box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.212); */
 `;
-
-function NewMixtapeModal() {
-  const [tags, setTags] = useState([] as any[]);
-
-  return (
-    <div>
-      <Container>
-        <MixtapeCoverImage />
-
-        <InputLabel>Title</InputLabel>
-        <Input />
-
-        <InputLabel>Description</InputLabel>
-        <InputArea />
-
-        <InputLabel>Tags</InputLabel>
-        <Tags value={tags} onChange={(e) => setTags(e.value)} />
-
-        <div style={{ display: "inline-block", marginTop: "20px" }}>
-          <span>Private</span>
-          <IsPrivateCheckbox label="Private" />
-        </div>
-      </Container>
-      <CreateMixtapeButton>Create Mixtape</CreateMixtapeButton>
-    </div>
-  );
-}
-
-export default NewMixtapeModal;
