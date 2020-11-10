@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 export async function register(userDetails: any) {
   const { data } = await api.post("/user", userDetails);
 
-  if (data.result === "OK") {
+  if (data?.result === "OK") {
     toast.success("🎉 Successfully signed up!");
     return data.payload.user;
   } else {

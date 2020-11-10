@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import Button from "../../../components/Button";
 import SideModal from "../../../components/SideModal";
-import { followUser, getUser } from "../../../services/user/userService";
+import useUser from "../../../hooks/useUser";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
+import FollowButton from "./FollowButton";
 
 const Container = styled.div`
   display: grid;
@@ -84,11 +85,6 @@ const TagTitle = styled.div`
   font-weight: 500;
 `;
 
-const FollowButton = styled(Button)`
-  font-weight: 600;
-  font-size: 18px;
-`;
-
 const EditProfileButton = styled.i`
   cursor: pointer;
   font-size: 30px;
@@ -109,7 +105,7 @@ const UserBio = styled.div`
 `;
 
 function ProfileDetails() {
-  const context = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
 
   const toggleEditProfile = () => {
     setShowEditProfile(!showEditProfile);
@@ -118,31 +114,23 @@ function ProfileDetails() {
 
   const { username } = useParams() as any;
 
-  const [user, setuser] = useState(null as any);
+  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
 
-  const [isFollow, setisFollow] = useState(null as any);
-
-  const updateUser = async () => {
-    const user = await getUser(username);
-    setuser(user);
-    setloading(false);
+  const update = () => {
+    getUser();
+    authContext.update();
   };
-
-  useEffect(() => {
-    updateUser();
-  }, []);
-
-  const [loading, setloading] = useState(true);
 
   return (
     <div>
-      {loading ? (
+      {isLoading || !user ? (
         "Loading"
       ) : (
         <Container>
           <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
             <EditUserProfileDetailsModal
-              user={context.currentUser}
+              user={user}
+              updateUser={updateUser}
               toggle={toggleEditProfile}
             />
           </SideModal>
@@ -156,7 +144,7 @@ function ProfileDetails() {
           <DetailsContainer>
             <Username>
               {username}
-              {username === context.currentUser.username && (
+              {username === authContext.currentUser.username && (
                 <EditProfileButton
                   onClick={() => toggleEditProfile()}
                   className="mdi mdi-pencil"
@@ -171,12 +159,7 @@ function ProfileDetails() {
               <span className="num">{user.profile.totalFollowing}</span>
               <span>Following</span>
             </FollowDetails>
-            {username !== context.currentUser.username && (
-              <FollowButton onClick={() => followUser(user.username, true)}>
-                FOLLOW
-              </FollowButton>
-            )}
-
+            <FollowButton username={username} update={update} />
             <UserBio>
               {user.profile.bio
                 ? user.profile.bio
@@ -195,7 +178,7 @@ function ProfileDetails() {
 
             <div>
               <TagTitle>Favorite Genres</TagTitle>
-              {user.profile.favGenres?.map((a: any) => (
+              {user.profile.favGenre?.map((a: any) => (
                 <Tag>{a}</Tag>
               ))}
             </div>

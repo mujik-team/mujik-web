@@ -67,19 +67,19 @@ const CustomFormInput = styled(TextInput)`
 
 type Props = {
   user: any;
+  updateUser: (updatedUser: any) => Promise<void>;
   toggle: any;
 };
 
 function EditProfileDetailsModal(props: Props) {
-  const authContext = useContext(AuthContext);
+  const [userProfile, setUserProfile] = useState(props.user.profile);
+
   const saveChanges = async () => {
-    const user = await updateUserProfile(props.user.username, profile);
-    authContext.update();
+    const updatedUser = props.user;
+    updatedUser.profile = userProfile;
+    await props.updateUser(updatedUser);
     props.toggle();
   };
-
-  const [profile, setProfile] = useState(props.user.profile);
-
   return (
     <div>
       <Container>
@@ -90,24 +90,26 @@ function EditProfileDetailsModal(props: Props) {
           <FormTitle>About Me</FormTitle>
           <TextArea
             style={{ width: "100%", height: "120px" }}
-            value={profile.bio}
+            value={userProfile.bio}
             onChange={(e: any) =>
-              setProfile({ ...profile, bio: e.target.value })
+              setUserProfile({ ...userProfile, bio: e.target.value })
             }
           />
 
           <FormTitle>Favorite Artists</FormTitle>
           <TagInput
-            value={profile.favArtist}
+            value={userProfile.favArtist}
             onChange={(e: any) =>
-              setProfile({ ...profile, favArtist: e.value })
+              setUserProfile({ ...userProfile, favArtist: e.value })
             }
           />
 
           <FormTitle>Favorite Genres</FormTitle>
           <TagInput
-            value={profile.favGenres}
-            onChange={(e: any) => setProfile({ ...profile, favGenre: e.value })}
+            value={userProfile.favGenre}
+            onChange={(e: any) =>
+              setUserProfile({ ...userProfile, favGenre: e.value })
+            }
           />
         </FormContainer>
       </Container>

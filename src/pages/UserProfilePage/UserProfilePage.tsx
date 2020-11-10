@@ -57,8 +57,6 @@ const Filters = (
 );
 
 function UserProfileScreen() {
-  const { username } = useParams() as any;
-
   return (
     <Container>
       <ProfileDetails />
