@@ -1,4 +1,3 @@
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { api } from "../services/api";
 
@@ -24,7 +23,7 @@ function useUser(username: string) {
     setIsLoading(true);
   }, [username]);
 
-  return [user, setUser, updateUser, isLoading];
+  return [user, getUser, setUser, updateUser, isLoading];
 }
 
 export default useUser;
