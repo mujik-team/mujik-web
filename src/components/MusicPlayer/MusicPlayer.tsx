@@ -2,6 +2,49 @@ import React from "react";
 import styled from "styled-components";
 import { ProgressBar } from "primereact/progressbar";
 
+function MusicPlayer(props: Props) {
+  return (
+    <Container showPlayer={props.showPlayer} toggle={props.toggle}>
+      <div>
+        <MixtapeCoverArt
+          width="100"
+          showPlayer={props.showPlayer}
+          onClick={() => props.toggle()}
+          src="/images/weeknd.png"
+        />
+      </div>
+
+      {props.showPlayer && (
+        <div style={{ marginTop: "20px" }}>
+          <div style={{ textAlign: "center" }}>
+            <PlaybackIcon className={`mdi mdi-skip-previous`}></PlaybackIcon>
+            <PlaybackIcon className={`mdi mdi-play`}></PlaybackIcon>
+            <PlaybackIcon className={`mdi mdi-skip-next`}></PlaybackIcon>
+          </div>
+          <SongTimeProgressBar showValue={false} value={40} />
+        </div>
+      )}
+
+      {props.showPlayer && (
+        <div
+          style={{
+            marginTop: "30px",
+            marginRight: "20px",
+            textAlign: "right",
+            fontSize: "15px",
+          }}
+        >
+          <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
+          <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
+          <VolumeProgressBar showValue={false} value={80} />
+        </div>
+      )}
+    </Container>
+  );
+}
+
+export default MusicPlayer;
+
 const Container = styled.div`
   position: absolute;
   bottom: 0;
@@ -66,46 +109,3 @@ type Props = {
 type IsShowing = {
   showPlayer: boolean;
 };
-
-function MusicPlayer(props: Props) {
-  return (
-    <Container showPlayer={props.showPlayer} toggle={props.toggle}>
-      <div>
-        <MixtapeCoverArt
-          width="100"
-          showPlayer={props.showPlayer}
-          onClick={() => props.toggle()}
-          src="/images/weeknd.png"
-        />
-      </div>
-
-      {props.showPlayer && (
-        <div style={{ marginTop: "20px" }}>
-          <div style={{ textAlign: "center" }}>
-            <PlaybackIcon className={`mdi mdi-skip-previous`}></PlaybackIcon>
-            <PlaybackIcon className={`mdi mdi-play`}></PlaybackIcon>
-            <PlaybackIcon className={`mdi mdi-skip-next`}></PlaybackIcon>
-          </div>
-          <SongTimeProgressBar showValue={false} value={40} />
-        </div>
-      )}
-
-      {props.showPlayer && (
-        <div
-          style={{
-            marginTop: "30px",
-            marginRight: "20px",
-            textAlign: "right",
-            fontSize: "15px",
-          }}
-        >
-          <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
-          <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
-          <VolumeProgressBar showValue={false} value={80} />
-        </div>
-      )}
-    </Container>
-  );
-}
-
-export default MusicPlayer;
