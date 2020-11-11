@@ -1,37 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "primereact/progressbar";
+import { SpotifyContext } from "../../App";
 
 function MusicPlayer(props: Props) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [songName, setSongName] = useState("Nothing Playing...");
   const [currentImage, setCurrentImage] = useState("/images/weeknd.png");
-
-  const player = (window as any).player;
+  const spotifyContext = useContext(SpotifyContext);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-    player.togglePlay();
+    spotifyContext.player.togglePlay();
   };
 
   const nextSong = () => {
-    player.nextTrack();
+    spotifyContext.player.nextTrack();
   };
 
   const prevSong = () => {
-    player.previousTrack();
+    spotifyContext.player.previousTrack();
+    spotifyContext.player.previousTrack();
   };
 
-  useEffect(() => {
-    (window as any).subscribers.push((state: any) => {
-      if (state && state["context"]) {
-        setIsPlaying(!state.paused);
-        setSongName(state.track_window.current_track.name);
-        setCurrentImage(state.track_window.current_track.album.images[0].url);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   if (spotifyContext.isAuthorized && spotifyContext.player) {
+  //     spotifyContext.player.addListener(
+  //       "player_state_changed",
+  //       (state: any) => {
+  //         setIsPlaying(!state.paused);
+  //         setSongName(state.track_window.current_track.name);
+  //         setCurrentImage(state.track_window.current_track.album.images[0].url);
+  //       }
+  //     );
+  //   }
+  // }, [spotifyContext.isAuthorized]);
 
   return (
     <Container showPlayer={props.showPlayer} toggle={props.toggle}>

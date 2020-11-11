@@ -5,6 +5,9 @@ export type Player = {
   addListener: (event: string, callback: (state: any) => any) => void;
   connect: () => void;
   disconnect: () => void;
+  togglePlay: () => void;
+  nextTrack: () => void;
+  previousTrack: () => void;
 };
 
 type SpotifyActions = {
@@ -17,12 +20,14 @@ export type SpotifyState = {
   isAuthorized: boolean;
   spotifySDKReady: boolean;
   player: Player;
+  playerState: any;
   actions: SpotifyActions;
 };
 
 function useSpotify() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [player, setPlayer] = useState({} as Player);
+  const [playerState, setPlayerState] = useState(null);
   const [spotifySDKReady, setSpotifyReady] = useState(false);
   const [accessToken, setAccessToken] = useState("");
 
@@ -57,7 +62,8 @@ function useSpotify() {
 
       // Playback status updates
       newPlayer.addListener("player_state_changed", (state) => {
-        console.log(state);
+        // console.log(state);
+        setPlayerState(state);
       });
 
       // Ready
@@ -120,6 +126,7 @@ function useSpotify() {
     isAuthorized,
     spotifySDKReady,
     player,
+    playerState,
     actions,
   };
 
