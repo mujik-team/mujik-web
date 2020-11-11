@@ -62,7 +62,7 @@ function useSpotify() {
 
       // Playback status updates
       newPlayer.addListener("player_state_changed", (state) => {
-        // console.log(state);
+        console.log(state);
         setPlayerState(state);
       });
 

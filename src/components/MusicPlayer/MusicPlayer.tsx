@@ -4,25 +4,84 @@ import { ProgressBar } from "primereact/progressbar";
 import { SpotifyContext } from "../../App";
 
 function MusicPlayer(props: Props) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentProgress, setCurrentProgress] = useState(0);
-  const [songName, setSongName] = useState("Nothing Playing...");
-  const [currentImage, setCurrentImage] = useState("/images/weeknd.png");
   const spotifyContext = useContext(SpotifyContext);
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    spotifyContext.player.togglePlay();
-  };
+  if (spotifyContext.playerState) {
+    const isPlaying = !spotifyContext.playerState.paused;
+    const currentTrack = spotifyContext.playerState.track_window.current_track;
+    const image = currentTrack.album.images[0]?.url;
+    const songName = currentTrack.name;
 
-  const nextSong = () => {
-    spotifyContext.player.nextTrack();
-  };
+    const togglePlay = () => {
+      spotifyContext.player.togglePlay();
+    };
 
-  const prevSong = () => {
-    spotifyContext.player.previousTrack();
-    spotifyContext.player.previousTrack();
-  };
+    const nextSong = () => {
+      spotifyContext.player.nextTrack();
+    };
+
+    const prevSong = () => {
+      spotifyContext.player.previousTrack();
+      spotifyContext.player.previousTrack();
+    };
+
+    return (
+      <Container showPlayer={props.showPlayer} toggle={props.toggle}>
+        <div>
+          <MixtapeCoverArt
+            width="100"
+            showPlayer={props.showPlayer}
+            onClick={() => props.toggle()}
+            src={image}
+          />
+        </div>
+
+        {props.showPlayer && (
+          <div
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <SongPlaying>{songName}</SongPlaying>
+              <div style={{ textAlign: "center" }}>
+                <PlaybackIcon
+                  onClick={() => prevSong()}
+                  className={`mdi mdi-skip-previous`}
+                ></PlaybackIcon>
+                <PlaybackIcon
+                  onClick={() => togglePlay()}
+                  className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
+                ></PlaybackIcon>
+                <PlaybackIcon
+                  onClick={() => nextSong()}
+                  className={`mdi mdi-skip-next`}
+                ></PlaybackIcon>
+              </div>
+            </div>
+            <SongTimeProgressBar showValue={false} value={40} />
+          </div>
+        )}
+
+        {props.showPlayer && (
+          <div
+            style={{
+              marginTop: "30px",
+              marginRight: "20px",
+              textAlign: "right",
+              fontSize: "15px",
+            }}
+          >
+            <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
+            <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
+            <VolumeProgressBar showValue={false} value={80} />
+          </div>
+        )}
+      </Container>
+    );
+  } else {
+    return null;
+  }
 
   // useEffect(() => {
   //   if (spotifyContext.isAuthorized && spotifyContext.player) {
@@ -36,61 +95,6 @@ function MusicPlayer(props: Props) {
   //     );
   //   }
   // }, [spotifyContext.isAuthorized]);
-
-  return (
-    <Container showPlayer={props.showPlayer} toggle={props.toggle}>
-      <div>
-        <MixtapeCoverArt
-          width="100"
-          showPlayer={props.showPlayer}
-          onClick={() => props.toggle()}
-          src={currentImage}
-        />
-      </div>
-
-      {props.showPlayer && (
-        <div
-          style={{
-            marginTop: "20px",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <SongPlaying>{songName}</SongPlaying>
-            <div style={{ textAlign: "center" }}>
-              <PlaybackIcon
-                onClick={() => prevSong()}
-                className={`mdi mdi-skip-previous`}
-              ></PlaybackIcon>
-              <PlaybackIcon
-                onClick={() => togglePlay()}
-                className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
-              ></PlaybackIcon>
-              <PlaybackIcon
-                onClick={() => nextSong()}
-                className={`mdi mdi-skip-next`}
-              ></PlaybackIcon>
-            </div>
-          </div>
-          <SongTimeProgressBar showValue={false} value={currentProgress} />
-        </div>
-      )}
-
-      {props.showPlayer && (
-        <div
-          style={{
-            marginTop: "30px",
-            marginRight: "20px",
-            textAlign: "right",
-            fontSize: "15px",
-          }}
-        >
-          <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
-          <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
-          <VolumeProgressBar showValue={false} value={80} />
-        </div>
-      )}
-    </Container>
-  );
 }
 
 export default MusicPlayer;
