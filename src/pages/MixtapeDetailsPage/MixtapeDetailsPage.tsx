@@ -11,11 +11,13 @@ import clock from "../../Images/clock.svg";
 import Button from "../../components/Button";
 
 import { Button as PrimeButton } from "primereact/button";
+import { initSpotifyWebPlayer } from "../../services/spotify";
 
 function MixtapeDetailsScreen() {
   const { mixtapeId } = useParams() as any;
   const mixtape = mixtapes[mixtapeId as number];
   // console.log(mixtapeId)
+  // initSpotifyWebPlayer();
 
   const UserDetailsCard = (
     <div

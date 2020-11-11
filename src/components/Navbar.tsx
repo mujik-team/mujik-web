@@ -2,8 +2,52 @@ import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import styled from "styled-components";
-import { AuthContext } from "../App";
+import { AuthContext, SpotifyContext } from "../App";
 import Button from "./Button";
+
+function Navbar() {
+  const history = useHistory();
+  const location = useLocation();
+  const authContext = useContext(AuthContext);
+  const spotifyContext = useContext(SpotifyContext);
+  return (
+    <Container>
+      <Title>mujik</Title>
+      {/* <h4>Welcome {authContext.currentUser.username}!</h4> */}
+      <br />
+      <br />
+      <NavItem
+        onClick={() => history.push("/")}
+        className={`${location.pathname === "/" ? "active" : ""}`}
+      >
+        <span className={`mdi mdi-home`}></span>
+        Home
+      </NavItem>
+      {routes.map((r) => (
+        <NavItem
+          className={`${location.pathname.includes(r.route) ? "active" : ""}`}
+          onClick={() => history.push(r.route)}
+        >
+          <span className={`mdi mdi-${r.icon}`}></span>
+          {r.name}
+        </NavItem>
+      ))}
+      <Button
+        onClick={() => {
+          authContext.logout();
+          spotifyContext.actions.logout();
+          history.push("/");
+        }}
+        style={{ marginTop: "50px" }}
+      >
+        Logout
+      </Button>
+    </Container>
+  );
+}
+
+export default Navbar;
+
 const routes = [
   { name: "Library", route: "/library", icon: "music-circle" },
   { name: "Rewards", route: "/rewards", icon: "seal" },
@@ -60,44 +104,3 @@ const NavItem = styled.button`
     margin-right: 10px;
   }
 `;
-
-function Navbar() {
-  const history = useHistory();
-  const location = useLocation();
-  const authContext = useContext(AuthContext);
-  return (
-    <Container>
-      <Title>mujik</Title>
-      {/* <h4>Welcome {authContext.currentUser.username}!</h4> */}
-      <br />
-      <br />
-      <NavItem
-        onClick={() => history.push("/")}
-        className={`${location.pathname === "/" ? "active" : ""}`}
-      >
-        <span className={`mdi mdi-home`}></span>
-        Home
-      </NavItem>
-      {routes.map((r) => (
-        <NavItem
-          className={`${location.pathname.includes(r.route) ? "active" : ""}`}
-          onClick={() => history.push(r.route)}
-        >
-          <span className={`mdi mdi-${r.icon}`}></span>
-          {r.name}
-        </NavItem>
-      ))}
-      <Button
-        onClick={() => {
-          authContext.logout();
-          history.push("/");
-        }}
-        style={{ marginTop: "50px" }}
-      >
-        Logout
-      </Button>
-    </Container>
-  );
-}
-
-export default Navbar;
