@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import mixtapes from "../../../services/mock/mixtapes";
+import MixtapeActions from "./MixtapeActions";
 
 function MixtapeDetails() {
   return (
@@ -21,6 +22,8 @@ function MixtapeDetails() {
         Monster on the weekend while mowing your lawn, think summer barbecues,
         think riding down the highway in your Ford pickup with the windows down.
       </Description>
+
+      <MixtapeActions />
     </Container>
   );
 }
@@ -82,4 +85,5 @@ const Description = styled.div`
   color: var(--text-inactive);
   margin-top: 30px;
   margin-right: 30%;
+  margin-bottom: 20px;
 `;
