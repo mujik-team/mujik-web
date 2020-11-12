@@ -4,16 +4,6 @@ import { AuthContext } from "../../../App";
 import Button from "../../../components/Button";
 import { api } from "../../../services/api";
 
-const FButton = styled(Button)`
-  font-weight: 600;
-  font-size: 18px;
-`;
-
-type Props = {
-  username: string;
-  update: any;
-};
-
 function FollowButton(props: Props) {
   const authContext = useContext(AuthContext);
 
@@ -39,3 +29,13 @@ function FollowButton(props: Props) {
 }
 
 export default FollowButton;
+
+const FButton = styled(Button)`
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+type Props = {
+  username: string;
+  update: any;
+};

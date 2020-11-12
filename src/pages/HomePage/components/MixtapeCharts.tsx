@@ -3,6 +3,46 @@ import styled from "styled-components";
 import mixtapes from "../../../services/mock/mixtapes";
 import { randomMixtapes } from "../../../services/random";
 
+function MixtapeCharts() {
+  const items = [];
+
+  const filters = ["Top 50", "Featured", "Rising"];
+
+  for (let i = 0; i < 10; i++) {
+    items.push(
+      <ChartItem>
+        <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
+        <div
+          style={{
+            backgroundImage: `url(/images/mixtapes/${
+              randomMixtapes()[i].image
+            })`,
+          }}
+          className="mixtape-image"
+        ></div>
+        <div className="details">
+          <div className="song-title">{mixtapes[i].name}</div>
+          <div className="song-artist">{mixtapes[i].createdBy}</div>
+        </div>
+      </ChartItem>
+    );
+  }
+
+  return (
+    <Container>
+      <Filters>
+        {filters.map((f) => (
+          <span className="filter">{f}</span>
+        ))}
+      </Filters>
+      <hr style={{ margin: "15px 40px" }} />
+      <TopChartGrid>{items}</TopChartGrid>
+    </Container>
+  );
+}
+
+export default MixtapeCharts;
+
 const Container = styled.div``;
 const TopChartGrid = styled.div`
   margin: 30px;
@@ -55,43 +95,3 @@ const Filters = styled.div`
     color: whitesmoke;
   }
 `;
-
-function MixtapeCharts() {
-  const items = [];
-
-  const filters = ["Top 50", "Featured", "Rising"];
-
-  for (let i = 0; i < 10; i++) {
-    items.push(
-      <ChartItem>
-        <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
-        <div
-          style={{
-            backgroundImage: `url(/images/mixtapes/${
-              randomMixtapes()[i].image
-            })`,
-          }}
-          className="mixtape-image"
-        ></div>
-        <div className="details">
-          <div className="song-title">{mixtapes[i].name}</div>
-          <div className="song-artist">{mixtapes[i].createdBy}</div>
-        </div>
-      </ChartItem>
-    );
-  }
-
-  return (
-    <Container>
-      <Filters>
-        {filters.map((f) => (
-          <span className="filter">{f}</span>
-        ))}
-      </Filters>
-      <hr style={{ margin: "15px 40px" }} />
-      <TopChartGrid>{items}</TopChartGrid>
-    </Container>
-  );
-}
-
-export default MixtapeCharts;

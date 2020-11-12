@@ -4,6 +4,34 @@ import styled from "styled-components";
 import tournaments from "../../../services/mock/tournaments";
 import styles from "./FeaturedMixtapes.module.css";
 
+function FeaturedMixtapes() {
+  const history = useHistory();
+
+  const featured = [];
+
+  for (let i = 0; i < 4; i++) {
+    featured.push(
+      <MixtapeCard
+        style={{
+          backgroundImage: `url(/images/tournaments/${tournaments[i].image})`,
+        }}
+        onClick={() => history.push(`/tournament/${i}`)}
+      >
+        <span>{tournaments[i].title}</span>
+      </MixtapeCard>
+    );
+  }
+
+  return (
+    <Container>
+      <Title>Featured</Title>
+      <FeaturedTournamentsGrid>{featured}</FeaturedTournamentsGrid>
+    </Container>
+  );
+}
+
+export default FeaturedMixtapes;
+
 const Container = styled.div`
   margin: 30px;
 `;
@@ -64,31 +92,3 @@ const MixtapeCard = styled.div`
     display: block;
   }
 `;
-
-function FeaturedMixtapes() {
-  const history = useHistory();
-
-  const featured = [];
-
-  for (let i = 0; i < 4; i++) {
-    featured.push(
-      <MixtapeCard
-        style={{
-          backgroundImage: `url(/images/tournaments/${tournaments[i].image})`,
-        }}
-        onClick={() => history.push(`/tournament/${i}`)}
-      >
-        <span>{tournaments[i].title}</span>
-      </MixtapeCard>
-    );
-  }
-
-  return (
-    <Container>
-      <Title>Featured</Title>
-      <FeaturedTournamentsGrid>{featured}</FeaturedTournamentsGrid>
-    </Container>
-  );
-}
-
-export default FeaturedMixtapes;

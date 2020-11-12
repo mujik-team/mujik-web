@@ -1,6 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
+function RewardDetailsModal(props: Props) {
+  return props.reward_details ? (
+    <Container>
+      <img
+        style={{ marginTop: "90px" }}
+        src={`/images/logos/${props.reward_details.image}`}
+      ></img>
+
+      <RewardOptionsGrid>
+        <RewardOptionCard />
+        <RewardOptionCard />
+        <RewardOptionCard />
+        <RewardOptionCard />
+        <RewardOptionCard />
+      </RewardOptionsGrid>
+
+      <RedeemButton onClick={() => props.submitRedeem()}>Redeem</RedeemButton>
+    </Container>
+  ) : null;
+}
+
+export default RewardDetailsModal;
+
 type Props = {
   reward_details?: any;
   submitRedeem: any;
@@ -41,26 +64,3 @@ const RedeemButton = styled.div`
     color: black;
   }
 `;
-
-function RewardDetailsModal(props: Props) {
-  return props.reward_details ? (
-    <Container>
-      <img
-        style={{ marginTop: "90px" }}
-        src={`/images/logos/${props.reward_details.image}`}
-      ></img>
-
-      <RewardOptionsGrid>
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
-      </RewardOptionsGrid>
-
-      <RedeemButton onClick={() => props.submitRedeem()}>Redeem</RedeemButton>
-    </Container>
-  ) : null;
-}
-
-export default RewardDetailsModal;

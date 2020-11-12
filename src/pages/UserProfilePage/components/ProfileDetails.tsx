@@ -8,6 +8,93 @@ import useUser from "../../../hooks/useUser";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
 
+function ProfileDetails() {
+  const authContext = useContext(AuthContext);
+
+  const toggleEditProfile = () => {
+    setShowEditProfile(!showEditProfile);
+  };
+  const [showEditProfile, setShowEditProfile] = useState(false);
+
+  const { username } = useParams() as any;
+
+  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
+
+  const update = () => {
+    getUser();
+    authContext.update();
+  };
+
+  return (
+    <div>
+      {isLoading || !user ? (
+        "Loading"
+      ) : (
+        <Container>
+          <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
+            <EditUserProfileDetailsModal
+              user={user}
+              updateUser={updateUser}
+              toggle={toggleEditProfile}
+            />
+          </SideModal>
+
+          <ProfilePicture>
+            <LevelBadge>
+              <span style={{ paddingTop: "20px" }}>{user.profile.level}</span>
+            </LevelBadge>
+          </ProfilePicture>
+
+          <DetailsContainer>
+            <Username>
+              {username}
+              {username === authContext.currentUser.username && (
+                <EditProfileButton
+                  onClick={() => toggleEditProfile()}
+                  className="mdi mdi-pencil"
+                />
+              )}
+            </Username>
+            <FollowDetails>
+              <span className="num">{user.profile.totalFollowers}</span>
+              <span>Followers</span>
+            </FollowDetails>
+            <FollowDetails>
+              <span className="num">{user.profile.totalFollowing}</span>
+              <span>Following</span>
+            </FollowDetails>
+            <FollowButton username={username} update={update} />
+            <UserBio>
+              {user.profile.bio
+                ? user.profile.bio
+                : "User has not added an 'About Me' yet."}
+            </UserBio>
+          </DetailsContainer>
+
+          <TagsContainer>
+            <div>
+              <TagTitle>Favorite Artists</TagTitle>
+              {user.profile.favArtist?.map((a: any) => (
+                <Tag>{a}</Tag>
+              ))}
+            </div>
+            <br />
+
+            <div>
+              <TagTitle>Favorite Genres</TagTitle>
+              {user.profile.favGenre?.map((a: any) => (
+                <Tag>{a}</Tag>
+              ))}
+            </div>
+          </TagsContainer>
+        </Container>
+      )}
+    </div>
+  );
+}
+
+export default ProfileDetails;
+
 const Container = styled.div`
   display: grid;
   grid-template-columns: 300px 400px 1fr;
@@ -103,90 +190,3 @@ const UserBio = styled.div`
   font-size: 20px;
   color: var(--text-inactive);
 `;
-
-function ProfileDetails() {
-  const authContext = useContext(AuthContext);
-
-  const toggleEditProfile = () => {
-    setShowEditProfile(!showEditProfile);
-  };
-  const [showEditProfile, setShowEditProfile] = useState(false);
-
-  const { username } = useParams() as any;
-
-  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
-
-  const update = () => {
-    getUser();
-    authContext.update();
-  };
-
-  return (
-    <div>
-      {isLoading || !user ? (
-        "Loading"
-      ) : (
-        <Container>
-          <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
-            <EditUserProfileDetailsModal
-              user={user}
-              updateUser={updateUser}
-              toggle={toggleEditProfile}
-            />
-          </SideModal>
-
-          <ProfilePicture>
-            <LevelBadge>
-              <span style={{ paddingTop: "20px" }}>{user.profile.level}</span>
-            </LevelBadge>
-          </ProfilePicture>
-
-          <DetailsContainer>
-            <Username>
-              {username}
-              {username === authContext.currentUser.username && (
-                <EditProfileButton
-                  onClick={() => toggleEditProfile()}
-                  className="mdi mdi-pencil"
-                />
-              )}
-            </Username>
-            <FollowDetails>
-              <span className="num">{user.profile.totalFollowers}</span>
-              <span>Followers</span>
-            </FollowDetails>
-            <FollowDetails>
-              <span className="num">{user.profile.totalFollowing}</span>
-              <span>Following</span>
-            </FollowDetails>
-            <FollowButton username={username} update={update} />
-            <UserBio>
-              {user.profile.bio
-                ? user.profile.bio
-                : "User has not added an 'About Me' yet."}
-            </UserBio>
-          </DetailsContainer>
-
-          <TagsContainer>
-            <div>
-              <TagTitle>Favorite Artists</TagTitle>
-              {user.profile.favArtist?.map((a: any) => (
-                <Tag>{a}</Tag>
-              ))}
-            </div>
-            <br />
-
-            <div>
-              <TagTitle>Favorite Genres</TagTitle>
-              {user.profile.favGenre?.map((a: any) => (
-                <Tag>{a}</Tag>
-              ))}
-            </div>
-          </TagsContainer>
-        </Container>
-      )}
-    </div>
-  );
-}
-
-export default ProfileDetails;

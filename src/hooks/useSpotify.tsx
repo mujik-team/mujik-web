@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as spotifyService from "../services/spotify";
 
 export type Player = {
+  device_id: string;
   addListener: (event: string, callback: (state: any) => any) => void;
   connect: () => void;
   disconnect: () => void;
@@ -13,6 +14,8 @@ export type Player = {
 type SpotifyActions = {
   initPlayer: () => void;
   requestAuthorization: () => Promise<void>;
+  playSong: (uris: string[]) => Promise<void>;
+  search: (query: string) => Promise<any>;
   logout: () => void;
 };
 
@@ -62,13 +65,14 @@ function useSpotify() {
 
       // Playback status updates
       newPlayer.addListener("player_state_changed", (state) => {
-        // console.log(state);
+        console.log(state);
         setPlayerState(state);
       });
 
       // Ready
       newPlayer.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
+        newPlayer.device_id = device_id;
       });
 
       // Not Ready
@@ -120,6 +124,17 @@ function useSpotify() {
     initPlayer,
     requestAuthorization: spotifyService.authorize,
     logout,
+    playSong: (uris: string[]) =>
+      spotifyService.playSong(accessToken, player.device_id, uris),
+    search: async (q) => {
+      const params = {
+        q,
+        type: "track",
+        market: "US",
+      };
+
+      return await spotifyService.search(accessToken, params);
+    },
   };
 
   const spotifyState: SpotifyState = {

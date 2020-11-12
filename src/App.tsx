@@ -7,7 +7,7 @@ import LibraryPage from "./pages/LibraryPage/LibraryPage";
 import TournamentBrowser from "./pages/TournamentBrowserPage/TournamentBrowser";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
-import MixtapeDetailsScreen from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
+import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
 import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
@@ -44,7 +44,7 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/library" component={LibraryPage} />
           <Route path="/tournament" exact component={TournamentBrowser} />
-          <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsScreen} />
+          <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsPage} />
           <Route
             path="/tournament/:tournamentId"
             component={TournamentDetails}

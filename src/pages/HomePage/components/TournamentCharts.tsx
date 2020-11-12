@@ -3,6 +3,34 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import tournaments from "../../../services/mock/tournaments";
 
+function TournamentCharts() {
+  const filters = ["Popular", "Bounty Size"];
+
+  const history = useHistory();
+
+  const cards = tournaments.slice(2).map((t, i) => (
+    <TournamentCard
+      onClick={() => history.push(`/tournament/${i}`)}
+      style={{ backgroundImage: `url(/images/tournaments/${t.image})` }}
+    >
+      <span>{t.title}</span>
+    </TournamentCard>
+  ));
+
+  return (
+    <Container>
+      <Filters>
+        {filters.map((f) => (
+          <span className="filter">{f}</span>
+        ))}
+      </Filters>
+      <TournamentGrid>{cards}</TournamentGrid>
+    </Container>
+  );
+}
+
+export default TournamentCharts;
+
 const Container = styled.div``;
 
 const Filters = styled.div`
@@ -71,31 +99,3 @@ const TournamentCard = styled.div`
     display: block;
   }
 `;
-
-function TournamentCharts() {
-  const filters = ["Popular", "Bounty Size"];
-
-  const history = useHistory();
-
-  const cards = tournaments.slice(2).map((t, i) => (
-    <TournamentCard
-      onClick={() => history.push(`/tournament/${i}`)}
-      style={{ backgroundImage: `url(/images/tournaments/${t.image})` }}
-    >
-      <span>{t.title}</span>
-    </TournamentCard>
-  ));
-
-  return (
-    <Container>
-      <Filters>
-        {filters.map((f) => (
-          <span className="filter">{f}</span>
-        ))}
-      </Filters>
-      <TournamentGrid>{cards}</TournamentGrid>
-    </Container>
-  );
-}
-
-export default TournamentCharts;

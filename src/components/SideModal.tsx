@@ -32,7 +32,7 @@ const Container = styled.div`
 
   &.active {
     opacity: 1;
-    z-index: 1;
+    z-index: 3;
     background-color: rgba(0, 0, 0, 0.651);
   }
 

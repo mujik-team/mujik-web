@@ -4,93 +4,123 @@ import { ProgressBar } from "primereact/progressbar";
 import { SpotifyContext } from "../../App";
 
 function MusicPlayer(props: Props) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentProgress, setCurrentProgress] = useState(0);
-  const [songName, setSongName] = useState("Nothing Playing...");
-  const [currentImage, setCurrentImage] = useState("/images/weeknd.png");
   const spotifyContext = useContext(SpotifyContext);
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    spotifyContext.player.togglePlay();
-  };
+  const [progress, setProgress] = useState(0);
 
-  const nextSong = () => {
-    spotifyContext.player.nextTrack();
-  };
+  // Used for managing the state of the progress bar.
+  useEffect(() => {
+    const playerState = spotifyContext.playerState;
+    let interval: any;
+    if (playerState) {
+      setProgress(playerState.position);
+      if (!playerState.paused) {
+        // Starts a repeating function that adds 1000ms to progress.
+        interval = setInterval(() => {
+          setProgress((p) => p + 1000);
+        }, 1000);
+      }
+    }
 
-  const prevSong = () => {
-    spotifyContext.player.previousTrack();
-    spotifyContext.player.previousTrack();
-  };
+    return () => clearInterval(interval);
+  }, [spotifyContext.playerState]);
 
-  // useEffect(() => {
-  //   if (spotifyContext.isAuthorized && spotifyContext.player) {
-  //     spotifyContext.player.addListener(
-  //       "player_state_changed",
-  //       (state: any) => {
-  //         setIsPlaying(!state.paused);
-  //         setSongName(state.track_window.current_track.name);
-  //         setCurrentImage(state.track_window.current_track.album.images[0].url);
-  //       }
-  //     );
-  //   }
-  // }, [spotifyContext.isAuthorized]);
+  if (spotifyContext.playerState) {
+    const isPlaying = !spotifyContext.playerState.paused;
+    const currentTrack = spotifyContext.playerState.track_window.current_track;
+    const image = currentTrack.album.images[0]?.url;
+    const songName = currentTrack.name;
+    const duration = spotifyContext.playerState.duration;
+    const artist = currentTrack.artists[0];
 
-  return (
-    <Container showPlayer={props.showPlayer} toggle={props.toggle}>
-      <div>
-        <MixtapeCoverArt
-          width="100"
-          showPlayer={props.showPlayer}
-          onClick={() => props.toggle()}
-          src={currentImage}
-        />
-      </div>
+    const togglePlay = () => {
+      spotifyContext.player.togglePlay();
+    };
 
-      {props.showPlayer && (
-        <div
-          style={{
-            marginTop: "20px",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <SongPlaying>{songName}</SongPlaying>
-            <div style={{ textAlign: "center" }}>
-              <PlaybackIcon
-                onClick={() => prevSong()}
-                className={`mdi mdi-skip-previous`}
-              ></PlaybackIcon>
-              <PlaybackIcon
-                onClick={() => togglePlay()}
-                className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
-              ></PlaybackIcon>
-              <PlaybackIcon
-                onClick={() => nextSong()}
-                className={`mdi mdi-skip-next`}
-              ></PlaybackIcon>
+    const nextSong = () => {
+      spotifyContext.player.nextTrack();
+    };
+
+    const prevSong = () => {
+      spotifyContext.player.previousTrack();
+      spotifyContext.player.previousTrack();
+    };
+
+    return (
+      <Container showPlayer={props.showPlayer} toggle={props.toggle}>
+        <div>
+          <MixtapeCoverArt
+            width="100"
+            showPlayer={props.showPlayer}
+            onClick={() => props.toggle()}
+            src={image}
+          />
+        </div>
+
+        {props.showPlayer && (
+          <div
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            <div
+              style={{
+                textAlign: "center",
+                height: "35px",
+                marginBottom: "30px",
+              }}
+            >
+              <SongPlaying>
+                <span className="name">{songName}</span>
+                <div className="artist">{artist.name}</div>
+              </SongPlaying>
+
+              <div
+                style={{
+                  position: "relative",
+                  top: "-55px",
+                }}
+              >
+                <PlaybackIcon
+                  onClick={() => prevSong()}
+                  className={`mdi mdi-skip-previous`}
+                ></PlaybackIcon>
+                <PlaybackIcon
+                  onClick={() => togglePlay()}
+                  className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
+                ></PlaybackIcon>
+                <PlaybackIcon
+                  onClick={() => nextSong()}
+                  className={`mdi mdi-skip-next`}
+                ></PlaybackIcon>
+              </div>
             </div>
+            <SongTimeProgressBar
+              showValue={false}
+              value={(progress / duration) * 100}
+            />
           </div>
-          <SongTimeProgressBar showValue={false} value={currentProgress} />
-        </div>
-      )}
+        )}
 
-      {props.showPlayer && (
-        <div
-          style={{
-            marginTop: "30px",
-            marginRight: "20px",
-            textAlign: "right",
-            fontSize: "15px",
-          }}
-        >
-          <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
-          <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
-          <VolumeProgressBar showValue={false} value={80} />
-        </div>
-      )}
-    </Container>
-  );
+        {props.showPlayer && (
+          <div
+            style={{
+              marginTop: "30px",
+              marginRight: "20px",
+              textAlign: "right",
+              fontSize: "15px",
+            }}
+          >
+            <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
+            <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
+            <VolumeProgressBar showValue={false} value={80} />
+          </div>
+        )}
+      </Container>
+    );
+  } else {
+    return null;
+  }
 }
 
 export default MusicPlayer;
@@ -113,16 +143,29 @@ const Container = styled.div`
 `;
 
 const SongPlaying = styled.div`
-  /* display: inline-block; */
+  text-align: left;
   position: relative;
-  float: left;
   font-weight: 500;
-  font-size: 1.5rem;
+  left: 0;
+  width: 350px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  & > span.name {
+    font-size: 22px;
+  }
+
+  & > div.artist {
+    color: var(--text-inactive);
+    font-size: 15px;
+  }
 `;
 
 const SongTimeProgressBar = styled(ProgressBar)`
   height: 8px;
   margin-top: 10px;
+  transition: none !important;
 
   & > .p-progressbar-value {
     background-color: grey;

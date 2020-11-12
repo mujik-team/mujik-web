@@ -1,10 +1,65 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../../App";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
-import { updateUserProfile } from "../../../services/user/userService";
+
+function EditProfileDetailsModal(props: Props) {
+  const [userProfile, setUserProfile] = useState(props.user.profile);
+
+  const saveChanges = async () => {
+    const updatedUser = props.user;
+    updatedUser.profile = userProfile;
+    await props.updateUser(updatedUser);
+    props.toggle();
+  };
+  return (
+    <div>
+      <Container>
+        <ProfilePicture />
+        <Username>{props.user.username}</Username>
+
+        <FormContainer>
+          <FormTitle>About Me</FormTitle>
+          <TextArea
+            style={{ width: "100%", height: "120px" }}
+            value={userProfile.bio}
+            onChange={(e: any) =>
+              setUserProfile({ ...userProfile, bio: e.target.value })
+            }
+          />
+
+          <FormTitle>Favorite Artists</FormTitle>
+          <TagInput
+            value={userProfile.favArtist}
+            onChange={(e: any) =>
+              setUserProfile({ ...userProfile, favArtist: e.value })
+            }
+          />
+
+          <FormTitle>Favorite Genres</FormTitle>
+          <TagInput
+            value={userProfile.favGenre}
+            onChange={(e: any) =>
+              setUserProfile({ ...userProfile, favGenre: e.value })
+            }
+          />
+        </FormContainer>
+      </Container>
+      <SaveChangesButton onClick={() => saveChanges()}>
+        Save Changes
+      </SaveChangesButton>
+    </div>
+  );
+}
+
+export default EditProfileDetailsModal;
+
+type Props = {
+  user: any;
+  updateUser: (updatedUser: any) => Promise<void>;
+  toggle: any;
+};
 
 const Container = styled.div`
   margin: 30px;
@@ -64,60 +119,3 @@ const CustomFormInput = styled(TextInput)`
   font-size: 20px;
   margin-bottom: 20px;
 `;
-
-type Props = {
-  user: any;
-  updateUser: (updatedUser: any) => Promise<void>;
-  toggle: any;
-};
-
-function EditProfileDetailsModal(props: Props) {
-  const [userProfile, setUserProfile] = useState(props.user.profile);
-
-  const saveChanges = async () => {
-    const updatedUser = props.user;
-    updatedUser.profile = userProfile;
-    await props.updateUser(updatedUser);
-    props.toggle();
-  };
-  return (
-    <div>
-      <Container>
-        <ProfilePicture />
-        <Username>{props.user.username}</Username>
-
-        <FormContainer>
-          <FormTitle>About Me</FormTitle>
-          <TextArea
-            style={{ width: "100%", height: "120px" }}
-            value={userProfile.bio}
-            onChange={(e: any) =>
-              setUserProfile({ ...userProfile, bio: e.target.value })
-            }
-          />
-
-          <FormTitle>Favorite Artists</FormTitle>
-          <TagInput
-            value={userProfile.favArtist}
-            onChange={(e: any) =>
-              setUserProfile({ ...userProfile, favArtist: e.value })
-            }
-          />
-
-          <FormTitle>Favorite Genres</FormTitle>
-          <TagInput
-            value={userProfile.favGenre}
-            onChange={(e: any) =>
-              setUserProfile({ ...userProfile, favGenre: e.value })
-            }
-          />
-        </FormContainer>
-      </Container>
-      <SaveChangesButton onClick={() => saveChanges()}>
-        Save Changes
-      </SaveChangesButton>
-    </div>
-  );
-}
-
-export default EditProfileDetailsModal;

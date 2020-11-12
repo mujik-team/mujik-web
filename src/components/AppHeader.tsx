@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { AuthContext, SpotifyContext } from "../App";
 import Button from "./Button";
+import TextInput from "./Input/TextInput";
 
 const UserCoinsText = styled.span``;
 
@@ -39,14 +40,27 @@ function AppHeader() {
         marginRight: "15px",
       }}
     >
-      {!spotifyContext.isAuthorized && (
-        <Button
-          style={{ height: "40px", marginRight: "20px" }}
-          onClick={() => history.push("/spotify/authorize")}
-        >
-          Authorize Spotify
-        </Button>
-      )}
+      {
+        !spotifyContext.isAuthorized ? (
+          <Button
+            style={{ height: "40px", marginRight: "20px" }}
+            onClick={() => history.push("/spotify/authorize")}
+          >
+            Authorize Spotify
+          </Button>
+        ) : null
+        // <div className="p-input-icon-left">
+        //   <i
+        //     style={{ fontSize: "20px", top: "25%" }}
+        //     className="mdi mdi-magnify"
+        //   ></i>
+        //   <TextInput
+        //   // value={searchTerm}
+        //   // onChange={(e: any) => setSearchTerm(e.target.value)}
+        //   // onKeyDown={handleKeyDown}
+        //   />
+        // </div>
+      }
       <UserDetailsContainer>
         <span style={{ margin: "0 8px" }}>LEVEL 3</span>
         <span style={{ width: "250px" }}>

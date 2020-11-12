@@ -4,6 +4,41 @@ import styled from "styled-components";
 import { randomMixtapes } from "../../services/random";
 import SortDropdown from "../Input/SortDropdown";
 
+function MixtapeBrowser(props: Props) {
+  const history = useHistory();
+
+  const [sortBy, setSortBy] = useState("");
+  const cards = randomMixtapes().map((m, i) => (
+    <MixtapeCard
+      style={{ backgroundImage: `url(/images/mixtapes/${m.image})` }}
+      onClick={() => history.push(`/mixtape/0`)}
+    />
+  ));
+
+  return (
+    <Container>
+      <Header>
+        <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
+        <RightHeader>
+          <div className="p-float-label">
+            <SortDropdown
+              id="sort-dropdown"
+              value={sortBy}
+              onChange={(e: any) => setSortBy(e.value)}
+              options={options}
+            />
+            <label htmlFor="sort-dropdown">Sort By</label>
+          </div>
+        </RightHeader>
+      </Header>
+      <hr />
+      <MixtapeGridContainer>{cards}</MixtapeGridContainer>
+    </Container>
+  );
+}
+
+export default MixtapeBrowser;
+
 type Props = {
   mixtapes?: any[];
   LeftHeaderContent?: ReactNode;
@@ -61,37 +96,3 @@ const options = [
   { label: "Date Added", value: "submit" },
   { label: "Random", value: "random" },
 ];
-
-function MixtapeBrowser(props: Props) {
-  const history = useHistory();
-
-  const [sortBy, setSortBy] = useState("");
-  const cards = randomMixtapes().map((m, i) => (
-    <MixtapeCard
-      style={{ backgroundImage: `url(/images/mixtapes/${m.image})` }}
-      onClick={() => history.push(`/mixtape/0`)}
-    />
-  ));
-  return (
-    <Container>
-      <Header>
-        <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
-        <RightHeader>
-          <div className="p-float-label">
-            <SortDropdown
-              id="sort-dropdown"
-              value={sortBy}
-              onChange={(e: any) => setSortBy(e.value)}
-              options={options}
-            />
-            <label htmlFor="sort-dropdown">Sort By</label>
-          </div>
-        </RightHeader>
-      </Header>
-      <hr />
-      <MixtapeGridContainer>{cards}</MixtapeGridContainer>
-    </Container>
-  );
-}
-
-export default MixtapeBrowser;

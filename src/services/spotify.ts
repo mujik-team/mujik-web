@@ -20,7 +20,8 @@ export async function authorize() {
     redirect_uri,
     code_challenge,
     code_challenge_method: "S256",
-    scope: "streaming user-read-email user-read-private",
+    scope:
+      "streaming user-read-email user-read-private user-modify-playback-state",
   };
 
   let url: any = axios.getUri({
@@ -75,6 +76,41 @@ export async function refreshAccessToken(refresh_token: string) {
     console.log("Unable refresh access token", err);
     return null;
   }
+}
+
+export async function search(accessToken: string, params: any) {
+  const { data } = await axios.get("https://api.spotify.com/v1/search", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params,
+  });
+
+  return data;
+}
+
+export async function playSong(
+  accessToken: string,
+  device_id: string,
+  uris: string[]
+) {
+  const body = {
+    uris,
+  };
+
+  const { data } = await axios.put(
+    "https://api.spotify.com/v1/me/player/play",
+
+    body,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        device_id,
+      },
+    }
+  );
 }
 
 // Utility functions to be used.
