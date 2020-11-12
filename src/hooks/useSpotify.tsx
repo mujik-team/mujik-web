@@ -13,6 +13,7 @@ export type Player = {
 type SpotifyActions = {
   initPlayer: () => void;
   requestAuthorization: () => Promise<void>;
+  search: (query: string) => Promise<any>;
   logout: () => void;
 };
 
@@ -120,6 +121,15 @@ function useSpotify() {
     initPlayer,
     requestAuthorization: spotifyService.authorize,
     logout,
+    search: async (q) => {
+      const params = {
+        q,
+        type: "track",
+        market: "US",
+      };
+
+      return await spotifyService.search(accessToken, params);
+    },
   };
 
   const spotifyState: SpotifyState = {

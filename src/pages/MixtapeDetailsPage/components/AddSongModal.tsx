@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { SpotifyContext } from "../../../App";
 import TextInput from "../../../components/Input/TextInput";
 
 function AddSongModal() {
@@ -7,27 +8,20 @@ function AddSongModal() {
   const [isLoading, setIsLoading] = useState(false);
   const [songs, setSongs] = useState([] as any[]);
 
+  const spotifyContext = useContext(SpotifyContext);
+
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       search(searchTerm);
     }
   };
 
-  const search = (query: string) => {
+  const search = async (query: string) => {
     setIsLoading(true);
     setSongs([]);
-    setTimeout(() => {
-      const results = [];
-      for (let i = 0; i < 30; i++) {
-        results.push({
-          name: "Let It Happen",
-          artist: "Tame Impala",
-        });
-      }
-
-      setSongs(results);
-      setIsLoading(false);
-    }, 1000);
+    const { tracks } = await spotifyContext.actions.search(query);
+    setSongs(tracks.items);
+    setIsLoading(false);
   };
 
   return (
@@ -57,7 +51,7 @@ function AddSongModal() {
           songs.map((s) => (
             <SearchResultItem>
               <span className="name">{s.name}</span>
-              <span className="artist">{s.artist}</span>
+              <span className="artist">{s.artists[0].name}</span>
             </SearchResultItem>
           ))
         )}
@@ -83,10 +77,22 @@ const SearchResultItem = styled.div`
   user-select: none;
   background-color: var(--card-color);
   border-radius: 6px;
+  margin-top: 2px;
   padding: 15px 10px;
   margin: 10px 0;
+  transition: 0.2s linear all;
+
+  &:hover {
+    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  }
 
   & > span.name {
+    display: inline-block;
+    width: 200px;
+    line-height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     margin-right: 10px;
   }
 
