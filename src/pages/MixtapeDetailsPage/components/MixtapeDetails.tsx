@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import SideModal from "../../../components/SideModal";
 import mixtapes from "../../../services/mock/mixtapes";
+import AddSongModal from "./AddSongModal";
 import MixtapeActions from "./MixtapeActions";
 
 function MixtapeDetails() {
+  const [showModal, setShowModal] = useState(true);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
   return (
     <Container>
+      <SideModal toggle={toggleModal} isActive={showModal}>
+        <AddSongModal />
+      </SideModal>
       <Title>Best of the Weeknd</Title>
       <div style={{ height: "50px" }}>
         <AvatarImage />
@@ -23,7 +32,7 @@ function MixtapeDetails() {
         think riding down the highway in your Ford pickup with the windows down.
       </Description>
 
-      <MixtapeActions />
+      <MixtapeActions showModal={toggleModal} />
     </Container>
   );
 }

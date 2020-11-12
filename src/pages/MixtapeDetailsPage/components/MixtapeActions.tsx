@@ -3,13 +3,13 @@ import Button from "../../../components/Button";
 import { Menu } from "primereact/menu";
 import styled from "styled-components";
 
-function MixtapeActions() {
+function MixtapeActions(props: Props) {
   const [menu, setMenu] = useState(null as any);
 
   return (
     <div>
       <ActionButton>Play</ActionButton>
-      <ActionButton className="icon-button">
+      <ActionButton className="icon-button" onClick={() => props.showModal()}>
         <i className="mdi mdi-plus" />
       </ActionButton>
 
@@ -22,6 +22,10 @@ function MixtapeActions() {
 }
 
 export default MixtapeActions;
+
+type Props = {
+  showModal: () => any;
+};
 
 const items = [
   {

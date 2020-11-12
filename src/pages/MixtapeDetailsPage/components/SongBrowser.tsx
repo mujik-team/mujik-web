@@ -45,6 +45,12 @@ const HeaderBar = styled.div`
   & > i.center {
     text-align: center;
   }
+
+  & > span:hover,
+  i:hover {
+    color: whitesmoke;
+    cursor: pointer;
+  }
 `;
 
 const SongListItem = styled.div`
