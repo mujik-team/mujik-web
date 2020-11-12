@@ -48,5 +48,9 @@ export async function logout() {
   localStorage.removeItem("username");
   localStorage.removeItem("password");
 
+  const token = localStorage.getItem("spotify_refresh_token");
+  if (token) {
+    console.log("Still exists", token);
+  }
   return true;
 }

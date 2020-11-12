@@ -2,7 +2,8 @@ import { ProgressBar } from "primereact/progressbar";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { AuthContext } from "../App";
+import { AuthContext, SpotifyContext } from "../App";
+import Button from "./Button";
 
 const UserCoinsText = styled.span``;
 
@@ -27,6 +28,8 @@ const UserDetailsContainer = styled.div`
 function AppHeader() {
   const history = useHistory();
   const authContext = useContext(AuthContext);
+  const spotifyContext = useContext(SpotifyContext);
+
   const UserDetailsCard = (
     <div
       style={{
@@ -36,6 +39,14 @@ function AppHeader() {
         marginRight: "15px",
       }}
     >
+      {!spotifyContext.isAuthorized && (
+        <Button
+          style={{ height: "40px", marginRight: "20px" }}
+          onClick={() => history.push("/spotify/authorize")}
+        >
+          Authorize Spotify
+        </Button>
+      )}
       <UserDetailsContainer>
         <span style={{ margin: "0 8px" }}>LEVEL 3</span>
         <span style={{ width: "250px" }}>
