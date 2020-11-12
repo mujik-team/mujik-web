@@ -24,6 +24,10 @@ function AddSongModal() {
     setIsLoading(false);
   };
 
+  const playSong = (uri: string) => {
+    spotifyContext.actions.playSong([uri]);
+  };
+
   return (
     <div style={{ overflowY: "scroll", height: "100vh" }}>
       <Container>
@@ -49,7 +53,7 @@ function AddSongModal() {
           </span>
         ) : (
           songs.map((s) => (
-            <SearchResultItem>
+            <SearchResultItem onClick={() => playSong(s.uri)}>
               <span className="name">{s.name}</span>
               <span className="artist">{s.artists[0].name}</span>
             </SearchResultItem>

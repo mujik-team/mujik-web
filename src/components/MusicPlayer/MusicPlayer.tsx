@@ -82,19 +82,6 @@ function MusicPlayer(props: Props) {
   } else {
     return null;
   }
-
-  // useEffect(() => {
-  //   if (spotifyContext.isAuthorized && spotifyContext.player) {
-  //     spotifyContext.player.addListener(
-  //       "player_state_changed",
-  //       (state: any) => {
-  //         setIsPlaying(!state.paused);
-  //         setSongName(state.track_window.current_track.name);
-  //         setCurrentImage(state.track_window.current_track.album.images[0].url);
-  //       }
-  //     );
-  //   }
-  // }, [spotifyContext.isAuthorized]);
 }
 
 export default MusicPlayer;
