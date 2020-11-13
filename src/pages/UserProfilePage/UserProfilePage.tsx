@@ -20,9 +20,10 @@ function UserProfileScreen() {
 
   useEffect(() => {
     if (user && user.profile.mixtapes.length !== 0) {
-      getSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) =>
-        setMixtapes([...userMixtapes])
-      );
+      getSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
+        const mixtapesToShow = userMixtapes.filter((m) => !m.isPrivate);
+        setMixtapes([...mixtapesToShow]);
+      });
     }
   }, [user]);
 
