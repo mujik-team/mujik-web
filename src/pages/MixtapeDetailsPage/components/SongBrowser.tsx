@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { ContextMenu } from "primereact/contextmenu";
+import Button from "../../../components/Button";
+import mixtapes from "../../../services/mock/mixtapes";
+import { SpotifyContext } from "../../../App";
 
-function SongBrowser() {
-  const songList = [];
+const items = [
+  {
+    label: "Remove Song",
+    icon: "mdi mdi-minus",
+  },
+  {
+    label: "Add to Queue",
+    icon: "mdi mdi-playlist-plus",
+  },
+];
 
-  for (let i = 0; i < 10; i++) {
-    songList.push(
-      <SongListItem>
-        <span>Let It Happen</span>
-        <span>Tame Impala</span>
-        <span>Currents</span>
-        <span className="center">2020-08-11</span>
-        <span className="center">4:31</span>
-      </SongListItem>
-    );
-  }
+function SongBrowser(props: Props) {
+  const [contextMenu, setContextMenu] = useState(null as any);
+  const [songs, setSongs] = useState([] as any[]);
+  const spotifyContext = useContext(SpotifyContext);
+
+  useEffect(() => {
+    if (spotifyContext.isAuthorized) {
+      spotifyContext.actions.getSeveralSongs(props.songIds).then((songs) => {
+        setSongs(songs);
+      });
+    }
+  }, [spotifyContext.isAuthorized]);
+
+  const songList = songs?.map((s) => (
+    <SongListItem onContextMenu={(e) => contextMenu.show(e)}>
+      <PlayButton onClick={() => spotifyContext.actions.playSong([s.uri])}>
+        <i className="mdi mdi-play" />
+      </PlayButton>
+      <span>{s.name}</span>
+      <span>{s.artists[0].name}</span>
+      <span>{s.album.name}</span>
+      <span className="center">{s.album.release_date}</span>
+      <span className="center">{s.duration / 1000}</span>
+    </SongListItem>
+  ));
 
   return (
     <Container>
       <HeaderBar>
+        <span />
         <span>Title</span>
         <span>Artist</span>
         <span>Album</span>
@@ -26,6 +53,7 @@ function SongBrowser() {
         <i className="mdi mdi-clock-outline center" />
       </HeaderBar>
       <hr />
+      <ContextMenu model={items} ref={(el) => setContextMenu(el)} />
       {songList}
     </Container>
   );
@@ -33,11 +61,15 @@ function SongBrowser() {
 
 export default SongBrowser;
 
+type Props = {
+  songIds: string[];
+};
+
 const Container = styled.div``;
 
 const HeaderBar = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr 100px 80px;
+  grid-template-columns: 50px 2fr 1fr 2fr 100px 80px;
   color: var(--text-inactive);
   gap: 20px;
   padding: 0px 20px;
@@ -53,18 +85,35 @@ const HeaderBar = styled.div`
   }
 `;
 
+const PlayButton = styled(Button)`
+  /* display: inline-block; */
+  border-radius: 25px;
+  opacity: 0;
+  font-size: 20px;
+  padding: 1px;
+
+  &:focus {
+    opacity: 1;
+  }
+`;
+
 const SongListItem = styled.div`
   user-select: none;
   font-family: "Fira Sans";
   border-radius: 6px;
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr 100px 80px;
+  grid-template-columns: 50px 2fr 1fr 2fr 100px 80px;
   gap: 20px;
   margin: 10px 0;
-  padding: 10px 20px;
+  line-height: 30px;
+  padding: 5px 20px;
   background-color: var(--card-color);
 
   & > span.center {
     text-align: center;
+  }
+
+  &:hover > ${PlayButton} {
+    opacity: 1;
   }
 `;

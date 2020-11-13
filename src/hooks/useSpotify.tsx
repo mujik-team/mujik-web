@@ -16,6 +16,7 @@ type SpotifyActions = {
   requestAuthorization: () => Promise<void>;
   playSong: (uris: string[]) => Promise<void>;
   search: (query: string) => Promise<any>;
+  getSeveralSongs: (ids: string[]) => Promise<any>;
   logout: () => void;
 };
 
@@ -92,8 +93,8 @@ function useSpotify() {
     const refresh_token = localStorage.getItem("spotify_refresh_token");
     if (refresh_token) {
       const newToken = await spotifyService.refreshAccessToken(refresh_token);
-      setIsAuthorized(true);
       setAccessToken(newToken);
+      setIsAuthorized(true);
       return newToken;
     } else {
       return null;
@@ -101,23 +102,23 @@ function useSpotify() {
   };
 
   const logout = async () => {
-    player.disconnect();
+    if (player?.disconnect) {
+      player.disconnect();
+    }
     localStorage.removeItem("spotify_refresh_token");
     localStorage.removeItem("spotify_access_token");
     setIsAuthorized(false);
   };
 
   useEffect(() => {
-    if (spotifySDKReady && isAuthorized) {
+    const refreshToken = localStorage.getItem("spotify_refresh_token");
+    if (spotifySDKReady && refreshToken) {
       initPlayer();
     }
   }, [spotifySDKReady]);
 
   useEffect(() => {
     (window as any).onReadySubscribers.push(() => setSpotifyReady(true));
-    if (localStorage.getItem("spotify_refresh_token")) {
-      setIsAuthorized(true);
-    }
   }, []);
 
   const actions: SpotifyActions = {
@@ -135,6 +136,7 @@ function useSpotify() {
 
       return await spotifyService.search(accessToken, params);
     },
+    getSeveralSongs: (ids) => spotifyService.getSeveralSongs(accessToken, ids),
   };
 
   const spotifyState: SpotifyState = {
