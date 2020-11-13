@@ -1,41 +1,51 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import SideModal from "../../../components/SideModal";
-import mixtapes from "../../../services/mock/mixtapes";
 import AddSongModal from "./AddSongModal";
 import MixtapeActions from "./MixtapeActions";
 
-function MixtapeDetails() {
-  const [showModal, setShowModal] = useState(true);
+function MixtapeDetails(props: Props) {
+  const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  return (
+
+  const mixtape = props.mixtape;
+
+  const addNewSongs = (newSongs: any[]) => {
+    newSongs.forEach((s) => mixtape.songs.push(s.id));
+    props.updateMixtape(mixtape);
+  };
+
+  return props.isLoading ? (
+    <span>Loading</span>
+  ) : (
     <Container>
       <SideModal toggle={toggleModal} isActive={showModal}>
-        <AddSongModal />
+        <AddSongModal toggle={toggleModal} addNewSongs={addNewSongs} />
       </SideModal>
-      <Title>Best of the Weeknd</Title>
+      <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
         <AvatarImage />
-        <Username>cptmango</Username>
-        <Pill>36 Songs</Pill>
+        <Username>{mixtape.createdBy}</Username>
+        <Pill>{mixtape.songs.length} Songs</Pill>
         <Pill>7hr 23min</Pill>
         <Pill>
-          <span>43,294</span>Followers
+          <span>{mixtape.followers}</span>Followers
         </Pill>
       </div>
-      <Description>
-        This one here is for all of our boomers out there! You are tasked with
-        creating the most boomer friendly playlist possible. Think drinking
-        Monster on the weekend while mowing your lawn, think summer barbecues,
-        think riding down the highway in your Ford pickup with the windows down.
-      </Description>
+      <Description>{mixtape.description}</Description>
 
-      <MixtapeActions showModal={toggleModal} />
+      <MixtapeActions showModal={toggleModal} mixtape={mixtape} />
     </Container>
   );
 }
+
+type Props = {
+  mixtape: any;
+  isLoading: boolean;
+  updateMixtape: (newMixtape: any) => void;
+};
 
 export default MixtapeDetails;
 
@@ -93,6 +103,6 @@ const Description = styled.div`
   font-size: 1.2rem;
   color: var(--text-inactive);
   margin-top: 30px;
-  margin-right: 30%;
+  max-width: 750px;
   margin-bottom: 20px;
 `;

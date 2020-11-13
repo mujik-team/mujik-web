@@ -89,6 +89,22 @@ export async function search(accessToken: string, params: any) {
   return data;
 }
 
+export async function getSeveralSongs(accessToken: string, ids: string[]) {
+  const params = {
+    market: "US",
+    ids: ids.toString(),
+  };
+
+  const { data } = await axios.get("https://api.spotify.com/v1/tracks", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params,
+  });
+
+  return data.tracks;
+}
+
 export async function playSong(
   accessToken: string,
   device_id: string,
