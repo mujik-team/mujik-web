@@ -8,7 +8,7 @@ function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
   const spotifyContext = useContext(SpotifyContext);
-  const [selectedSong, setSelectedSong] = useState({} as any);
+  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
     if (spotifyContext.isAuthorized) {
@@ -25,7 +25,7 @@ function SongBrowser(props: Props) {
     {
       label: "Remove Song",
       icon: "mdi mdi-minus",
-      command: (e: any) => removeSong(selectedSong.id),
+      command: (e: any) => removeSong(selectedSongIndex),
     },
     {
       label: "Add to Queue",
@@ -33,19 +33,19 @@ function SongBrowser(props: Props) {
     },
   ];
 
-  const removeSong = (songId: any) => {
-    if (songId) {
+  const removeSong = (songIndex: number) => {
+    if (songIndex !== -1) {
       const mixtape = props.mixtape;
-      mixtape.songs = mixtape.songs.filter((s: string) => s !== songId);
+      mixtape.songs.splice(songIndex, 1);
       props.updateMixtape(mixtape);
     }
   };
 
-  const songList = songs?.map((s) => (
+  const songList = songs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
-        setSelectedSong(s);
         contextMenu.show(e);
+        setSelectedSongIndex(i);
       }}
     >
       <PlayButton onClick={() => spotifyContext.actions.playSong([s.uri])}>
@@ -55,7 +55,7 @@ function SongBrowser(props: Props) {
       <span>{s.artists[0].name}</span>
       <span>{s.album.name}</span>
       <span className="center">{s.album.release_date}</span>
-      <span className="center">{s.duration / 1000}</span>
+      <span className="center">{s.duration_ms / 1000}</span>
     </SongListItem>
   ));
 
