@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import useMixtape from "../../hooks/useMixtape";
 import useMockMixtape from "../../hooks/useMockMixtape";
 import MixtapeDetails from "./components/MixtapeDetails";
 import SongBrowser from "./components/SongBrowser";
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
-  const [m, getMixtape, updateMixtape, isLoading] = useMockMixtape("some_id");
+  // const [m, getMixtape, updateMixtape, isLoading] = useMockMixtape("some_id");
+  const [mixtape, getMixtape, updateMixtape, isLoading] = useMixtape(mixtapeId);
 
   return (
     <Container>
@@ -15,12 +17,13 @@ function MixtapeDetailsPage() {
         <img height="300" src="/images/weeknd.png" />
         <MixtapeDetails
           isLoading={isLoading as boolean}
-          mixtape={m}
+          mixtape={mixtape}
           updateMixtape={updateMixtape as any}
         />
       </DetailsContainer>
-
-      <SongBrowser mixtape={m} updateMixtape={updateMixtape} />
+      {!isLoading && (
+        <SongBrowser mixtape={mixtape} updateMixtape={updateMixtape} />
+      )}
     </Container>
   );
 }

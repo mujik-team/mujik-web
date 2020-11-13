@@ -29,27 +29,27 @@ function MixtapeBrowser(props: Props) {
   const description =
     "A really cool mixtape created by some cool guy who has a really good taste in mujik!!! Lemme write some more stuff over here so I can really pad out the length of this description! Oh boy still going!~";
 
-  const mixtapeItems = randomMixtapes().map((m) =>
+  const mixtapeItems = props.mixtapes?.map((m) =>
     isCardLayout ? (
       <MixtapeCard
         style={{ backgroundImage: `url(/images/mixtapes/${m.image})` }}
-        onClick={() => history.push(`/mixtape/0`)}
+        onClick={() => history.push(`/mixtape/${m._id}`)}
       />
     ) : (
       <MixtapeListItem
         image={`url(/images/mixtapes/${m.image})`}
-        onClick={() => history.push(`/mixtape/0`)}
+        onClick={() => history.push(`/mixtape/${m._id}`)}
       >
         <div className="mixtape-image" />
         <div className="mixtape-details">
-          <h2>{m.name}</h2>
+          <h2>{m.mixtapeName}</h2>
           <div>{description}</div>
         </div>
       </MixtapeListItem>
     )
   );
 
-  const mixtapeLayout = (items: JSX.Element[]) => {
+  const mixtapeLayout = (items?: JSX.Element[]) => {
     return isCardLayout ? (
       <CardLayout>{items}</CardLayout>
     ) : (

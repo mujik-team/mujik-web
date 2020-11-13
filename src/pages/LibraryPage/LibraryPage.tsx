@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./libraryScreen.module.css";
 import { useHistory } from "react-router-dom";
 import TextInput from "../../components/Input/TextInput";
@@ -6,9 +6,12 @@ import SideModal from "../../components/SideModal";
 import NewMixtapeModal from "./components/NewMixtapeModal";
 import "primeflex/primeflex.css";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
-import mixtapes from "../../services/mock/mixtapes";
+// import mixtapes from "../../services/mock/mixtapes";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import * as mixtapeService from "../../services/mixtapeService";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../App";
 
 const tabs = ["All", "By Me", "By Others"];
 
@@ -16,11 +19,45 @@ const Container = styled.div``;
 
 function LibraryPage() {
   const history = useHistory();
+  const authContext = useContext(AuthContext);
   const [sortBy, setSortBy] = useState("");
+
+  const [mixtapes, setMixtapes] = useState([] as any[]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getUserMixtapes = async () => {
+    console.log(authContext.currentUser);
+    const userMixtapes = await mixtapeService.getSeveralMixtapes(
+      authContext.currentUser.profile.mixtapes
+    );
+
+    setMixtapes([...userMixtapes]);
+  };
+
+  const createNewMixtape = async (mixtape: any) => {
+    try {
+      const newMixtape = await mixtapeService.createNewMixtape(mixtape);
+      authContext.update();
+      history.push(`/mixtape/${newMixtape._id}`);
+      toast.dark("🎵 Created new mixtape");
+    } catch (err) {
+      toast.error("🤔 Unable to create new mixtape.");
+      return null;
+    }
+  };
 
   const [showNewMixtapeModal, setShowNewMixtapeModal] = useState(false);
   const toggleShowNewMixtapeModal = () =>
     setShowNewMixtapeModal(!showNewMixtapeModal);
+
+  useEffect(() => {
+    if (
+      authContext.isLoggedIn &&
+      authContext.currentUser.profile.mixtapes.length !== 0
+    ) {
+      getUserMixtapes();
+    }
+  }, [authContext.isLoggedIn, authContext.currentUser]);
 
   const headerBrowser = (
     <div style={{ marginBottom: "30px" }}>
@@ -30,57 +67,6 @@ function LibraryPage() {
           <span className={styles.tabTitle}>{t}</span>
         ))}
       </span>
-    </div>
-  );
-
-  const mixtapeDisplayDetails = (
-    <div>
-      <div className={styles.mixtapeDisplayCard}>
-        <img className={styles.mixtapeImage} src="/images/weeknd.png"></img>
-      </div>
-      <div className={styles.mixtapeDisplayText}>Best of The Weeknd</div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <img
-          alt="user-avatar"
-          src="/images/avatar_placeholder.svg"
-          width="30px"
-        ></img>
-        <span
-          className="p-tag p-tag-rounded"
-          style={{
-            paddingLeft: "20px",
-            paddingRight: "20px",
-            marginLeft: "5px",
-            backgroundColor: "#21242a",
-            color: "white",
-            fontWeight: "normal",
-          }}
-        >
-          Mckilla Gorilla
-        </span>
-        <span
-          className="p-tag p-tag-rounded"
-          style={{
-            paddingLeft: "20px",
-            paddingRight: "20px",
-            marginLeft: "5px",
-            backgroundColor: "#21242a",
-            color: "white",
-          }}
-        >
-          DETAILS
-        </span>
-        <span
-          className="p-tag p-tag-rounded"
-          style={{
-            paddingLeft: "20px",
-            paddingRight: "20px",
-            marginLeft: "5px",
-            backgroundColor: "#21242a",
-            color: "white",
-          }}
-        ></span>
-      </div>
     </div>
   );
 
@@ -104,14 +90,14 @@ function LibraryPage() {
           isActive={showNewMixtapeModal}
           toggle={toggleShowNewMixtapeModal}
         >
-          <NewMixtapeModal />
+          <NewMixtapeModal
+            toggleModal={toggleShowNewMixtapeModal}
+            newMixtape={createNewMixtape}
+          />
         </SideModal>
         <div>
           {headerBrowser}
           <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} />
-        </div>
-        <div className={styles.usertournamentBrowser}>
-          {mixtapeDisplayDetails}
         </div>
       </div>
     </Container>
