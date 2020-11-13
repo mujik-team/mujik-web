@@ -38,9 +38,9 @@ function MixtapeActions(props: Props) {
   };
 
   const deleteMixtape = async () => {
-    await mixtapeService.deleteMixtape(`/mixtape/${props.mixtape._id}`);
+    await mixtapeService.deleteMixtape(props.mixtape._id);
+    await authContext.update();
     history.push("/library");
-    authContext.update();
   };
 
   const items = [
