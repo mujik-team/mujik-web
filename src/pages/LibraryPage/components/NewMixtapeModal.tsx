@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import Checkbox from "../../../components/Input/Checkbox";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
+import { Checkbox } from "primereact/checkbox";
+import { AuthContext } from "../../../App";
 
-function NewMixtapeModal() {
+function NewMixtapeModal(props: Props) {
   const [tags, setTags] = useState([] as any[]);
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const authContext = useContext(AuthContext);
+
+  const createNewMixtape = async () => {
+    const mixtape = {
+      mixtapeName: title,
+      description,
+      isPrivate,
+      createdBy: authContext.currentUser.username,
+    };
+
+    await props.newMixtape(mixtape);
+    props.toggleModal();
+  };
 
   return (
     <div>
@@ -14,25 +31,39 @@ function NewMixtapeModal() {
         <MixtapeCoverImage />
 
         <InputLabel>Title</InputLabel>
-        <Input />
+        <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />
 
         <InputLabel>Description</InputLabel>
-        <InputArea />
+        <InputArea
+          value={description}
+          onChange={(e: any) => setDescription(e.target.value)}
+        />
 
         <InputLabel>Tags</InputLabel>
         <Tags value={tags} onChange={(e) => setTags(e.value)} />
 
         <div style={{ display: "inline-block", marginTop: "20px" }}>
-          <span>Private</span>
-          <IsPrivateCheckbox label="Private" />
+          <span style={{ marginRight: "10px" }}>Private</span>
+          <Checkbox
+            inputId="isprivate"
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.checked)}
+          />
         </div>
       </Container>
-      <CreateMixtapeButton>Create Mixtape</CreateMixtapeButton>
+      <CreateMixtapeButton onClick={() => createNewMixtape()}>
+        Create Mixtape
+      </CreateMixtapeButton>
     </div>
   );
 }
 
 export default NewMixtapeModal;
+
+type Props = {
+  newMixtape: (mixtape: any) => Promise<any>;
+  toggleModal: () => void;
+};
 
 const Container = styled.div`
   margin: 50px;

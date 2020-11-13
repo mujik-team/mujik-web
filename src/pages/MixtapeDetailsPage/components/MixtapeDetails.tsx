@@ -2,41 +2,66 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SideModal from "../../../components/SideModal";
 import AddSongModal from "./AddSongModal";
+import EditMixtapeModal from "./EditMixtapeModal";
 import MixtapeActions from "./MixtapeActions";
 
 function MixtapeDetails(props: Props) {
   const [showModal, setShowModal] = useState(false);
+  const [modalToShow, setModalToShow] = useState(0);
+  const mixtape = props.mixtape;
+
+  const toggleAddSongsModal = () => {
+    setModalToShow(0);
+    toggleModal();
+  };
+
+  const toggleEditMixtapeModal = () => {
+    setModalToShow(1);
+    toggleModal();
+  };
+
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
-  const mixtape = props.mixtape;
 
   const addNewSongs = (newSongs: any[]) => {
     newSongs.forEach((s) => mixtape.songs.push(s.id));
     props.updateMixtape(mixtape);
   };
 
+  const modals = [
+    <AddSongModal toggle={toggleAddSongsModal} addNewSongs={addNewSongs} />,
+    <EditMixtapeModal
+      mixtape={mixtape}
+      toggleModal={toggleEditMixtapeModal}
+      updateMixtape={props.updateMixtape}
+    />,
+  ];
+
   return props.isLoading ? (
     <span>Loading</span>
   ) : (
     <Container>
       <SideModal toggle={toggleModal} isActive={showModal}>
-        <AddSongModal toggle={toggleModal} addNewSongs={addNewSongs} />
+        {modals[modalToShow]}
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
         <AvatarImage />
         <Username>{mixtape.createdBy}</Username>
         <Pill>{mixtape.songs.length} Songs</Pill>
-        <Pill>7hr 23min</Pill>
+        {/* <Pill>7hr 23min</Pill> */}
         <Pill>
           <span>{mixtape.followers}</span>Followers
         </Pill>
       </div>
       <Description>{mixtape.description}</Description>
 
-      <MixtapeActions showModal={toggleModal} mixtape={mixtape} />
+      <MixtapeActions
+        showEditMixtapeModal={toggleEditMixtapeModal}
+        showAddSongModal={toggleAddSongsModal}
+        mixtape={mixtape}
+      />
     </Container>
   );
 }

@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../../App";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
-import mixtapes from "../../services/mock/mixtapes";
+import useUser from "../../hooks/useUser";
+import { getSeveralMixtapes } from "../../services/mixtapeService";
 import ProfileDetails from "./components/ProfileDetails";
 
 function UserProfileScreen() {
+  const { username } = useParams() as any;
+  const authContext = useContext(AuthContext);
+  const [mixtapes, setMixtapes] = useState([] as any[]);
+  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
+
+  const update = () => {
+    getUser();
+    authContext.update();
+  };
+
+  useEffect(() => {
+    if (user && user.profile.mixtapes.length !== 0) {
+      getSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) =>
+        setMixtapes([...userMixtapes])
+      );
+    }
+  }, [user]);
+
   return (
     <Container>
-      <ProfileDetails />
+      <ProfileDetails
+        user={user as any}
+        update={update}
+        updateUser={updateUser}
+        isLoading={isLoading}
+      />
       <UserContentContainer>
         <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
         <TournamentWins>

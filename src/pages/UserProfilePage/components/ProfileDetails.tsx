@@ -8,47 +8,39 @@ import useUser from "../../../hooks/useUser";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
 
-function ProfileDetails() {
+function ProfileDetails(props: Props) {
   const authContext = useContext(AuthContext);
 
   const toggleEditProfile = () => {
     setShowEditProfile(!showEditProfile);
   };
   const [showEditProfile, setShowEditProfile] = useState(false);
-
-  const { username } = useParams() as any;
-
-  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
-
-  const update = () => {
-    getUser();
-    authContext.update();
-  };
-
   return (
     <div>
-      {isLoading || !user ? (
+      {props.isLoading || !props.user ? (
         "Loading"
       ) : (
         <Container>
           <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
             <EditUserProfileDetailsModal
-              user={user}
-              updateUser={updateUser}
+              user={props.user}
+              updateUser={props.updateUser}
               toggle={toggleEditProfile}
             />
           </SideModal>
 
           <ProfilePicture>
             <LevelBadge>
-              <span style={{ paddingTop: "20px" }}>{user.profile.level}</span>
+              <span style={{ paddingTop: "20px" }}>
+                {props.user.profile.level}
+              </span>
             </LevelBadge>
           </ProfilePicture>
 
           <DetailsContainer>
             <Username>
-              {username}
-              {username === authContext.currentUser.username && (
+              {props.user.username}
+              {props.user.username === authContext.currentUser.username && (
                 <EditProfileButton
                   onClick={() => toggleEditProfile()}
                   className="mdi mdi-pencil"
@@ -56,17 +48,20 @@ function ProfileDetails() {
               )}
             </Username>
             <FollowDetails>
-              <span className="num">{user.profile.totalFollowers}</span>
+              <span className="num">{props.user.profile.totalFollowers}</span>
               <span>Followers</span>
             </FollowDetails>
             <FollowDetails>
-              <span className="num">{user.profile.totalFollowing}</span>
+              <span className="num">{props.user.profile.totalFollowing}</span>
               <span>Following</span>
             </FollowDetails>
-            <FollowButton username={username} update={update} />
+            <FollowButton
+              username={props.user.username}
+              update={props.update}
+            />
             <UserBio>
-              {user.profile.bio
-                ? user.profile.bio
+              {props.user.profile.bio
+                ? props.user.profile.bio
                 : "User has not added an 'About Me' yet."}
             </UserBio>
           </DetailsContainer>
@@ -74,7 +69,7 @@ function ProfileDetails() {
           <TagsContainer>
             <div>
               <TagTitle>Favorite Artists</TagTitle>
-              {user.profile.favArtist?.map((a: any) => (
+              {props.user.profile.favArtist?.map((a: any) => (
                 <Tag>{a}</Tag>
               ))}
             </div>
@@ -82,7 +77,7 @@ function ProfileDetails() {
 
             <div>
               <TagTitle>Favorite Genres</TagTitle>
-              {user.profile.favGenre?.map((a: any) => (
+              {props.user.profile.favGenre?.map((a: any) => (
                 <Tag>{a}</Tag>
               ))}
             </div>
@@ -94,6 +89,13 @@ function ProfileDetails() {
 }
 
 export default ProfileDetails;
+
+type Props = {
+  user: any;
+  isLoading: boolean;
+  update: () => any;
+  updateUser: (updatedUser: any) => Promise<any>;
+};
 
 const Container = styled.div`
   display: grid;
