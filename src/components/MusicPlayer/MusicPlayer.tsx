@@ -15,10 +15,10 @@ function MusicPlayer(props: Props) {
     if (playerState) {
       setProgress(playerState.position);
       if (!playerState.paused) {
-        // Starts a repeating function that adds 1000ms to progress.
+        // Starts a repeating function that adds 200ms to progress.
         interval = setInterval(() => {
-          setProgress((p) => p + 1000);
-        }, 1000);
+          setProgress((p) => p + 200);
+        }, 200);
       }
     }
 
