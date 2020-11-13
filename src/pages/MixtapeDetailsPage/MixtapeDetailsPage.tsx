@@ -9,16 +9,18 @@ function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
   const [m, getMixtape, updateMixtape, isLoading] = useMockMixtape("some_id");
 
-  const mixtape: any = m;
-
   return (
     <Container>
       <DetailsContainer>
         <img height="300" src="/images/weeknd.png" />
-        <MixtapeDetails isLoading={isLoading as boolean} mixtape={mixtape} />
+        <MixtapeDetails
+          isLoading={isLoading as boolean}
+          mixtape={m}
+          updateMixtape={updateMixtape as any}
+        />
       </DetailsContainer>
 
-      <SongBrowser songIds={mixtape.songs} />
+      <SongBrowser mixtape={m} updateMixtape={updateMixtape} />
     </Container>
   );
 }

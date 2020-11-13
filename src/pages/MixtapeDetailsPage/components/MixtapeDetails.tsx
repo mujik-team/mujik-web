@@ -12,18 +12,23 @@ function MixtapeDetails(props: Props) {
 
   const mixtape = props.mixtape;
 
+  const addNewSongs = (newSongs: any[]) => {
+    newSongs.forEach((s) => mixtape.songs.push(s.id));
+    props.updateMixtape(mixtape);
+  };
+
   return props.isLoading ? (
     <span>Loading</span>
   ) : (
     <Container>
       <SideModal toggle={toggleModal} isActive={showModal}>
-        <AddSongModal toggle={toggleModal} />
+        <AddSongModal toggle={toggleModal} addNewSongs={addNewSongs} />
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
         <AvatarImage />
         <Username>{mixtape.createdBy}</Username>
-        <Pill>36 Songs</Pill>
+        <Pill>{mixtape.songs.length} Songs</Pill>
         <Pill>7hr 23min</Pill>
         <Pill>
           <span>{mixtape.followers}</span>Followers
@@ -31,7 +36,7 @@ function MixtapeDetails(props: Props) {
       </div>
       <Description>{mixtape.description}</Description>
 
-      <MixtapeActions showModal={toggleModal} />
+      <MixtapeActions showModal={toggleModal} mixtape={mixtape} />
     </Container>
   );
 }
@@ -39,6 +44,7 @@ function MixtapeDetails(props: Props) {
 type Props = {
   mixtape: any;
   isLoading: boolean;
+  updateMixtape: (newMixtape: any) => void;
 };
 
 export default MixtapeDetails;

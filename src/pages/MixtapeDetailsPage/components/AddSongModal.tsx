@@ -37,6 +37,7 @@ function AddSongModal(props: Props) {
 
   const addSongsToMixtape = () => {
     // Reset everything back to normal.
+    props.addNewSongs(songsSelected);
     setSongsSelected([]);
     setSearchTerm("");
     setSongs([]);
@@ -105,6 +106,7 @@ export default AddSongModal;
 
 type Props = {
   toggle: () => any;
+  addNewSongs: (newSongs: any[]) => any;
 };
 
 const Container = styled.div`

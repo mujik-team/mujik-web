@@ -5,20 +5,22 @@ async function stall(stallTime = 3000) {
 }
 
 function useMockMixtape(id: string) {
-  const [mixtape, setMixtape] = useState(default_mixtape);
+  const [mixtape, setMixtape] = useState({} as any);
   const [isLoading, setIsLoading] = useState(true);
 
   const getMixtape = async () => {
     setIsLoading(true);
     await stall(500);
+    setMixtape(default_mixtape);
     setIsLoading(false);
     return mixtape;
   };
 
   const updateMixtape = async (updatedMixtape: any) => {
+    console.log(updatedMixtape);
     setIsLoading(true);
     await stall(600);
-    setMixtape({ ...mixtape, ...updateMixtape });
+    setMixtape({ ...mixtape, ...updatedMixtape });
     setIsLoading(false);
   };
 

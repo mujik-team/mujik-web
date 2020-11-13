@@ -2,35 +2,52 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
-import mixtapes from "../../../services/mock/mixtapes";
 import { SpotifyContext } from "../../../App";
-
-const items = [
-  {
-    label: "Remove Song",
-    icon: "mdi mdi-minus",
-  },
-  {
-    label: "Add to Queue",
-    icon: "mdi mdi-playlist-plus",
-  },
-];
 
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
   const spotifyContext = useContext(SpotifyContext);
+  const [selectedSong, setSelectedSong] = useState({} as any);
 
   useEffect(() => {
     if (spotifyContext.isAuthorized) {
-      spotifyContext.actions.getSeveralSongs(props.songIds).then((songs) => {
-        setSongs(songs);
-      });
+      console.log("Retrieving songs...");
+      spotifyContext.actions
+        .getSeveralSongs(props.mixtape.songs)
+        .then((songs) => {
+          setSongs(songs);
+        });
     }
-  }, [spotifyContext.isAuthorized]);
+  }, [spotifyContext.isAuthorized, props.mixtape]);
+
+  const items = [
+    {
+      label: "Remove Song",
+      icon: "mdi mdi-minus",
+      command: (e: any) => removeSong(selectedSong.id),
+    },
+    {
+      label: "Add to Queue",
+      icon: "mdi mdi-playlist-plus",
+    },
+  ];
+
+  const removeSong = (songId: any) => {
+    if (songId) {
+      const mixtape = props.mixtape;
+      mixtape.songs = mixtape.songs.filter((s: string) => s !== songId);
+      props.updateMixtape(mixtape);
+    }
+  };
 
   const songList = songs?.map((s) => (
-    <SongListItem onContextMenu={(e) => contextMenu.show(e)}>
+    <SongListItem
+      onContextMenu={(e: any) => {
+        setSelectedSong(s);
+        contextMenu.show(e);
+      }}
+    >
       <PlayButton onClick={() => spotifyContext.actions.playSong([s.uri])}>
         <i className="mdi mdi-play" />
       </PlayButton>
@@ -62,7 +79,8 @@ function SongBrowser(props: Props) {
 export default SongBrowser;
 
 type Props = {
-  songIds: string[];
+  mixtape: any;
+  updateMixtape: (newMixtape: any) => void;
 };
 
 const Container = styled.div``;
