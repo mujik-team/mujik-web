@@ -35,6 +35,14 @@ function AddSongModal(props: Props) {
     setSongsSelected([...songsSelected, song]);
   };
 
+  const removeSongFromSelect = (song: any, i: number) => {
+    const newSelected = songsSelected.filter((s, index) => index !== i);
+
+    if (newSelected.length === 0) setShowAddedSongs(false);
+
+    setSongsSelected(newSelected);
+  };
+
   const addSongsToMixtape = () => {
     // Reset everything back to normal.
     props.addNewSongs(songsSelected);
@@ -54,7 +62,7 @@ function AddSongModal(props: Props) {
   ));
 
   const songsSelectedList = songsSelected.map((s, i) => (
-    <SearchResultItem key={i}>
+    <SearchResultItem key={i} onClick={() => removeSongFromSelect(s, i)}>
       <span className="name">{s.name}</span>
       <span className="artist">{s.artists[0].name}</span>
     </SearchResultItem>
