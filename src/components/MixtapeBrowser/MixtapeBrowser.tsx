@@ -43,7 +43,7 @@ function MixtapeBrowser(props: Props) {
         <div className="mixtape-image" />
         <div className="mixtape-details">
           <h2>{m.mixtapeName}</h2>
-          <div>{description}</div>
+          <div>{m.description}</div>
         </div>
       </MixtapeListItem>
     )
