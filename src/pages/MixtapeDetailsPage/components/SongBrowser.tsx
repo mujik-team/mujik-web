@@ -69,7 +69,7 @@ function SongBrowser(props: Props) {
         <i className="mdi mdi-clock-outline center" />
       </HeaderBar>
       <hr />
-      <ContextMenu model={items} ref={(el) => setContextMenu(el)} />
+      <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
       {songList}
     </Container>
   );
@@ -132,5 +132,15 @@ const SongListItem = styled.div`
 
   &:hover > ${PlayButton} {
     opacity: 1;
+  }
+`;
+
+const PopupMenu = styled(ContextMenu)`
+  border: none !important;
+  /* box-shadow: none !important; */
+  background-color: var(--card-color) !important;
+
+  &.p-menu {
+    padding: 0 0 !important;
   }
 `;
