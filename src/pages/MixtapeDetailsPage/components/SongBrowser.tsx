@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
-import { SpotifyContext } from "../../../App";
+import { AuthContext, SpotifyContext } from "../../../App";
 
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
   const spotifyContext = useContext(SpotifyContext);
+  const authContext = useContext(AuthContext);
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
@@ -21,16 +22,19 @@ function SongBrowser(props: Props) {
   }, [spotifyContext.isAuthorized, props.mixtape]);
 
   const items = [
-    {
+    // {
+    //   label: "Add to Queue",
+    //   icon: "mdi mdi-playlist-plus",
+    // },
+  ] as any[];
+
+  if (authContext.currentUser.username === props.mixtape.createdBy) {
+    items.push({
       label: "Remove Song",
       icon: "mdi mdi-minus",
       command: (e: any) => removeSong(selectedSongIndex),
-    },
-    {
-      label: "Add to Queue",
-      icon: "mdi mdi-playlist-plus",
-    },
-  ];
+    });
+  }
 
   const removeSong = (songIndex: number) => {
     if (songIndex !== -1) {

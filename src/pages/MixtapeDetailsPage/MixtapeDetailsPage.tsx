@@ -14,7 +14,7 @@ function MixtapeDetailsPage() {
   return (
     <Container>
       <DetailsContainer>
-        <img height="300" src="/images/weeknd.png" />
+        <img height="300" src="/images/mixtapes/default.jpg" />
         <MixtapeDetails
           isLoading={isLoading as boolean}
           mixtape={mixtape}

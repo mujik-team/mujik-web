@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SideModal from "../../../components/SideModal";
 import AddSongModal from "./AddSongModal";
@@ -8,6 +9,7 @@ import MixtapeActions from "./MixtapeActions";
 function MixtapeDetails(props: Props) {
   const [showModal, setShowModal] = useState(false);
   const [modalToShow, setModalToShow] = useState(0);
+  const history = useHistory();
   const mixtape = props.mixtape;
 
   const toggleAddSongsModal = () => {
@@ -48,7 +50,9 @@ function MixtapeDetails(props: Props) {
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
         <AvatarImage />
-        <Username>{mixtape.createdBy}</Username>
+        <Username onClick={() => history.push(`/user/${mixtape.createdBy}`)}>
+          {mixtape.createdBy}
+        </Username>
         <Pill>{mixtape.songs.length} Songs</Pill>
         {/* <Pill>7hr 23min</Pill> */}
         <Pill>
