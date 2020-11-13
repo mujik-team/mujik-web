@@ -11,8 +11,7 @@ function SongBrowser(props: Props) {
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
-    if (spotifyContext.isAuthorized) {
-      console.log("Retrieving songs...");
+    if (spotifyContext.isAuthorized && props.mixtape.songs) {
       spotifyContext.actions
         .getSeveralSongs(props.mixtape.songs)
         .then((songs) => {
