@@ -79,7 +79,16 @@ const TournamentGrid = styled.div`
 `;
 
 const Header = styled.div`
-  margin-bottom: 20px;
+  padding-bottom: 50px;
+`;
+
+const LeftHeader = styled.div`
+  display: block;
+  float: left;
+`;
+const RightHeader = styled.div`
+  display: block;
+  float: right;
 `;
 
 const Filter = styled.span`
