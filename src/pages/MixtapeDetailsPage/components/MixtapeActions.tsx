@@ -43,6 +43,24 @@ function MixtapeActions(props: Props) {
     history.push("/library");
   };
 
+  const followMixtape = async () => {
+
+    if (ownedByUser) {
+      toast.dark("Cannot unfollow your own mixtape!");
+    } else if (authContext.isLoggedIn) {
+      const follow = authContext.currentUser.profile.mixtapes.includes(props.mixtape._id);
+      if (follow === true) {
+        await mixtapeService.followMixtape(props.mixtape._id, authContext.currentUser.username, false);
+        await authContext.update();
+        toast.success("Unfollowed Mixtape!");
+      } else {
+        await mixtapeService.followMixtape(props.mixtape._id, authContext.currentUser.username, true);
+        await authContext.update();
+        toast.success("Followed Mixtape!");
+      }
+    }
+  }
+
   const items = [
     {
       label: "Share Mixtape",
@@ -80,7 +98,11 @@ function MixtapeActions(props: Props) {
           <i className="mdi mdi-plus" />
         </ActionButton>
       )}
-
+      {!ownedByUser && (<ActionButton
+        className="icon-button"
+        onClick={(e) => followMixtape()}>
+        {authContext.currentUser.profile.mixtapes.includes(props.mixtape._id) ? "Unfollow" : "Follow"}
+      </ActionButton>)}
       <ActionButton className="icon-button" onClick={(e) => menu.toggle(e)}>
         <i className="mdi mdi-menu" />
       </ActionButton>
