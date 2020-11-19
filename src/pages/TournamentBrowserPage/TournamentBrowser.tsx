@@ -1,28 +1,63 @@
-import React from "react";
-import styles from "./TournamentBrowser.module.css";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import tournaments from "../../services/mock/tournaments";
+import Button from "../../components/Button";
+import SortDropdown from "../../components/Input/SortDropdown";
 import TournamentCard from "./TournamentCard";
+import styles from "./TournamentBrowser.module.css";
+import tournaments from "../../services/mock/tournaments";
+// import CardLayout from "./components/CardLayout";
+// import ListLayout from "./components/ListLayout";
+// import MixtapeCard from "./components/MixtapeCard";
+// import MixtapeListItem from "./components/MixtapeListItem";
 
-function TournamentBrowser() {
+function TournamentBrowser(props: Props) {
   const history = useHistory();
+  const [sortBy, setSortBy] = useState("");
+  const [isCardLayout, setIsCardLayout] = useState(true);
 
-  const headerBrowser = (
-    <Header>
-      <div style={{ marginBottom: "20px" }} className={styles.title}>
-        <span style={{ marginRight: "20px" }}>Tournaments</span>
-        <span>
-          {tabs.map((t) => (
-            <Filter>{t}</Filter>
-          ))}
-        </span>
-      </div>
-      <hr />
-    </Header>
-  );
+  useEffect(() => {
+    if (localStorage.getItem("layout")) {
+      const setTo = localStorage.getItem("layout") === "card";
+      setIsCardLayout(setTo);
+    }
+  }, []);
 
-  const yourtournaments = [];
+  const toggleCardLayout = () => {
+    setIsCardLayout(!isCardLayout);
+    localStorage.setItem("layout", !isCardLayout ? "card" : "list");
+  };
+
+//   const mixtapeItems = props.mixtapes?.map((m) =>
+//     isCardLayout ? (
+//       <MixtapeCard
+//         style={{
+//           backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
+//         }}
+//         onClick={() => history.push(`/mixtape/${m._id}`)}
+//       />
+//     ) : (
+//       <MixtapeListItem
+//         image={`url(/images/mixtapes/${m.image || "default.webp"})`}
+//         onClick={() => history.push(`/mixtape/${m._id}`)}
+//       >
+//         <div className="mixtape-image" />
+//         <div className="mixtape-details">
+//           <h2>{m.mixtapeName}</h2>
+//           <div>{m.description}</div>
+//         </div>
+//       </MixtapeListItem>
+//     )
+//   );
+
+//   const mixtapeLayout = (items?: JSX.Element[]) => {
+//     return isCardLayout ? (
+//       <CardLayout>{items}</CardLayout>
+//     ) : (
+//       <ListLayout>{items}</ListLayout>
+//     );
+//   };
+const yourtournaments = [];
 
   for (let i = 0; i < 8; i++) {
     yourtournaments.push(
@@ -33,7 +68,8 @@ function TournamentBrowser() {
     );
   }
 
-  const tournamentBrowser = (
+const tournamentStuff = (
+    <div>
     <TournamentGrid>
       {tournaments.map((t, i) => (
         <TournamentCard
@@ -44,39 +80,51 @@ function TournamentBrowser() {
         </TournamentCard>
       ))}
     </TournamentGrid>
+    </div>
+  )
+
+  const changeLayoutButton = (
+    <ChangeLayoutButton onClick={() => toggleCardLayout()}>
+      <i className={`mdi mdi-${isCardLayout ? "card" : "view-list"}`} />
+    </ChangeLayoutButton>
   );
 
   return (
-    <div>
-      <div className={styles.container}>
-        <div>
-          {headerBrowser}
-          {tournamentBrowser}
-        </div>
-        <div className={styles.usertournamentBrowser}>
-          <h2>Your Tournaments</h2>
-          {tabsYour.map((t) => (
-            <span className={styles.tabTitle}>{t}</span>
-          ))}
-          <hr />
-          <div className={styles.yourtournamentBrowser}>{yourtournaments}</div>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <Header>
+        <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
+        <RightHeader>
+          <div
+            style={{ display: "inline-block", marginRight: "10px" }}
+            className="p-float-label"
+          >
+            <SortDropdown
+              id="sort-dropdown"
+              value={sortBy}
+              onChange={(e: any) => setSortBy(e.value)}
+              options={sortDropdownOptions}
+            />
+            <label htmlFor="sort-dropdown">Sort By</label>
+          </div>
+          {changeLayoutButton}
+        </RightHeader>
+      </Header>
+      <hr />
+      {tournamentStuff}
+      {/* {mixtapeLayout(mixtapeItems)} */}
+    </Container>
   );
 }
 
 export default TournamentBrowser;
 
-const tabs = ["Currently Running", "Ended"];
-const tabsYour = ["All", "Entered", "Following", "Ended"];
+type Props = {
+  tournaments?: any[];
+  LeftHeaderContent?: ReactNode;
+  RightHeaderContent?: ReactNode;
+};
 
-const TournamentGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
-  padding-bottom: 100px;
-`;
+const Container = styled.div``;
 
 const Header = styled.div`
   padding-bottom: 50px;
@@ -91,14 +139,23 @@ const RightHeader = styled.div`
   float: right;
 `;
 
-const Filter = styled.span`
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--text-inactive);
-  margin-right: 20px;
+const ChangeLayoutButton = styled(Button)`
+  position: relative;
+  bottom: 8px;
+  display: inline-block;
+  font-size: 16px;
+`;
 
-  &:hover {
-    color: whitesmoke;
-  }
+const sortDropdownOptions = [
+  { label: "Title", value: "name" },
+  { label: "Length", value: "length" },
+  { label: "Date Added", value: "submit" },
+  { label: "Random", value: "random" },
+];
+
+const TournamentGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding-bottom: 100px;
 `;
