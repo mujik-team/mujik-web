@@ -15,8 +15,6 @@ const cdn_url =
   process.env.REACT_APP_API_URL ||
   "http://localhost:3001";
 
-const images: any = {};
-
 function MixtapeBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
