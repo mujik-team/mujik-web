@@ -34,9 +34,13 @@ function LibraryPage() {
     setMixtapes([...userMixtapes]);
   };
 
-  const createNewMixtape = async (mixtape: any) => {
+  const createNewMixtape = async (mixtape: any, imageBlob?: any) => {
     try {
       const newMixtape = await mixtapeService.createNewMixtape(mixtape);
+
+      // Upload mixtape image if it exists.
+      if (imageBlob)
+        await mixtapeService.uploadMixtapeImage(newMixtape._id, imageBlob);
       authContext.update();
       history.push(`/mixtape/${newMixtape._id}`);
       toast.dark("🎵 Created new mixtape");

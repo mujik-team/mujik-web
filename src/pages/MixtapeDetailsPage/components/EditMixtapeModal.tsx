@@ -7,6 +7,7 @@ import { Checkbox } from "primereact/checkbox";
 import ImageEditor from "../../../components/ImageEditor";
 import { api } from "../../../services/api";
 import { toast } from "react-toastify";
+import { uploadMixtapeImage } from "../../../services/mixtapeService";
 
 function EditMixtapeModal(props: Props) {
   const mixtape = props.mixtape;
@@ -16,7 +17,7 @@ function EditMixtapeModal(props: Props) {
   const [mixtapeName, setMixtapeName] = useState(mixtape.mixtapeName);
   const [description, setDescription] = useState(mixtape.description);
 
-  const [mixtapeCoverImage, setMixtapeCoverImage] = useState(null);
+  const [mixtapeCoverImage, setMixtapeCoverImage] = useState(null as any);
 
   const updateMixtape = async () => {
     const updatedMixtape = {
@@ -28,16 +29,9 @@ function EditMixtapeModal(props: Props) {
     };
 
     if (mixtapeCoverImage) {
-      const formData = new FormData();
-      formData.append("mixtape", mixtapeCoverImage!);
-      await api.post("/upload/mixtape/" + mixtape._id, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      toast.dark("✨ Updated mixtape cover image.");
-
       // Clear current image.
+      await uploadMixtapeImage(mixtape._id, mixtapeCoverImage);
+      toast.dark("✨ Updated mixtape cover image.");
       setMixtapeCoverImage(null);
     }
 
