@@ -5,6 +5,7 @@ import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import { AuthContext } from "../../../App";
+import ImageEditor from "../../../components/ImageEditor";
 
 function NewMixtapeModal(props: Props) {
   const [tags, setTags] = useState([] as any[]);
@@ -28,7 +29,8 @@ function NewMixtapeModal(props: Props) {
   return (
     <div>
       <Container>
-        <MixtapeCoverImage />
+        {/* <MixtapeCoverImage /> */}
+        <ImageEditor editorType="mixtape_image" />
 
         <InputLabel>Title</InputLabel>
         <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />

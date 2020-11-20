@@ -1,20 +1,42 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
-import Button from "../../../components/Button";
 import SideModal from "../../../components/SideModal";
-import useUser from "../../../hooks/useUser";
+import { api } from "../../../services/api";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
 
 function ProfileDetails(props: Props) {
   const authContext = useContext(AuthContext);
+  const [profilePicture, setProfilePicture] = useState("");
 
   const toggleEditProfile = () => {
     setShowEditProfile(!showEditProfile);
   };
+
+  // This effect is called to retrieve the user's profile image.
+  // A call is made to the api which retrieves the user's image and then
+  // the image is converted to base64 to be displayed.
+  useEffect(() => {
+    if (props.user) {
+      api
+        .get(`/user/${props.user.username}/avatar`, {
+          responseType: "arraybuffer",
+        })
+        .then((res) => {
+          const image =
+            "data:image/webp;base64," +
+            Buffer.from(res.data, "binary").toString("base64");
+          setProfilePicture(image);
+        })
+        .catch((err) => {
+          console.log("Unable to retrieve user profile image.");
+        });
+    }
+  }, [props.user]);
+
   const [showEditProfile, setShowEditProfile] = useState(false);
+
   return (
     <div>
       {props.isLoading || !props.user ? (
@@ -23,13 +45,14 @@ function ProfileDetails(props: Props) {
         <Container>
           <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
             <EditUserProfileDetailsModal
+              profilePicture={profilePicture}
               user={props.user}
               updateUser={props.updateUser}
               toggle={toggleEditProfile}
             />
           </SideModal>
 
-          <ProfilePicture>
+          <ProfilePicture image={profilePicture}>
             <LevelBadge>
               <span style={{ paddingTop: "20px" }}>
                 {props.user.profile.level}
@@ -138,10 +161,14 @@ const LevelBadge = styled.div`
   left: 80%;
 `;
 
+type ProfilePictureProps = {
+  image: string;
+};
 const ProfilePicture = styled.div`
   border-radius: 999px;
   background-position: 30% 20%;
-  background-image: url("/images/max.webp");
+  background-color: var(--card-color);
+  background-image: ${(props: ProfilePictureProps) => `url(${props.image})`};
   background-size: cover;
 `;
 
