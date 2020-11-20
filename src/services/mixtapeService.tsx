@@ -36,3 +36,7 @@ export async function getSeveralMixtapes(ids: string[]): Promise<any[]> {
   const { data } = await api.post(`/mixtape/query/id`, { ids });
   return data.payload.mixtapes;
 }
+
+export async function followMixtape(id: string, username: string, follow: boolean) {
+  await api.post(`/mixtape/${id}/follow`, { username, follow });
+}
