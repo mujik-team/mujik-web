@@ -9,6 +9,11 @@ import ListLayout from "./components/ListLayout";
 import MixtapeCard from "./components/MixtapeCard";
 import MixtapeListItem from "./components/MixtapeListItem";
 
+const cdn_url =
+  process.env.REACT_APP_CDN_URL ||
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:3001";
+
 function MixtapeBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
@@ -30,13 +35,15 @@ function MixtapeBrowser(props: Props) {
     isCardLayout ? (
       <MixtapeCard
         style={{
-          backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
+          backgroundImage: `url(${cdn_url}/mixtape/${
+            m._id
+          }/cover?${Math.random()})`,
         }}
         onClick={() => history.push(`/mixtape/${m._id}`)}
       />
     ) : (
       <MixtapeListItem
-        image={`url(/images/mixtapes/${m.image || "default.webp"})`}
+        image={`url(${cdn_url}/mixtape/${m._id}/cover?${Math.random()})`}
         onClick={() => history.push(`/mixtape/${m._id}`)}
       >
         <div className="mixtape-image" />

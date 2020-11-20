@@ -2,17 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
+  width?: number;
   isActive: boolean;
   toggle: () => any;
   children?: React.ReactNode;
 }
 
+type ModalProps = {
+  width: number;
+};
 const Modal = styled.div`
   transform: translateX(100%);
   position: fixed;
   background-color: var(--main-bg-color);
   right: 0;
-  width: 450px;
+  width: ${(props: ModalProps) => props.width + "px"};
   height: 100%;
   transition: 0.3s ease-in-out all;
   box-shadow: -5px 0px 30px 5px #00000060;
@@ -49,7 +53,12 @@ function SideModal(props: Props) {
       }}
       className={`side-modal-container ${props.isActive ? "active" : ""}`}
     >
-      <Modal onClick={(e: any) => e.stopPropagation()}>{props.children}</Modal>
+      <Modal
+        width={props.width || 450}
+        onClick={(e: any) => e.stopPropagation()}
+      >
+        {props.children}
+      </Modal>
     </Container>
   );
 }
