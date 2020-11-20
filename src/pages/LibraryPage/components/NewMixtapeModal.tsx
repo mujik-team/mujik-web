@@ -13,6 +13,7 @@ function NewMixtapeModal(props: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const authContext = useContext(AuthContext);
+  const [mixtapeImage, setMixtapeImage] = useState("");
 
   const createNewMixtape = async () => {
     const mixtape = {
@@ -22,15 +23,21 @@ function NewMixtapeModal(props: Props) {
       createdBy: authContext.currentUser.username,
     };
 
-    await props.newMixtape(mixtape);
+    await props.newMixtape(mixtape, mixtapeImage);
     props.toggleModal();
+  };
+
+  const handleImageSelected = (imageBlob: any) => {
+    setMixtapeImage(imageBlob);
   };
 
   return (
     <div>
       <Container>
-        {/* <MixtapeCoverImage /> */}
-        <ImageEditor editorType="mixtape_image" />
+        <ImageEditor
+          imageSelected={handleImageSelected}
+          editorType="mixtape_image"
+        />
 
         <InputLabel>Title</InputLabel>
         <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />
@@ -63,7 +70,7 @@ function NewMixtapeModal(props: Props) {
 export default NewMixtapeModal;
 
 type Props = {
-  newMixtape: (mixtape: any) => Promise<any>;
+  newMixtape: (mixtape: any, imageBlob?: any) => Promise<any>;
   toggleModal: () => void;
 };
 
