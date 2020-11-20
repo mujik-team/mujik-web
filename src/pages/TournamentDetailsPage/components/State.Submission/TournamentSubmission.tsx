@@ -59,7 +59,7 @@ const JumboButton = styled.button`
   }
 `;
 
-function TournamentSubmission() {
+function TournamentSubmission(props : any) {
   const toggleSubmitModal = () => {
     setShowEntryModal(!showEntryModal);
   };
@@ -87,20 +87,20 @@ function TournamentSubmission() {
       </FullScreenModal>
 
       <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
-        <EnterTournamentModal submit={submitMixtape} />
+        <EnterTournamentModal submit={submitMixtape} tournament={props.tournament} />
       </SideModal>
       <div>
         <h1>Mixtape Restrictions</h1>
-        <RestrictionCard />
-        <RestrictionCard />
-        <RestrictionCard />
-        <RestrictionCard />
-        <RestrictionCard />
+        {
+          props.tournament.restrictions.map((m : any, i : any) => (
+            <RestrictionCard key={i} >{`${props.tournament.restrictions[i].type}:${props.tournament.restrictions[i].value}`}</RestrictionCard>
+          ))
+        }
       </div>
 
       <div>
         <h1>Rules</h1>
-        <RuleCard />
+        <RuleCard>{props.rules}</RuleCard>
       </div>
 
       <TournamentStatusContainer>

@@ -15,7 +15,7 @@ function TournamentDetails() {
   const state = tournament.state as TournamentState;
 
   const bottomComponent = {
-    submission: <TournamentSubmission />,
+    submission: <TournamentSubmission tournament={tournament} restrictions={tournament.restrictions} rules={tournament.additional_submission_criteria} />,
     voting: <TournamentVote />,
     ended: <TournamentResults />,
   };

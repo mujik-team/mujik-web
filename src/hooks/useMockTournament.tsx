@@ -38,7 +38,7 @@ const default_tournament = {
     "title": "DnD Campaign Music",
     "creator_username": "cptmango",
     "description": "Me and my friends are starting a new campaign and we are looking for",
-    "additional_submission_criteria": "",
+    "additional_submission_criteria": "No bad language plis",
     "state": "submission",
     "image": null,
     "followers": 43358,
@@ -63,16 +63,16 @@ const default_tournament = {
       },
       {
         "type": "lvl_restriction",
-        "value": 70 // Minimum Level Restriction
+        "value": 1// Minimum Level Restriction
       },
-      {
-        "type": "allow_duplicates",
-        "value": false
-      },
-      {
-        "type": "min_time",
-        "value": 640 // in minutes
-      }
+      // {
+      //   "type": "allow_duplicates",
+      //   "value": false
+      // },
+      // {
+      //   "type": "min_time",
+      //   "value": 64 // in minutes
+      // }
     ],
     "tournament_modifiers": [
       "double_xp"
