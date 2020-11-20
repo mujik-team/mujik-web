@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
 import FullScreenModal from "../../../../components/FullScreenModal";
@@ -7,6 +8,8 @@ import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
 import SortDropdown from "../../../../components/Input/SortDropdown";
 import TextInput from "../../../../components/Input/TextInput";
+import { toast } from "react-toastify";
+import * as mixtapeService from "../../../../services/mixtapeService";
 
 const Container = styled.div``;
 
@@ -46,13 +49,39 @@ const VoteButton = styled(Button)`
   right: 20px;
 `;
 
+const VotePhaseButton = styled(Button)`
+  font-size: 30px;
+  padding: 0 20px;
+  color: black;
+  background-color: var(--main-color);
+  box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.25);
+  font-weight: bold;
+`
+
 const VotesRemainingText = styled.span`
   font-weight: 600;
   font-size: 25px;
 `;
 
-function TournamentVote() {
-  const cards = [];
+function TournamentVote(props: any){
+
+  const history = useHistory();
+
+  const ids = props.tournament.submissions.map((submission: any) => {
+    return submission.id;
+  });
+
+  const [submittedMixtapes, setSubmittedMixtapes] = useState([] as any);
+
+  const getSubmissions = async (ids: any) => {
+    const mixtapes = await mixtapeService.getSeveralMixtapes(ids);
+    console.log(mixtapes);
+    setSubmittedMixtapes(mixtapes);
+  }
+
+  useEffect(() => {
+    getSubmissions(ids);
+  }, []);
 
   const toggleShowVoteModal = () => setShowVoteModal(!showVoteModal);
   const [showVoteModal, setShowVoteModal] = useState(false);
@@ -66,16 +95,28 @@ function TournamentVote() {
     toggleShowVoteModal();
     setTimeout({}, 200);
     toggleShowVoteSuccessModal();
+    // setVotesLeft(votesLeft - selectedMixtapes.length <= 0 ? 0 : votesLeft - selectedMixtapes.length )
     setSelectedMixtapes([]);
   };
 
   // Add a mixtape to the current selection.
   const addMixtape = (id: string) =>
-    setSelectedMixtapes([...selectedMixtapes, id]);
+  {
+    if (votesLeft == 0) {
+      toast.error("Maximum amount of votes selected!");
+    } else {
+      setSelectedMixtapes([...selectedMixtapes, id]);
+      setVotesLeft(votesLeft - 1);
+    }
+    
+  }
 
   // Remove mixtape from the current selection.
   const removeMixtape = (id: string) =>
+  {
     setSelectedMixtapes(selectedMixtapes.filter((i) => i !== id));
+    setVotesLeft(votesLeft + 1);
+  }
 
   const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
   const options = [
@@ -87,19 +128,43 @@ function TournamentVote() {
 
   const [sortBy, setSortBy] = useState("");
 
-  for (let i = 0; i < 30; i++) {
-    cards.push(
-      <MixtapeCard
-        className={selectedMixtapes.includes(`m-${i}`) ? "selected" : ""}
-        onClick={() => {
-          if (!selectedMixtapes.includes(`m-${i}`)) {
-            addMixtape(`m-${i}`);
-          } else {
-            removeMixtape(`m-${i}`);
-          }
-        }}
-      />
-    );
+  const showCards = submittedMixtapes.map((m: any, i: number) => {
+    return <MixtapeCard
+      style={{
+        backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
+      }}
+      className=""
+      onClick={() => {
+        history.push(`/mixtape/${m._id}`);
+      }}
+    />
+  })
+
+  const voteCards = submittedMixtapes.map((m: any, i: number) => {
+    return <MixtapeCard
+      style={{
+        backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
+      }}
+      className={selectedMixtapes.includes(`m-${i}`) ? "selected" : ""}
+      onClick={() => {
+        if (!selectedMixtapes.includes(`m-${i}`)) {
+          addMixtape(`m-${i}`);
+        } else {
+          removeMixtape(`m-${i}`);
+        }
+      }}
+    />
+  })
+
+  const [votingPhase, setVotingPhase] = useState(false);
+  const [votesLeft, setVotesLeft] = useState(5);
+
+  const toggleVotingPhase = () => {
+    setVotingPhase(!votingPhase);
+  }
+
+  const getVotesLeft = () => {
+    return votesLeft;
   }
 
   return (
@@ -108,10 +173,10 @@ function TournamentVote() {
         isActive={showVoteSuccessModal}
         toggle={toggleShowVoteSuccessModal}
       >
-        <VoteSuccessModal />
+        <VoteSuccessModal votesLeft={getVotesLeft}/>
       </FullScreenModal>
       <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
-        <VoteModal submit={submitVote} />
+        <VoteModal submit={submitVote} mixtapes={selectedMixtapes} getVotesLeft={getVotesLeft}/>
       </SideModal>
 
       <div style={{ display: "grid", gridTemplateColumns: "250px 100px 1fr" }}>
@@ -134,10 +199,11 @@ function TournamentVote() {
 
         <FloatRightContainer>
           <VotesRemainingText style={{ marginRight: "20px" }}>
-            You have 9 votes remaining.
+            You have {votesLeft} votes remaining.
+            <VotePhaseButton onClick={() => toggleVotingPhase()}>{votingPhase === true ? "Show" : "Vote"}</VotePhaseButton>
           </VotesRemainingText>
           {selectedMixtapes.length > 0 ? (
-            <VoteButton onClick={() => toggleShowVoteModal()}>Vote</VoteButton>
+            <VoteButton onClick={() => toggleShowVoteModal()}>Confirm Vote</VoteButton>
           ) : null}
 
           <span></span>
@@ -146,7 +212,7 @@ function TournamentVote() {
 
       <hr />
 
-      <MixtapeGridContainer>{cards}</MixtapeGridContainer>
+      <MixtapeGridContainer>{votingPhase === true ? voteCards : showCards}</MixtapeGridContainer>
     </Container>
   );
 }

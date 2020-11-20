@@ -14,9 +14,11 @@ function TournamentDetails() {
   // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
 
+  console.log(tournament);
+
   const bottomComponent = {
     submission: <TournamentSubmission />,
-    voting: <TournamentVote />,
+    voting: <TournamentVote tournament={tournament} />,
     ended: <TournamentResults />,
   };
 
@@ -36,7 +38,7 @@ function TournamentDetails() {
                 bottom: "20px",
               }}
             >
-              by {tournament.creator_username}
+              by {tournament.creatorUsername}
             </Username>
             <div style={{ position: "relative", float: "right" }}>
               <Button
