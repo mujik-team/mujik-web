@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { randomMixtapes } from "../../services/random";
+import { getImageToBase64 } from "../../services/util";
 import Button from "../Button";
 import SortDropdown from "../Input/SortDropdown";
 import CardLayout from "./components/CardLayout";
@@ -31,29 +32,19 @@ function MixtapeBrowser(props: Props) {
     localStorage.setItem("layout", !isCardLayout ? "card" : "list");
   };
 
-  const mixtapeItems = props.mixtapes?.map((m) =>
-    isCardLayout ? (
-      <MixtapeCard
-        style={{
-          backgroundImage: `url(${cdn_url}/mixtape/${
-            m._id
-          }/cover?${Math.random()})`,
-        }}
-        onClick={() => history.push(`/mixtape/${m._id}`)}
-      />
+  const mixtapeItems = props.mixtapes?.map((m, i) => {
+    return isCardLayout ? (
+      <MixtapeCard key={i} mixtapeId={m._id} />
     ) : (
-      <MixtapeListItem
-        image={`url(${cdn_url}/mixtape/${m._id}/cover?${Math.random()})`}
-        onClick={() => history.push(`/mixtape/${m._id}`)}
-      >
+      <MixtapeListItem key={i} mixtapeId={m._id}>
         <div className="mixtape-image" />
         <div className="mixtape-details">
           <h2>{m.mixtapeName}</h2>
           <div>{m.description}</div>
         </div>
       </MixtapeListItem>
-    )
-  );
+    );
+  });
 
   const mixtapeLayout = (items?: JSX.Element[]) => {
     return isCardLayout ? (

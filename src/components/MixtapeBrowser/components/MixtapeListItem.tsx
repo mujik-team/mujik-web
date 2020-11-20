@@ -1,10 +1,18 @@
+import React, { ReactNode, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { getImageToBase64 } from "../../../services/util";
 
 type Props = {
-  image?: string;
+  mixtapeId: string;
+  children?: ReactNode[];
 };
 
-const MixtapeListItem = styled.div`
+type ListItemProps = {
+  base64image: string;
+};
+
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: 120px 1fr;
   grid-template-rows: 120px;
@@ -21,7 +29,7 @@ const MixtapeListItem = styled.div`
   }
 
   & > div.mixtape-image {
-    background-image: ${(props: Props) => props.image};
+    background-image: ${(props: ListItemProps) => `url(${props.base64image})`};
     background-position: center;
     background-size: cover;
     border-radius: 8px;
@@ -42,5 +50,26 @@ const MixtapeListItem = styled.div`
     text-overflow: ellipsis;
   }
 `;
+
+function MixtapeListItem(props: Props) {
+  const [image, setImage] = useState("");
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/mixtape/${props.mixtapeId}`);
+  };
+
+  useEffect(() => {
+    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
+      setImage(image || "")
+    );
+  }, [props.mixtapeId]);
+
+  return (
+    <ListItem onClick={handleClick} base64image={image}>
+      {props.children}{" "}
+    </ListItem>
+  );
+}
 
 export default MixtapeListItem;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import SideModal from "../../../components/SideModal";
 import { api } from "../../../services/api";
+import { getImageToBase64 } from "../../../services/util";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
 
@@ -19,19 +20,9 @@ function ProfileDetails(props: Props) {
   // the image is converted to base64 to be displayed.
   useEffect(() => {
     if (props.user) {
-      api
-        .get(`/user/${props.user.username}/avatar`, {
-          responseType: "arraybuffer",
-        })
-        .then((res) => {
-          const image =
-            "data:image/webp;base64," +
-            Buffer.from(res.data, "binary").toString("base64");
-          setProfilePicture(image);
-        })
-        .catch((err) => {
-          console.log("Unable to retrieve user profile image.");
-        });
+      getImageToBase64(`/user/${props.user.username}/avatar`).then((image) =>
+        setProfilePicture(image || "")
+      );
     }
   }, [props.user]);
 
