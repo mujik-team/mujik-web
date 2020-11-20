@@ -3,6 +3,25 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getImageToBase64 } from "../../../services/util";
 
+function MixtapeCard(props: Props) {
+  const [image, setImage] = useState("");
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/mixtape/${props.mixtapeId}`);
+  };
+
+  useEffect(() => {
+    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
+      setImage(image || "")
+    );
+  }, [props.mixtapeId]);
+
+  return <Card base64image={image} onClick={handleClick} />;
+}
+
+export default MixtapeCard;
+
 type Props = {
   mixtapeId: string;
 };
@@ -31,22 +50,3 @@ const Card = styled.div`
     display: block;
   }
 `;
-
-function MixtapeCard(props: Props) {
-  const [image, setImage] = useState("");
-  const history = useHistory();
-
-  const handleClick = () => {
-    history.push(`/mixtape/${props.mixtapeId}`);
-  };
-
-  useEffect(() => {
-    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
-      setImage(image || "")
-    );
-  }, [props.mixtapeId]);
-
-  return <Card base64image={image} onClick={handleClick} />;
-}
-
-export default MixtapeCard;

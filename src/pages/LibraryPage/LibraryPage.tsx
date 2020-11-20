@@ -24,6 +24,7 @@ function LibraryPage() {
 
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getUserMixtapes = async () => {
     console.log(authContext.currentUser);
@@ -81,7 +82,10 @@ function LibraryPage() {
           style={{ fontSize: "20px", top: "45%" }}
           className="pi mdi mdi-magnify"
         ></i>
-        <TextInput />
+        <TextInput
+          value={searchTerm}
+          onChange={(e: any) => setSearchTerm(e.target.value)}
+        />
       </div>
       <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
     </div>
@@ -101,7 +105,12 @@ function LibraryPage() {
         </SideModal>
         <div>
           {headerBrowser}
-          <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} />
+          <MixtapeBrowser
+            LeftHeaderContent={LeftHeader}
+            mixtapes={mixtapes.filter((m) =>
+              m.mixtapeName.toLowerCase().includes(searchTerm.toLowerCase())
+            )}
+          />
         </div>
       </div>
     </Container>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./TournamentBrowser.module.css";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import tournaments from "../../services/mock/tournaments";
 import TournamentCard from "./TournamentCard";
+import TextInput from "../../components/Input/TextInput";
 
 function TournamentBrowser() {
   const history = useHistory();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const headerBrowser = (
     <Header>
@@ -17,6 +19,16 @@ function TournamentBrowser() {
             <Filter>{t}</Filter>
           ))}
         </span>
+      </div>
+      <div className="p-input-icon-left">
+        <i
+          style={{ fontSize: "20px", top: "45%" }}
+          className="pi mdi mdi-magnify"
+        ></i>
+        <TextInput
+          value={searchTerm}
+          onChange={(e: any) => setSearchTerm(e.target.value)}
+        />
       </div>
       <hr />
     </Header>
@@ -35,14 +47,17 @@ function TournamentBrowser() {
 
   const tournamentBrowser = (
     <TournamentGrid>
-      {tournaments.map((t, i) => (
-        <TournamentCard
-          tournament={t}
-          onClick={() => history.push(`/tournament/${i}`)}
-        >
-          <span>{t.title}</span>
-        </TournamentCard>
-      ))}
+      {tournaments
+        .filter((t) => t.title.toLowerCase().includes(searchTerm.toLowerCase()))
+
+        .map((t, i) => (
+          <TournamentCard
+            tournament={t}
+            onClick={() => history.push(`/tournament/${i}`)}
+          >
+            <span>{t.title}</span>
+          </TournamentCard>
+        ))}
     </TournamentGrid>
   );
 
