@@ -44,12 +44,12 @@ function MixtapeDetails(props: Props) {
     <span>Loading</span>
   ) : (
     <Container>
-      <SideModal toggle={toggleModal} isActive={showModal}>
+      <SideModal width={550} toggle={toggleModal} isActive={showModal}>
         {modals[modalToShow]}
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
-        <AvatarImage />
+        <CreatedByAvatar />
         <Username onClick={() => history.push(`/user/${mixtape.createdBy}`)}>
           {mixtape.createdBy}
         </Username>
@@ -85,7 +85,7 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const AvatarImage = styled.div`
+const CreatedByAvatar = styled.div`
   display: inline-block;
   border-radius: 25px;
   height: 50px;

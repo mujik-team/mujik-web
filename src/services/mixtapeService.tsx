@@ -22,6 +22,16 @@ export async function updateMixtape(id: string, mixtape: any) {
   return data.payload.mixtape;
 }
 
+export async function uploadMixtapeImage(id: string, imageBlob: Blob) {
+  const formData = new FormData();
+  formData.append("mixtape", imageBlob);
+  await api.post("/upload/mixtape/" + id, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 export async function getSeveralMixtapes(ids: string[]): Promise<any[]> {
   const { data } = await api.post(`/mixtape/query/id`, { ids });
   return data.payload.mixtapes;
