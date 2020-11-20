@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import AvatarImage from "../../../components/AvatarImage";
 import SideModal from "../../../components/SideModal";
 import AddSongModal from "./AddSongModal";
 import EditMixtapeModal from "./EditMixtapeModal";
@@ -49,7 +50,8 @@ function MixtapeDetails(props: Props) {
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
-        <CreatedByAvatar />
+        {/* <CreatedByAvatar /> */}
+        <AvatarImage username={mixtape.createdBy} size={50} />
         <Username onClick={() => history.push(`/user/${mixtape.createdBy}`)}>
           {mixtape.createdBy}
         </Username>

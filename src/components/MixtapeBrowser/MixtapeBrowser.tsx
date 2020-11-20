@@ -1,8 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { randomMixtapes } from "../../services/random";
-import { getImageToBase64 } from "../../services/util";
 import Button from "../Button";
 import SortDropdown from "../Input/SortDropdown";
 import CardLayout from "./components/CardLayout";
@@ -10,15 +7,11 @@ import ListLayout from "./components/ListLayout";
 import MixtapeCard from "./components/MixtapeCard";
 import MixtapeListItem from "./components/MixtapeListItem";
 
-const cdn_url =
-  process.env.REACT_APP_CDN_URL ||
-  process.env.REACT_APP_API_URL ||
-  "http://localhost:3001";
-
 function MixtapeBrowser(props: Props) {
-  const history = useHistory();
   const [sortBy, setSortBy] = useState("");
+  const [sortByAscending, setSortByAscending] = useState(false);
   const [isCardLayout, setIsCardLayout] = useState(true);
+  // const [mixtapes, setMixtapes] = useState(props.mixtapes);
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
@@ -32,19 +25,33 @@ function MixtapeBrowser(props: Props) {
     localStorage.setItem("layout", !isCardLayout ? "card" : "list");
   };
 
-  const mixtapeItems = props.mixtapes?.map((m, i) => {
-    return isCardLayout ? (
-      <MixtapeCard key={i} mixtapeId={m._id} />
-    ) : (
-      <MixtapeListItem key={i} mixtapeId={m._id}>
-        <div className="mixtape-image" />
-        <div className="mixtape-details">
-          <h2>{m.mixtapeName}</h2>
-          <div>{m.description}</div>
-        </div>
-      </MixtapeListItem>
-    );
-  });
+  const mixtapeItems = () => {
+    const mixtapes = props.mixtapes;
+
+    if (sortBy && mixtapes) {
+      if (sortBy === "random") {
+        shuffleArray(mixtapes);
+      } else {
+        if (sortByAscending)
+          mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
+        else mixtapes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : 0));
+      }
+    }
+
+    return mixtapes?.map((m, i) => {
+      return isCardLayout ? (
+        <MixtapeCard key={i} mixtapeId={m._id} />
+      ) : (
+        <MixtapeListItem key={i} mixtapeId={m._id}>
+          <div className="mixtape-image" />
+          <div className="mixtape-details">
+            <h2>{m.mixtapeName}</h2>
+            <div>{m.description}</div>
+          </div>
+        </MixtapeListItem>
+      );
+    });
+  };
 
   const mixtapeLayout = (items?: JSX.Element[]) => {
     return isCardLayout ? (
@@ -81,13 +88,21 @@ function MixtapeBrowser(props: Props) {
         </RightHeader>
       </Header>
       <hr />
-      {mixtapeLayout(mixtapeItems)}
+      {mixtapeLayout(mixtapeItems())}
     </Container>
   );
 }
 
 export default MixtapeBrowser;
 
+function shuffleArray(array: any[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
 type Props = {
   mixtapes?: any[];
   LeftHeaderContent?: ReactNode;
@@ -117,8 +132,8 @@ const ChangeLayoutButton = styled(Button)`
 `;
 
 const sortDropdownOptions = [
-  { label: "Title", value: "name" },
-  { label: "Length", value: "length" },
-  { label: "Date Added", value: "submit" },
-  { label: "Random", value: "random" },
+  { label: "Title", value: "mixtapeName" },
+  // { label: "Length", value: "length" },
+  { label: "Date Added", value: "lastUpdated" },
+  // { label: "Random", value: "random" },
 ];

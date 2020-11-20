@@ -23,7 +23,7 @@ const TournamentCard = styled.div`
     overflow: none;
     text-overflow: ellipsis;
     width: 100px;
-    opacity: 0;
+    opacity: 1;
     transition: 0.2s linear all;
     border-radius: 99px;
     padding: 5px 10px;
