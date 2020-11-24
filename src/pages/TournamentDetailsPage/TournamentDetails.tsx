@@ -6,14 +6,16 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
+import useMockTournament from "../../hooks/useMockTournament"
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const tournament = tournaments[tournamentId as number];
+  const [tournament, getTournament, updateTournament, isLoading] = useMockTournament('0');
+  // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
 
   const bottomComponent = {
-    submission: <TournamentSubmission />,
+    submission: <TournamentSubmission tournament={tournament} restrictions={tournament.restrictions} rules={tournament.additional_submission_criteria} />,
     voting: <TournamentVote />,
     ended: <TournamentResults />,
   };
@@ -34,7 +36,7 @@ function TournamentDetails() {
                 bottom: "20px",
               }}
             >
-              by {tournament.createdBy}
+              by {tournament.creator_username}
             </Username>
             <div style={{ position: "relative", float: "right" }}>
               <Button
@@ -71,7 +73,7 @@ function TournamentDetails() {
                     marginRight: "20px",
                   }}
                 >
-                  300K
+                  {tournament.rewards ? tournament.rewards[0].value : ""}
                 </div>
                 <span style={{ position: "relative", top: "12%" }}>
                   <Tag>DOUBLE XP</Tag>

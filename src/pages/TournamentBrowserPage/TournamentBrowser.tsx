@@ -1,38 +1,39 @@
-import React, { useState } from "react";
-import styles from "./TournamentBrowser.module.css";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import tournaments from "../../services/mock/tournaments";
+import Button from "../../components/Button";
+import SortDropdown from "../../components/Input/SortDropdown";
 import TournamentCard from "./TournamentCard";
-import TextInput from "../../components/Input/TextInput";
+import styles from "./TournamentBrowser.module.css";
+// import tournaments from "../../services/mock/tournaments";
+// import CardLayout from "./components/CardLayout";
+// import ListLayout from "./components/ListLayout";
+// import MixtapeCard from "./components/MixtapeCard";
+// import MixtapeListItem from "./components/MixtapeListItem";
+import useMockTournament from "../../hooks/useMockTournament";
 
-function TournamentBrowser() {
+function TournamentBrowser(props: Props) {
   const history = useHistory();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [isCardLayout, setIsCardLayout] = useState(true);
+  const [
+    tournament,
+    getTournament,
+    updateTournament,
+    isLoading,
+  ] = useMockTournament("0");
 
-  const headerBrowser = (
-    <Header>
-      <div style={{ marginBottom: "20px" }} className={styles.title}>
-        <span style={{ marginRight: "20px" }}>Tournaments</span>
-        <span>
-          {tabs.map((t) => (
-            <Filter>{t}</Filter>
-          ))}
-        </span>
-      </div>
-      <div className="p-input-icon-left">
-        <i
-          style={{ fontSize: "20px", top: "45%" }}
-          className="pi mdi mdi-magnify"
-        ></i>
-        <TextInput
-          value={searchTerm}
-          onChange={(e: any) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      <hr />
-    </Header>
-  );
+  useEffect(() => {
+    if (localStorage.getItem("layout")) {
+      const setTo = localStorage.getItem("layout") === "card";
+      setIsCardLayout(setTo);
+    }
+  }, []);
+
+  const toggleCardLayout = () => {
+    setIsCardLayout(!isCardLayout);
+    localStorage.setItem("layout", !isCardLayout ? "card" : "list");
+  };
 
   const yourtournaments = [];
 
@@ -45,66 +46,100 @@ function TournamentBrowser() {
     );
   }
 
-  const tournamentBrowser = (
-    <TournamentGrid>
-      {tournaments
-        .filter((t) => t.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  let tournaments = [];
+  for (let i = 0; i < 8; i++) {
+    tournaments.push(tournament);
+  }
 
-        .map((t, i) => (
+  const tournamentStuff = (
+    <div>
+      <TournamentGrid>
+        {tournaments.map((t, i) => (
           <TournamentCard
             tournament={t}
-            onClick={() => history.push(`/tournament/${i}`)}
+            // ${i}
+            onClick={() => history.push(`/tournament/0`)}
           >
             <span>{t.title}</span>
           </TournamentCard>
         ))}
-    </TournamentGrid>
+      </TournamentGrid>
+    </div>
+  );
+
+  const changeLayoutButton = (
+    <ChangeLayoutButton onClick={() => toggleCardLayout()}>
+      <i className={`mdi mdi-${isCardLayout ? "card" : "view-list"}`} />
+    </ChangeLayoutButton>
   );
 
   return (
-    <div>
-      <div className={styles.container}>
-        <div>
-          {headerBrowser}
-          {tournamentBrowser}
-        </div>
-        <div className={styles.usertournamentBrowser}>
-          <h2>Your Tournaments</h2>
-          {tabsYour.map((t) => (
-            <span className={styles.tabTitle}>{t}</span>
-          ))}
-          <hr />
-          <div className={styles.yourtournamentBrowser}>{yourtournaments}</div>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <Header>
+        <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
+        <RightHeader>
+          <div
+            style={{ display: "inline-block", marginRight: "10px" }}
+            className="p-float-label"
+          >
+            <SortDropdown
+              id="sort-dropdown"
+              value={sortBy}
+              onChange={(e: any) => setSortBy(e.value)}
+              options={sortDropdownOptions}
+            />
+            <label htmlFor="sort-dropdown">Sort By</label>
+          </div>
+          {changeLayoutButton}
+        </RightHeader>
+      </Header>
+      <hr />
+      {tournamentStuff}
+      {/* {mixtapeLayout(mixtapeItems)} */}
+    </Container>
   );
 }
 
 export default TournamentBrowser;
 
-const tabs = ["Currently Running", "Ended"];
-const tabsYour = ["All", "Entered", "Following", "Ended"];
+type Props = {
+  tournaments?: any[];
+  LeftHeaderContent?: ReactNode;
+  RightHeaderContent?: ReactNode;
+};
+
+const Container = styled.div``;
+
+const Header = styled.div`
+  padding-bottom: 50px;
+`;
+
+const LeftHeader = styled.div`
+  display: block;
+  float: left;
+`;
+const RightHeader = styled.div`
+  display: block;
+  float: right;
+`;
+
+const ChangeLayoutButton = styled(Button)`
+  position: relative;
+  bottom: 8px;
+  display: inline-block;
+  font-size: 16px;
+`;
+
+const sortDropdownOptions = [
+  { label: "Title", value: "name" },
+  { label: "Length", value: "length" },
+  { label: "Date Added", value: "submit" },
+  { label: "Random", value: "random" },
+];
 
 const TournamentGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1rem;
   padding-bottom: 100px;
-`;
-
-const Header = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Filter = styled.span`
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--text-inactive);
-  margin-right: 20px;
-
-  &:hover {
-    color: whitesmoke;
-  }
 `;

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Navbar from "./components/Navbar";
 import LibraryPage from "./pages/LibraryPage/LibraryPage";
-import TournamentBrowser from "./pages/TournamentBrowserPage/TournamentBrowser";
+import TournamentPage from "./pages/TournamentBrowserPage/TournamentPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
 import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
@@ -43,7 +43,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/library" component={LibraryPage} />
-          <Route path="/tournament" exact component={TournamentBrowser} />
+          <Route path="/tournament" exact component={TournamentPage} />
           <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsPage} />
           <Route
             path="/tournament/:tournamentId"
