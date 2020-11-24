@@ -1,22 +1,51 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import ImageEditor from "../../../components/ImageEditor";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
+import { api } from "../../../services/api";
 
 function EditProfileDetailsModal(props: Props) {
   const [userProfile, setUserProfile] = useState(props.user.profile);
+  const [userAvatar, setUserAvatar] = useState(null);
 
   const saveChanges = async () => {
     const updatedUser = props.user;
     updatedUser.profile = userProfile;
+
+    // If the user has changed the avatar update it.
+    if (userAvatar) {
+      const formData = new FormData();
+      formData.append("avatar", userAvatar!);
+      await api.post("/upload/avatar", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.dark("✨ Updated user profile image.");
+      // Clear current image.
+      setUserAvatar(null);
+    }
+
     await props.updateUser(updatedUser);
     props.toggle();
   };
+
+  const userAvatarChanged = (blob: any) => {
+    setUserAvatar(blob);
+  };
+
   return (
     <div>
       <Container>
-        <ProfilePicture />
+        {/* <ProfilePicture /> */}
+        <ImageEditor
+          imageSelected={userAvatarChanged}
+          editorType="avatar"
+          imageUrl={props.profilePicture}
+        />
         <Username>{props.user.username}</Username>
 
         <FormContainer>
@@ -56,6 +85,7 @@ function EditProfileDetailsModal(props: Props) {
 export default EditProfileDetailsModal;
 
 type Props = {
+  profilePicture: string;
   user: any;
   updateUser: (updatedUser: any) => Promise<void>;
   toggle: any;
@@ -63,6 +93,7 @@ type Props = {
 
 const Container = styled.div`
   margin: 30px;
+  /* padding-bottom: 50px; */
 `;
 
 const ProfilePicture = styled.div`
@@ -79,7 +110,7 @@ const Username = styled.div`
   font-size: 50px;
   font-weight: 500;
   text-align: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 `;
 
 const SaveChangesButton = styled.div`
@@ -102,7 +133,7 @@ const SaveChangesButton = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin: 50px 0;
+  margin: 20px 0;
 `;
 
 const FormTitle = styled.div`

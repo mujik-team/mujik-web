@@ -24,6 +24,7 @@ function LibraryPage() {
 
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getUserMixtapes = async () => {
     console.log(authContext.currentUser);
@@ -34,9 +35,13 @@ function LibraryPage() {
     setMixtapes([...userMixtapes]);
   };
 
-  const createNewMixtape = async (mixtape: any) => {
+  const createNewMixtape = async (mixtape: any, imageBlob?: any) => {
     try {
       const newMixtape = await mixtapeService.createNewMixtape(mixtape);
+
+      // Upload mixtape image if it exists.
+      if (imageBlob)
+        await mixtapeService.uploadMixtapeImage(newMixtape._id, imageBlob);
       authContext.update();
       history.push(`/mixtape/${newMixtape._id}`);
       toast.dark("🎵 Created new mixtape");
@@ -77,7 +82,10 @@ function LibraryPage() {
           style={{ fontSize: "20px", top: "45%" }}
           className="pi mdi mdi-magnify"
         ></i>
-        <TextInput />
+        <TextInput
+          value={searchTerm}
+          onChange={(e: any) => setSearchTerm(e.target.value)}
+        />
       </div>
       <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
     </div>
@@ -97,7 +105,12 @@ function LibraryPage() {
         </SideModal>
         <div>
           {headerBrowser}
-          <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} />
+          <MixtapeBrowser
+            LeftHeaderContent={LeftHeader}
+            mixtapes={mixtapes.filter((m) =>
+              m.mixtapeName.toLowerCase().includes(searchTerm.toLowerCase())
+            )}
+          />
         </div>
       </div>
     </Container>

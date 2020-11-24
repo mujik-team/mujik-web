@@ -5,18 +5,18 @@ import Button from "../../components/Button";
 import SortDropdown from "../../components/Input/SortDropdown";
 import TournamentCard from "./TournamentCard";
 import styles from "./TournamentBrowser.module.css";
-// import tournaments from "../../services/mock/tournaments";
-// import CardLayout from "./components/CardLayout";
-// import ListLayout from "./components/ListLayout";
-// import MixtapeCard from "./components/MixtapeCard";
-// import MixtapeListItem from "./components/MixtapeListItem";
-import useMockTournament from "../../hooks/useMockTournament"
+import useMockTournament from "../../hooks/useMockTournament";
 
 function TournamentBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
   const [isCardLayout, setIsCardLayout] = useState(true);
-  const [tournament, getTournament, updateTournament, isLoading] = useMockTournament('0');
+  const [
+    tournament,
+    getTournament,
+    updateTournament,
+    isLoading,
+  ] = useMockTournament("0");
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
@@ -30,36 +30,7 @@ function TournamentBrowser(props: Props) {
     localStorage.setItem("layout", !isCardLayout ? "card" : "list");
   };
 
-//   const mixtapeItems = props.mixtapes?.map((m) =>
-//     isCardLayout ? (
-//       <MixtapeCard
-//         style={{
-//           backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
-//         }}
-//         onClick={() => history.push(`/mixtape/${m._id}`)}
-//       />
-//     ) : (
-//       <MixtapeListItem
-//         image={`url(/images/mixtapes/${m.image || "default.webp"})`}
-//         onClick={() => history.push(`/mixtape/${m._id}`)}
-//       >
-//         <div className="mixtape-image" />
-//         <div className="mixtape-details">
-//           <h2>{m.mixtapeName}</h2>
-//           <div>{m.description}</div>
-//         </div>
-//       </MixtapeListItem>
-//     )
-//   );
-
-//   const mixtapeLayout = (items?: JSX.Element[]) => {
-//     return isCardLayout ? (
-//       <CardLayout>{items}</CardLayout>
-//     ) : (
-//       <ListLayout>{items}</ListLayout>
-//     );
-//   };
-const yourtournaments = [];
+  const yourtournaments = [];
 
   for (let i = 0; i < 8; i++) {
     yourtournaments.push(
@@ -70,28 +41,26 @@ const yourtournaments = [];
     );
   }
 
-let tournaments = []
-for(let i=0;i<8; i++){
-    tournaments.push(tournament)
-}
+  let tournaments = [];
+  for (let i = 0; i < 8; i++) {
+    tournaments.push(tournament);
+  }
 
-const tournamentStuff = (
+  const tournamentStuff = (
     <div>
-    <TournamentGrid>
-      {
-        tournaments.map((t, i) => (
-        <TournamentCard 
+      <TournamentGrid>
+        {tournaments.map((t, i) => (
+          <TournamentCard
             tournament={t}
             // ${i}
             onClick={() => history.push(`/tournament/0`)}
-        >
+          >
             <span>{t.title}</span>
-        </TournamentCard>
-      ))
-      }
-    </TournamentGrid>
+          </TournamentCard>
+        ))}
+      </TournamentGrid>
     </div>
-  )
+  );
 
   const changeLayoutButton = (
     <ChangeLayoutButton onClick={() => toggleCardLayout()}>

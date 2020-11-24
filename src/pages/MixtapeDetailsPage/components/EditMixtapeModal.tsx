@@ -4,7 +4,10 @@ import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
-import { AuthContext } from "../../../App";
+import ImageEditor from "../../../components/ImageEditor";
+import { api } from "../../../services/api";
+import { toast } from "react-toastify";
+import { uploadMixtapeImage } from "../../../services/mixtapeService";
 
 function EditMixtapeModal(props: Props) {
   const mixtape = props.mixtape;
@@ -14,6 +17,8 @@ function EditMixtapeModal(props: Props) {
   const [mixtapeName, setMixtapeName] = useState(mixtape.mixtapeName);
   const [description, setDescription] = useState(mixtape.description);
 
+  const [mixtapeCoverImage, setMixtapeCoverImage] = useState(null as any);
+
   const updateMixtape = async () => {
     const updatedMixtape = {
       ...mixtape,
@@ -22,15 +27,31 @@ function EditMixtapeModal(props: Props) {
       mixtapeName,
       isPrivate,
     };
+
+    if (mixtapeCoverImage) {
+      // Clear current image.
+      await uploadMixtapeImage(mixtape._id, mixtapeCoverImage);
+      toast.dark("✨ Updated mixtape cover image.");
+      setMixtapeCoverImage(null);
+    }
+
     props.updateMixtape(updatedMixtape);
     props.toggleModal();
+  };
+
+  const userAvatarChanged = (blob: any) => {
+    setMixtapeCoverImage(blob);
   };
 
   return (
     <div>
       <Container>
-        <MixtapeCoverImage />
-
+        {/* <MixtapeCoverImage /> */}
+        <ImageEditor
+          imageUrl={mixtape.mixtapeCoverImage}
+          imageSelected={userAvatarChanged}
+          editorType="mixtape_image"
+        />
         <InputLabel>Title</InputLabel>
         <Input
           value={mixtapeName}

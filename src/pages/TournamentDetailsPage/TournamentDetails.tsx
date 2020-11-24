@@ -6,19 +6,25 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import useMockTournament from "../../hooks/useMockTournament"
+import useMockTournament from "../../hooks/useMockTournament";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const [tournament, getTournament, updateTournament, isLoading] = useMockTournament('0');
+  const [tournament, ,] = useMockTournament("0");
   // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
 
   console.log(tournament);
 
   const bottomComponent = {
-    submission: <TournamentSubmission />,
-    voting: <TournamentVote tournament={tournament} />,
+    submission: (
+      <TournamentSubmission
+        tournament={tournament}
+        restrictions={tournament.restrictions}
+        rules={tournament.additional_submission_criteria}
+      />
+    ),
+    voting: <TournamentVote />,
     ended: <TournamentResults />,
   };
 
@@ -38,7 +44,7 @@ function TournamentDetails() {
                 bottom: "20px",
               }}
             >
-              by {tournament.creatorUsername}
+              by {tournament.creator_username}
             </Username>
             <div style={{ position: "relative", float: "right" }}>
               <Button

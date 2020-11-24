@@ -5,6 +5,7 @@ import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import { AuthContext } from "../../../App";
+import ImageEditor from "../../../components/ImageEditor";
 
 function NewMixtapeModal(props: Props) {
   const [tags, setTags] = useState([] as any[]);
@@ -12,6 +13,7 @@ function NewMixtapeModal(props: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const authContext = useContext(AuthContext);
+  const [mixtapeImage, setMixtapeImage] = useState("");
 
   const createNewMixtape = async () => {
     const mixtape = {
@@ -21,14 +23,21 @@ function NewMixtapeModal(props: Props) {
       createdBy: authContext.currentUser.username,
     };
 
-    await props.newMixtape(mixtape);
+    await props.newMixtape(mixtape, mixtapeImage);
     props.toggleModal();
+  };
+
+  const handleImageSelected = (imageBlob: any) => {
+    setMixtapeImage(imageBlob);
   };
 
   return (
     <div>
       <Container>
-        <MixtapeCoverImage />
+        <ImageEditor
+          imageSelected={handleImageSelected}
+          editorType="mixtape_image"
+        />
 
         <InputLabel>Title</InputLabel>
         <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />
@@ -61,7 +70,7 @@ function NewMixtapeModal(props: Props) {
 export default NewMixtapeModal;
 
 type Props = {
-  newMixtape: (mixtape: any) => Promise<any>;
+  newMixtape: (mixtape: any, imageBlob?: any) => Promise<any>;
   toggleModal: () => void;
 };
 

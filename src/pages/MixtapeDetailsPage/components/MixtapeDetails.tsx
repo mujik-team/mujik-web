@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import AvatarImage from "../../../components/AvatarImage";
 import SideModal from "../../../components/SideModal";
 import AddSongModal from "./AddSongModal";
 import EditMixtapeModal from "./EditMixtapeModal";
@@ -44,12 +45,13 @@ function MixtapeDetails(props: Props) {
     <span>Loading</span>
   ) : (
     <Container>
-      <SideModal toggle={toggleModal} isActive={showModal}>
+      <SideModal width={550} toggle={toggleModal} isActive={showModal}>
         {modals[modalToShow]}
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
       <div style={{ height: "50px" }}>
-        <AvatarImage />
+        {/* <CreatedByAvatar /> */}
+        <AvatarImage username={mixtape.createdBy} size={50} />
         <Username onClick={() => history.push(`/user/${mixtape.createdBy}`)}>
           {mixtape.createdBy}
         </Username>
@@ -85,7 +87,7 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const AvatarImage = styled.div`
+const CreatedByAvatar = styled.div`
   display: inline-block;
   border-radius: 25px;
   height: 50px;
