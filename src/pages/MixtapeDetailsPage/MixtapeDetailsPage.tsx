@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useMixtape from "../../hooks/useMixtape";
 import useMockMixtape from "../../hooks/useMockMixtape";
+import { api } from "../../services/api";
 import MixtapeDetails from "./components/MixtapeDetails";
 import SongBrowser from "./components/SongBrowser";
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
-  // const [m, getMixtape, updateMixtape, isLoading] = useMockMixtape("some_id");
-  const [mixtape, getMixtape, updateMixtape, isLoading] = useMixtape(mixtapeId);
+  const { mixtape, updateMixtape, isLoading } = useMixtape(mixtapeId);
 
   return (
     <Container>
       <DetailsContainer>
-        <img height="300" src="/images/mixtapes/default.jpg" />
+        <MixtapeCoverImage image={mixtape.mixtapeCoverImage} />
         <MixtapeDetails
           isLoading={isLoading as boolean}
           mixtape={mixtape}
@@ -40,4 +40,16 @@ const DetailsContainer = styled.div`
   grid-template-rows: 300px;
   gap: 30px;
   margin-bottom: 30px;
+`;
+
+type CoverImageProps = {
+  image: string;
+};
+const MixtapeCoverImage = styled.div`
+  height: 300px;
+  width: 300px;
+  border: 0;
+  border-radius: 8px;
+  background-image: ${(props: CoverImageProps) => `url(${props.image})` || ""};
+  background-color: var(--card-color);
 `;

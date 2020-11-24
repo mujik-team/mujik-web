@@ -21,7 +21,9 @@ function UserProfileScreen() {
   useEffect(() => {
     if (user && user.profile.mixtapes.length !== 0) {
       getSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
-        const mixtapesToShow = userMixtapes.filter((m) => !m.isPrivate);
+        const mixtapesToShow = userMixtapes.filter(
+          (m) => !m.isPrivate && m.createdBy === user.username
+        );
         setMixtapes([...mixtapesToShow]);
       });
     }
