@@ -15,7 +15,7 @@ import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 import { ToastContainer, Slide } from "react-toastify";
 import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
-import useSpotify, { SpotifyState } from "./hooks/useSpotify";
+import useSpotify, { SpotifyState } from "./hooks/useSpotifyOld";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState

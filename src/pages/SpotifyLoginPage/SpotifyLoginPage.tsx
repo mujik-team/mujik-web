@@ -3,7 +3,10 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { SpotifyContext } from "../../App";
 import Button from "../../components/Button";
-import { authorize, getAccessToken } from "../../services/spotifyService";
+import {
+  requestAccountAuthorization,
+  getAccessToken,
+} from "../../services/spotifyService/spotifyService";
 
 function SpotifyLoginPage() {
   const location = useLocation();
@@ -23,7 +26,7 @@ function SpotifyLoginPage() {
   return (
     <Container>
       <h2>Login with Spotify</h2>
-      <Button onClick={() => authorize()}>Authorize</Button>
+      <Button onClick={() => requestAccountAuthorization()}>Authorize</Button>
     </Container>
   );
 }
