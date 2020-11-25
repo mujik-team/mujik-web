@@ -4,28 +4,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { AuthContext, SpotifyContext } from "../App";
 import Button from "./Button";
-import TextInput from "./Input/TextInput";
 import AvatarImage from "./AvatarImage";
-
-const UserCoinsText = styled.span``;
-
-const UserDetailsContainer = styled.div`
-  cursor: pointer;
-  border-radius: 8px;
-  background-color: var(--card-color);
-  transition: 0.2s ease-in all;
-  height: 35px;
-  width: fit-content;
-  display: flex;
-  align-self: flex-end;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--main-color);
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 20px;
-`;
 
 function AppHeader() {
   const history = useHistory();
@@ -47,7 +26,7 @@ function AppHeader() {
         marginRight: "15px",
       }}
     >
-      {!spotifyContext.isAuthorized ? (
+      {!spotifyContext.state.isAuthorized ? (
         <Button
           style={{ height: "40px", marginRight: "20px" }}
           onClick={() => history.push("/spotify/authorize")}
@@ -80,3 +59,23 @@ function AppHeader() {
 }
 
 export default AppHeader;
+
+const UserCoinsText = styled.span``;
+
+const UserDetailsContainer = styled.div`
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: var(--card-color);
+  transition: 0.2s ease-in all;
+  height: 35px;
+  width: fit-content;
+  display: flex;
+  align-self: flex-end;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--main-color);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+`;

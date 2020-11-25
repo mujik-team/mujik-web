@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import spotifyService from "../services/spotifyService/spotifyService";
-import { Player } from "./useSpotifyOld";
 
 function useSpotifyNew() {
   const player = useRef(null as Player | null);
@@ -23,10 +22,10 @@ function useSpotifyNew() {
       // User is now authorized to make API calls.
       action({ type: "userAuthorized", payload: { accessToken } });
 
-      const device_id = await initalizePlayer(accessToken);
+      const deviceId = await initalizePlayer(accessToken);
 
       // The spotify web player is now ready.
-      action({ type: "playerReady", payload: { device_id } });
+      action({ type: "playerReady", payload: { deviceId } });
     }
   };
 
@@ -58,21 +57,40 @@ function useSpotifyNew() {
 
     const player_id: string = await new Promise((resolve) => {
       player.current!.addListener("ready", ({ device_id }) => {
+        console.log("player ready...");
         resolve(device_id);
       });
+
+      player.current!.connect();
     });
+
+    console.log(player_id);
 
     return player_id;
   };
 
+  const handleUserAuthorizedApp = async (code: string) => {
+    await spotifyService.auth.getInitialAccessToken(code);
+    initializeSpotify();
+  };
+
+  const logout = async () => {
+    player.current?.disconnect();
+
+    localStorage.removeItem("spotify_refresh_token");
+    localStorage.removeItem("spotify_access_token");
+  };
+
   useEffect(() => {
-    (window as any).onSdkReady = () => initializeSpotify();
-  });
+    (window as any).onSdkReady.push(() => initializeSpotify());
+  }, []);
 
   return {
     state,
     player,
     spotifyService,
+    handleUserAuthorizedApp,
+    logout,
   };
 }
 
@@ -90,11 +108,19 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         playerReady: true,
+        deviceId: action.payload.deviceId,
       };
     case "playerStateChanged":
       return {
         ...state,
         playerState: action.payload.playerState,
+      };
+    case "logout":
+      return {
+        ...state,
+        isAuthorized: false,
+        accessToken: "",
+        playerReady: false,
       };
   }
 }
@@ -116,6 +142,15 @@ type State = {
 };
 
 interface Action {
-  type: "userAuthorized" | "playerReady" | "playerStateChanged";
+  type: "userAuthorized" | "logout" | "playerReady" | "playerStateChanged";
   payload: any;
 }
+export type Player = {
+  device_id: string;
+  addListener: (event: string, callback: (state: any) => any) => void;
+  connect: () => void;
+  disconnect: () => void;
+  togglePlay: () => void;
+  nextTrack: () => void;
+  previousTrack: () => void;
+};

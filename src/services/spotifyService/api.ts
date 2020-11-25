@@ -4,16 +4,16 @@ let api: AxiosInstance;
 
 export const init = (accessToken: string) => {
   api = axios.create({
-    baseURL: "https://api/spotify.com/v1/",
+    baseURL: "https://api.spotify.com/v1/",
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 };
 
-export async function search(params: any) {
-  const { data } = await api.get("search", {
-    params,
+export async function search(q: string) {
+  const { data } = await api.get("/search", {
+    params: { q, market: "US", type: "track" },
   });
 
   return data;
@@ -25,7 +25,7 @@ export async function getSeveralSongs(ids: string[]) {
     ids: ids.toString(),
   };
 
-  const { data } = await axios.get("tracks", {
+  const { data } = await api.get("/tracks", {
     params,
   });
 
@@ -37,5 +37,5 @@ export async function playSong(device_id: string, uris: string[]) {
 
   const params = { device_id };
 
-  const { data } = await axios.put("play", body, { params });
+  const { data } = await api.put("/me/player/play", body, { params });
 }

@@ -33,9 +33,13 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
 
-    var onSdkReady;
+    var onSdkReady = [];
 
-    window.onSpotifyWebPlaybackSDKReady = () => onSdkReady();
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      
+      onSdkReady.forEach(cb => cb());
+    
+    };
     
 
 

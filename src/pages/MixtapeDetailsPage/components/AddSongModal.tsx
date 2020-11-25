@@ -10,7 +10,7 @@ function AddSongModal(props: Props) {
   const [showAddedSongs, setShowAddedSongs] = useState(false);
   const [songs, setSongs] = useState([] as any[]);
   const [songsSelected, setSongsSelected] = useState([] as any[]);
-  const spotifyContext = useContext(SpotifyContext);
+  const spotify = useContext(SpotifyContext);
 
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
@@ -21,14 +21,15 @@ function AddSongModal(props: Props) {
   const search = async (query: string) => {
     setIsLoading(true);
     setSongs([]);
-    const { tracks } = await spotifyContext.actions.search(query);
+    const { tracks } = await spotify.spotifyService.api.search(query);
     setSongs(tracks.items);
     setIsLoading(false);
     setShowAddedSongs(false);
   };
 
   const playSong = (uri: string) => {
-    spotifyContext.actions.playSong([uri]);
+    const deviceId = spotify.state.deviceId;
+    spotify.spotifyService.api.playSong(deviceId, [uri]);
   };
 
   const addSongToSelected = (song: any) => {

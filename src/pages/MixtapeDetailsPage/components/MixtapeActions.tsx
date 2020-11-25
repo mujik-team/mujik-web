@@ -26,9 +26,10 @@ function MixtapeActions(props: Props) {
   const authContext = useContext(AuthContext);
 
   const playMixtape = () => {
-    if (spotifyContext.isAuthorized && props.mixtape.songs) {
+    if (spotifyContext.state.isAuthorized && props.mixtape.songs) {
+      const deviceId = spotifyContext.state.deviceId;
       const uris = props.mixtape.songs.map((m: string) => "spotify:track:" + m);
-      spotifyContext.actions.playSong(uris);
+      spotifyContext.spotifyService.api.playSong(deviceId, uris);
     }
   };
 
@@ -44,22 +45,31 @@ function MixtapeActions(props: Props) {
   };
 
   const followMixtape = async () => {
-
     if (ownedByUser) {
       toast.dark("Cannot unfollow your own mixtape!");
     } else if (authContext.isLoggedIn) {
-      const follow = authContext.currentUser.profile.mixtapes.includes(props.mixtape._id);
+      const follow = authContext.currentUser.profile.mixtapes.includes(
+        props.mixtape._id
+      );
       if (follow === true) {
-        await mixtapeService.followMixtape(props.mixtape._id, authContext.currentUser.username, false);
+        await mixtapeService.followMixtape(
+          props.mixtape._id,
+          authContext.currentUser.username,
+          false
+        );
         await authContext.update();
         toast.success("Unfollowed Mixtape!");
       } else {
-        await mixtapeService.followMixtape(props.mixtape._id, authContext.currentUser.username, true);
+        await mixtapeService.followMixtape(
+          props.mixtape._id,
+          authContext.currentUser.username,
+          true
+        );
         await authContext.update();
         toast.success("Followed Mixtape!");
       }
     }
-  }
+  };
 
   const items = [
     {
@@ -98,11 +108,13 @@ function MixtapeActions(props: Props) {
           <i className="mdi mdi-plus" />
         </ActionButton>
       )}
-      {!ownedByUser && (<ActionButton
-        className="icon-button"
-        onClick={(e) => followMixtape()}>
-        {authContext.currentUser.profile.mixtapes.includes(props.mixtape._id) ? "Unfollow" : "Follow"}
-      </ActionButton>)}
+      {!ownedByUser && (
+        <ActionButton className="icon-button" onClick={(e) => followMixtape()}>
+          {authContext.currentUser.profile.mixtapes.includes(props.mixtape._id)
+            ? "Unfollow"
+            : "Follow"}
+        </ActionButton>
+      )}
       <ActionButton className="icon-button" onClick={(e) => menu.toggle(e)}>
         <i className="mdi mdi-menu" />
       </ActionButton>

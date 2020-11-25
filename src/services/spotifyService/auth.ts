@@ -53,6 +53,8 @@ export async function getInitialAccessToken(code: string) {
 
   localStorage.setItem("spotify_access_token", access_token);
   localStorage.setItem("spotify_refresh_token", refresh_token);
+
+  return { access_token, refresh_token };
 }
 
 /**
