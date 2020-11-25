@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as spotifyService from "../services/spotify";
+import * as spotifyService from "../services/spotifyService";
 
 export type Player = {
   device_id: string;

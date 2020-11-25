@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TextInput from "../../../components/Input/TextInput";
-import * as userService from "../../../services/user/userService";
+import * as userService from "../../../services/userService";
 import { toast } from "react-toastify";
 
 import { Steps } from "primereact/steps";

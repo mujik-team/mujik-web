@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useMixtape from "../../hooks/useMixtape";
-import useMockMixtape from "../../hooks/useMockMixtape";
-import { api } from "../../services/api";
 import MixtapeDetails from "./components/MixtapeDetails";
 import SongBrowser from "./components/SongBrowser";
 
@@ -16,7 +14,7 @@ function MixtapeDetailsPage() {
       <DetailsContainer>
         <MixtapeCoverImage image={mixtape.mixtapeCoverImage} />
         <MixtapeDetails
-          isLoading={isLoading as boolean}
+          isLoading={isLoading}
           mixtape={mixtape}
           updateMixtape={updateMixtape as any}
         />
@@ -32,6 +30,8 @@ export default MixtapeDetailsPage;
 
 const Container = styled.div`
   margin: 30px;
+
+  background-size: cover;
 `;
 
 const DetailsContainer = styled.div`

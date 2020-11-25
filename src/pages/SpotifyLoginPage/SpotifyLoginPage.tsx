@@ -3,7 +3,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { SpotifyContext } from "../../App";
 import Button from "../../components/Button";
-import { authorize, getAccessToken } from "../../services/spotify";
+import { authorize, getAccessToken } from "../../services/spotifyService";
 
 function SpotifyLoginPage() {
   const location = useLocation();

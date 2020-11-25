@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./HomePage.module.css";
 import FeaturedMixtapes from "./components/FeaturedMixtapes";
-import MixtapeCharts from "./components/MixtapeCharts";
+// import MixtapeCharts from "./components/MixtapeCharts";
 import TournamentCharts from "./components/TournamentCharts";
 import styled from "styled-components";
 
@@ -25,7 +25,7 @@ function HomePage() {
           <div className={styles.mixtapeChartsContainer}>
             <div className={styles.mixtapesTitle}>Mixtapes</div>
 
-            <MixtapeCharts />
+            {/* <MixtapeCharts /> */}
           </div>
           <div>
             <div className={styles.featuredTournamentsContainer}>
