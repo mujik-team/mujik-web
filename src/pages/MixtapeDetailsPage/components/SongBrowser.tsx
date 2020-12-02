@@ -18,6 +18,8 @@ function SongBrowser(props: Props) {
         .then((songs) => {
           setSongs(songs);
         });
+    } else if (props.mixtape.songs.length === 0) {
+      setSongs([]);
     }
   }, [spotifyContext.isAuthorized, props.mixtape]);
 
