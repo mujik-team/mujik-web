@@ -7,6 +7,7 @@ import { Tooltip } from 'primereact/tooltip';
 type Props = {
   mixtapeId: string;
   mixtapeName: string;
+  mixtape: any;
   children?: ReactNode[];
 };
 
@@ -76,7 +77,7 @@ function MixtapeListItem(props: Props) {
     <div>
       <Tooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
       <ListItem 
-      className="customClassName" data-pr-tooltip={props.mixtapeName}
+      className="customClassName" data-pr-tooltip={`${props.mixtape.songs.length} songs`}
       onClick={handleClick} base64image={image}>
       {props.children}{" "}
       </ListItem>

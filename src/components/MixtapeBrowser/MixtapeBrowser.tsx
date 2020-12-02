@@ -42,7 +42,7 @@ function MixtapeBrowser(props: Props) {
       return isCardLayout ? (
         <MixtapeCard key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} />
       ) : (
-        <MixtapeListItem key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName}>
+        <MixtapeListItem key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} mixtape={m}>
           <div className="mixtape-image" />
           <div className="mixtape-details">
             <h2>{m.mixtapeName}</h2>
