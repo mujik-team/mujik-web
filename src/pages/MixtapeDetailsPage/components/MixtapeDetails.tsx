@@ -62,12 +62,19 @@ function MixtapeDetails(props: Props) {
         </Pill>
       </div>
       <Description>{mixtape.description}</Description>
-
       <MixtapeActions
         showEditMixtapeModal={toggleEditMixtapeModal}
         showAddSongModal={toggleAddSongsModal}
         mixtape={mixtape}
-      />
+        />
+        <TagsContainer>
+          <div>
+            <TagTitle>{props.mixtape.tags.length? "Tags" : ""}</TagTitle>
+            {props.mixtape.tags?.map((a: string) => (
+              <Tag>{a}</Tag>
+            ))}
+          </div>
+      </TagsContainer>
     </Container>
   );
 }
@@ -136,4 +143,27 @@ const Description = styled.div`
   margin-top: 30px;
   max-width: 750px;
   margin-bottom: 20px;
+`;
+
+const TagsContainer = styled.div`
+  position: absolute;
+  right: 325px;
+  top: 175px;
+`;
+
+const TagTitle = styled.div`
+  color: var(--text-inactive);
+  font-size: 20px;
+  margin-bottom: 5px;
+  font-weight: 500;
+`;
+
+const Tag = styled.div`
+  cursor: pointer;
+  display: inline-block;
+  background-color: var(--card-color);
+  border-radius: 4px;
+  font-family: "Fira Sans";
+  padding: 5px;
+  margin-right: 10px;
 `;

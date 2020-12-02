@@ -11,6 +11,8 @@ function SongBrowser(props: Props) {
   const authContext = useContext(AuthContext);
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
+  console.log(props.mixtape);
+
   useEffect(() => {
     if (spotifyContext.isAuthorized && props.mixtape.songs.length !== 0) {
       spotifyContext.actions

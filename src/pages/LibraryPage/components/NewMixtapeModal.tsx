@@ -19,6 +19,7 @@ function NewMixtapeModal(props: Props) {
     const mixtape = {
       mixtapeName: title,
       description,
+      tags,
       isPrivate,
       createdBy: authContext.currentUser.username,
     };
