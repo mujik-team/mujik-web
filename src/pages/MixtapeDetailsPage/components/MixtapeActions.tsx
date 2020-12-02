@@ -116,8 +116,8 @@ function MixtapeActions(props: Props) {
         <i className="mdi mdi-menu" />
       </ActionButton>
       <PopupMenu popup ref={(el) => setMenu(el)} model={items} />
-      <Dialog header="Confirmation" visible={showConfirmDeleteModal} modal style={{ width: '350px' }} 
-        footer={<PrimeReactButton onClick={() => deleteMixtape()}>Delete</PrimeReactButton>} 
+      <Dialog header="Confirmation" visible={showConfirmDeleteModal} modal style={{ width: '500px' }} 
+        footer={<PrimeReactButton onClick={() => deleteMixtape()}>Confirm Delete</PrimeReactButton>} 
         onHide={() => setShowConfirmDeleteModal(false)}>
           <div className="confirmation-content">
             <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
