@@ -8,82 +8,103 @@ import { AuthContext, SpotifyContext } from "../../App";
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
-  const { mixtape, updateMixtape, isLoading, setMixtape } = useMixtape(mixtapeId);
-  const [sortBy, setSortBy] = useState('')
+  const { mixtape, updateMixtape, isLoading, setMixtape } = useMixtape(
+    mixtapeId
+  );
+  const [sortBy, setSortBy] = useState("");
   const spotifyContext = useContext(SpotifyContext);
-  const [songs, setSongs] = useState([] as any[])
-  const [asc, setAsc] = useState(true)
+  const [songs, setSongs] = useState([] as any[]);
+  const [asc, setAsc] = useState(true);
 
   useEffect(() => {
-    if (spotifyContext.isAuthorized && mixtape.songs.length !== 0) {
-      spotifyContext.actions
-        .getSeveralSongs(mixtape.songs)
-        .then((songs) => {
-          setSongs(songs);
-        });
-    } else if (mixtape.songs?.length === 0) {
-      setSongs([]);
+    if (mixtape.songs) {
+      if (spotifyContext.state.isAuthorized && mixtape.songs.length !== 0) {
+        spotifyContext.spotifyService.api
+          .getSeveralSongs(mixtape.songs)
+          .then((songs) => {
+            setSongs(songs);
+          });
+      }
     }
-  }, [spotifyContext.isAuthorized, mixtape]);
+  }, [spotifyContext.state.isAuthorized, mixtape]);
 
   useEffect(() => {
-    const newsongs = sortSongsBy(sortBy, songs)
+    const newsongs = sortSongsBy(sortBy, songs);
     // mixtape?.songs = newsongs
-     setMixtape({...mixtape, songs: newsongs})
-  }, [sortBy, asc])
+    setMixtape({ ...mixtape, songs: newsongs });
+  }, [sortBy, asc]);
 
   const getNewSongsArr = (songsToSort: any) => {
-      const newOrder = Array();
-      songsToSort.map((s : any, i : any) => {
-        newOrder.push(s.id)
-      })
-    return newOrder
-  }
+    const newOrder = Array();
+    songsToSort.map((s: any, i: any) => {
+      newOrder.push(s.id);
+    });
+    return newOrder;
+  };
 
   const sortSongsBy = (option: any, songs: any) => {
     switch (option) {
-      case "title" : {
-        console.log('sort by title')
-        const songsToSort = songs
-        asc 
-        ? songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() > b.name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() < b.name.toLowerCase() ) ? 1 : -1)
-        return getNewSongsArr(songsToSort)
-      }
-      case "artist" : {
-        console.log('sort by artist')
-        const songsToSort = songs
-        asc 
-        ? songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() < b.artists[0].name.toLowerCase() ) ? 1 : -1)
-        return getNewSongsArr(songsToSort)
-      }
-      case "album" : {
-        console.log('sort by title')
-        const songsToSort = songs
+      case "title": {
+        const songsToSort = songs;
         asc
-        ? songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() > b.album.name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() < b.album.name.toLowerCase() ) ? 1 : -1)
-        return getNewSongsArr(songsToSort)
+          ? songsToSort.sort((a: any, b: any) =>
+              a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+            )
+          : songsToSort.sort((a: any, b: any) =>
+              a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1
+            );
+        return getNewSongsArr(songsToSort);
       }
-      case "releaseDate" : {
-        console.log('sort by title')
-        const songsToSort = songs
+      case "artist": {
+        const songsToSort = songs;
         asc
-        ? songsToSort.sort((a : any,b : any) => ( a.album.release_date > b.album.release_date ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.album.release_date < b.album.release_date ) ? 1 : -1)
-        return getNewSongsArr(songsToSort)
+          ? songsToSort.sort((a: any, b: any) =>
+              a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase()
+                ? 1
+                : -1
+            )
+          : songsToSort.sort((a: any, b: any) =>
+              a.artists[0].name.toLowerCase() < b.artists[0].name.toLowerCase()
+                ? 1
+                : -1
+            );
+        return getNewSongsArr(songsToSort);
       }
-      case "duration" : {
-        console.log('sort by title')
-        const songsToSort = songs
+      case "album": {
+        const songsToSort = songs;
         asc
-        ? songsToSort.sort((a : any,b : any) => ( a.duration_ms > b.duration_ms ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.duration_ms < b.duration_ms ) ? 1 : -1)
-        return getNewSongsArr(songsToSort)
+          ? songsToSort.sort((a: any, b: any) =>
+              a.album.name.toLowerCase() > b.album.name.toLowerCase() ? 1 : -1
+            )
+          : songsToSort.sort((a: any, b: any) =>
+              a.album.name.toLowerCase() < b.album.name.toLowerCase() ? 1 : -1
+            );
+        return getNewSongsArr(songsToSort);
+      }
+      case "releaseDate": {
+        const songsToSort = songs;
+        asc
+          ? songsToSort.sort((a: any, b: any) =>
+              a.album.release_date > b.album.release_date ? 1 : -1
+            )
+          : songsToSort.sort((a: any, b: any) =>
+              a.album.release_date < b.album.release_date ? 1 : -1
+            );
+        return getNewSongsArr(songsToSort);
+      }
+      case "duration": {
+        const songsToSort = songs;
+        asc
+          ? songsToSort.sort((a: any, b: any) =>
+              a.duration_ms > b.duration_ms ? 1 : -1
+            )
+          : songsToSort.sort((a: any, b: any) =>
+              a.duration_ms < b.duration_ms ? 1 : -1
+            );
+        return getNewSongsArr(songsToSort);
       }
     }
-  }
+  };
 
   return (
     <Container>
@@ -96,8 +117,13 @@ function MixtapeDetailsPage() {
         />
       </DetailsContainer>
       {!isLoading && (
-        <SongBrowser mixtape={mixtape} setSortBy={setSortBy} asc={asc} 
-        setAsc={setAsc} updateMixtape={updateMixtape} />
+        <SongBrowser
+          mixtape={mixtape}
+          setSortBy={setSortBy}
+          asc={asc}
+          setAsc={setAsc}
+          updateMixtape={updateMixtape}
+        />
       )}
     </Container>
   );
