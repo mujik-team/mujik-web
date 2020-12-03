@@ -2,9 +2,12 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getImageToBase64 } from "../../../services/util";
+import { Tooltip } from 'primereact/tooltip';
 
 type Props = {
   mixtapeId: string;
+  mixtapeName: string;
+  mixtape: any;
   children?: ReactNode[];
 };
 
@@ -65,10 +68,21 @@ function MixtapeListItem(props: Props) {
     );
   }, [props.mixtapeId]);
 
+  // return (
+  //   <ListItem onClick={handleClick} base64image={image}>
+  //     {props.children}{" "}
+  //   </ListItem>
+  // );
   return (
-    <ListItem onClick={handleClick} base64image={image}>
+    <div>
+      <Tooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
+      <ListItem 
+      className="customClassName" data-pr-tooltip={`${props.mixtape.songs.length} songs`}
+      onClick={handleClick} base64image={image}>
       {props.children}{" "}
-    </ListItem>
+      </ListItem>
+
+    </div>
   );
 }
 

@@ -30,6 +30,7 @@ function SongBrowser(props: Props) {
     spotifyContext.spotifyService.api.playSong(device_id, uris);
   };
 
+
   const items = [
     // {
     //   label: "Add to Queue",
@@ -75,15 +76,17 @@ function SongBrowser(props: Props) {
     <Container>
       <HeaderBar>
         <span />
-        <span>Title</span>
-        <span>Artist</span>
-        <span>Album</span>
-        <i className="mdi mdi-calendar center" />
-        <i className="mdi mdi-clock-outline center" />
+        {/* { toggleAsc ? '▲' : '▼' } */}
+        <span onClick={() => {props.setSortBy("title"); props.setAsc(!props.asc);}}>Title</span>
+        <span onClick={() => {props.setSortBy("artist"); props.setAsc(!props.asc);}}>Artist</span>
+        <span onClick={() => {props.setSortBy("album"); props.setAsc(!props.asc);}}>Album</span>
+        <i className="mdi mdi-calendar center" onClick={() => {props.setSortBy("releaseDate"); props.setAsc(!props.asc);}} />
+        <i className="mdi mdi-clock-outline center" onClick={() => {props.setSortBy("duration"); props.setAsc(!props.asc);}} />
       </HeaderBar>
       <hr />
       <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
       {songList}
+      {/* {console.log(songs)} */}
     </Container>
   );
 }
@@ -93,6 +96,9 @@ export default SongBrowser;
 type Props = {
   mixtape: any;
   updateMixtape: (newMixtape: any) => void;
+  setSortBy: (option: any) => void;
+  asc: any;
+  setAsc: (value: any) => void;
 };
 
 const Container = styled.div``;

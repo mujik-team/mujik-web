@@ -6,6 +6,8 @@ import { AuthContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import * as mixtapeService from "../../../services/mixtapeService";
+import { Dialog } from 'primereact/dialog';
+import { Button as PrimeReactButton} from 'primereact/button'
 
 const copyToClipboard = (str: string) => {
   const el = document.createElement("textarea");
@@ -22,6 +24,7 @@ const copyToClipboard = (str: string) => {
 function MixtapeActions(props: Props) {
   const [menu, setMenu] = useState(null as any);
   const spotifyContext = useContext(SpotifyContext);
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
   const history = useHistory();
   const authContext = useContext(AuthContext);
 
@@ -43,6 +46,11 @@ function MixtapeActions(props: Props) {
     await authContext.update();
     history.push("/library");
   };
+
+  const deleteMixtapeModal = () => {
+    // <Button onClick={() => console.log("Hellooooo")} >Delete</Button>
+    setShowConfirmDeleteModal(true)
+  }
 
   const followMixtape = async () => {
     if (ownedByUser) {
@@ -92,7 +100,8 @@ function MixtapeActions(props: Props) {
       {
         label: "Delete Mixtape",
         icon: "mdi mdi-delete",
-        command: () => deleteMixtape(),
+        // command: () => deleteMixtape(),
+        command: () => deleteMixtapeModal(),
       }
     );
   }
@@ -119,6 +128,14 @@ function MixtapeActions(props: Props) {
         <i className="mdi mdi-menu" />
       </ActionButton>
       <PopupMenu popup ref={(el) => setMenu(el)} model={items} />
+      <Dialog header="Confirmation" visible={showConfirmDeleteModal} modal style={{ width: '500px' }} 
+        footer={<PrimeReactButton onClick={() => deleteMixtape()}>Confirm Delete</PrimeReactButton>} 
+        onHide={() => setShowConfirmDeleteModal(false)}>
+          <div className="confirmation-content">
+            <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
+            <span>Are you sure you want to delete this mixtape?</span>
+          </div>
+      </Dialog>
     </div>
   );
 }
