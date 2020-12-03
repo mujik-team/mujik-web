@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import * as authService from "../services/auth/authService";
-import { getUser } from "../services/user/userService";
-import { initSpotifyWebPlayer } from "../services/spotify";
+import * as authService from "../services/authService";
+import { getUser } from "../services/userService";
+import { initSpotifyWebPlayer } from "../services/spotifyService";
 
 export type AuthState = {
   isLoggedIn: boolean;

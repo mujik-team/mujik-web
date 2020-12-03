@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import mixtapes from "../../../services/mock/mixtapes";
-import { randomMixtapes } from "../../../services/random";
 
 function MixtapeCharts() {
   const items = [];
@@ -12,14 +11,7 @@ function MixtapeCharts() {
     items.push(
       <ChartItem>
         <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
-        <div
-          style={{
-            backgroundImage: `url(/images/mixtapes/${
-              randomMixtapes()[i].image
-            })`,
-          }}
-          className="mixtape-image"
-        ></div>
+        <div className="mixtape-image"></div>
         <div className="details">
           <div className="song-title">{mixtapes[i].name}</div>
           <div className="song-artist">{mixtapes[i].createdBy}</div>
