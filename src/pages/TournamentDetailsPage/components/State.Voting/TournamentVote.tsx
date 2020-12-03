@@ -5,7 +5,7 @@ import FullScreenModal from "../../../../components/FullScreenModal";
 import SideModal from "../../../../components/SideModal";
 import VoteModal from "./VoteModal";
 import VoteSuccessModal from "./VoteSuccessModal";
-import SortDropdown from "../../../../components/Input/SortDropdown";
+import DropdownSelect from "../../../../components/Input/DropdownSelect";
 import TextInput from "../../../../components/Input/TextInput";
 
 const Container = styled.div``;
@@ -123,7 +123,7 @@ function TournamentVote() {
           <TextInput />
         </div>
         <div className="p-float-label">
-          <SortDropdown
+          <DropdownSelect
             id="sort-dropdown"
             value={sortBy}
             onChange={(e: any) => setSortBy(e.value)}

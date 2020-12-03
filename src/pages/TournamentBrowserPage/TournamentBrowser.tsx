@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import SortDropdown from "../../components/Input/SortDropdown";
+import DropdownSelect from "../../components/Input/DropdownSelect";
 import TournamentCard from "./TournamentCard";
 import styles from "./TournamentBrowser.module.css";
 // import tournaments from "../../services/mock/tournaments";
@@ -82,7 +82,7 @@ function TournamentBrowser(props: Props) {
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
-            <SortDropdown
+            <DropdownSelect
               id="sort-dropdown"
               value={sortBy}
               onChange={(e: any) => setSortBy(e.value)}

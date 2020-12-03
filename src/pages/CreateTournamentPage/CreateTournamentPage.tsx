@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ImageEditor from "../../components/ImageEditor";
 import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
+import RestrictionSelector from "./components/RestrictionSelector";
 
 function CreateTournamentPage() {
   return (
@@ -23,13 +24,9 @@ function CreateTournamentPage() {
         <FieldTextArea />
 
         <FieldTitle>Submission Restrictions</FieldTitle>
-        <FieldTitle>Submission Restrictions</FieldTitle>
         <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
-        <FieldTitle>Submission Restrictions</FieldTitle>
-        <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
-        <FieldTitle>Submission Restrictions</FieldTitle>
-        <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
-        <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
+
+        <RestrictionSelector />
       </div>
 
       <ThinkingImage src="/images/in_thought.svg" />
@@ -99,6 +96,7 @@ const FieldTextArea = styled(TextArea)`
 
 const ThinkingImage = styled.img`
   position: fixed;
+  pointer-events: none;
   right: -5vw;
   bottom: -5vh;
   width: 45vw;
