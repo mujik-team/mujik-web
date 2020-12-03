@@ -12,14 +12,24 @@ function SongBrowser(props: Props) {
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
-    if (spotifyContext.isAuthorized && props.mixtape.songs.length !== 0) {
-      spotifyContext.actions
-        .getSeveralSongs(props.mixtape.songs)
-        .then((songs) => {
-          setSongs(songs);
-        });
+    if (props.mixtape.songs) {
+      if (
+        spotifyContext.state.isAuthorized &&
+        props.mixtape.songs.length !== 0
+      ) {
+        spotifyContext.spotifyService.api
+          .getSeveralSongs(props.mixtape.songs)
+          .then((songs) => {
+            setSongs(songs);
+          });
+      }
     }
-  }, [spotifyContext.isAuthorized, props.mixtape]);
+  }, [spotifyContext.state.isAuthorized, props.mixtape]);
+
+  const playSong = (uris: string[]) => {
+    const device_id = spotifyContext.state.deviceId;
+    spotifyContext.spotifyService.api.playSong(device_id, uris);
+  };
 
   const items = [
     // {
@@ -44,6 +54,16 @@ function SongBrowser(props: Props) {
     }
   };
 
+  const convertTime = (sec: number) => {
+    const hours = Number(Math.floor(sec / 3600).toFixed(0));
+    const minutes = Number(Math.floor((sec % 3600) / 60).toFixed(0));
+    const seconds = (sec - hours * 3600 - minutes * 60).toFixed(0);
+
+    return [`${hours}h`, `${minutes}m`, `${seconds}s`]
+      .filter((item) => item[0] !== "0")
+      .join(" ");
+  };
+
   const songList = songs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
@@ -51,14 +71,14 @@ function SongBrowser(props: Props) {
         setSelectedSongIndex(i);
       }}
     >
-      <PlayButton onClick={() => spotifyContext.actions.playSong([s.uri])}>
+      <PlayButton onClick={() => playSong([s.uri])}>
         <i className="mdi mdi-play" />
       </PlayButton>
       <span>{s.name}</span>
       <span>{s.artists[0].name}</span>
       <span>{s.album.name}</span>
       <span className="center">{s.album.release_date}</span>
-      <span className="center">{s.duration_ms / 1000}</span>
+      <span className="center">{convertTime(s.duration_ms / 1000)}</span>
     </SongListItem>
   ));
 
@@ -66,15 +86,50 @@ function SongBrowser(props: Props) {
     <Container>
       <HeaderBar>
         <span />
-        <span>Title</span>
-        <span>Artist</span>
-        <span>Album</span>
-        <i className="mdi mdi-calendar center" />
-        <i className="mdi mdi-clock-outline center" />
+        {/* { toggleAsc ? '▲' : '▼' } */}
+        <span
+          onClick={() => {
+            props.setSortBy("title");
+            props.setAsc(!props.asc);
+          }}
+        >
+          Title
+        </span>
+        <span
+          onClick={() => {
+            props.setSortBy("artist");
+            props.setAsc(!props.asc);
+          }}
+        >
+          Artist
+        </span>
+        <span
+          onClick={() => {
+            props.setSortBy("album");
+            props.setAsc(!props.asc);
+          }}
+        >
+          Album
+        </span>
+        <i
+          className="mdi mdi-calendar center"
+          onClick={() => {
+            props.setSortBy("releaseDate");
+            props.setAsc(!props.asc);
+          }}
+        />
+        <i
+          className="mdi mdi-clock-outline center"
+          onClick={() => {
+            props.setSortBy("duration");
+            props.setAsc(!props.asc);
+          }}
+        />
       </HeaderBar>
       <hr />
       <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
       {songList}
+      {/* {console.log(songs)} */}
     </Container>
   );
 }
@@ -84,6 +139,9 @@ export default SongBrowser;
 type Props = {
   mixtape: any;
   updateMixtape: (newMixtape: any) => void;
+  setSortBy: (option: any) => void;
+  asc: any;
+  setAsc: (value: any) => void;
 };
 
 const Container = styled.div``;

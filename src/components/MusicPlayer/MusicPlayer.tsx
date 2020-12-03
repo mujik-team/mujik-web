@@ -8,9 +8,11 @@ function MusicPlayer(props: Props) {
 
   const [progress, setProgress] = useState(0);
 
+  const player = spotifyContext.player.current;
+
   // Used for managing the state of the progress bar.
   useEffect(() => {
-    const playerState = spotifyContext.playerState;
+    const playerState = spotifyContext.state.playerState;
     let interval: any;
     if (playerState) {
       setProgress(playerState.position);
@@ -23,27 +25,31 @@ function MusicPlayer(props: Props) {
     }
 
     return () => clearInterval(interval);
-  }, [spotifyContext.playerState]);
+  }, [spotifyContext.state.playerState]);
 
-  if (spotifyContext.playerState) {
-    const isPlaying = !spotifyContext.playerState.paused;
-    const currentTrack = spotifyContext.playerState.track_window.current_track;
+  if (
+    spotifyContext.state.playerReady &&
+    spotifyContext.state.playerState.track_window
+  ) {
+    const isPlaying = !spotifyContext.state.playerState.paused;
+    const currentTrack =
+      spotifyContext.state.playerState.track_window.current_track;
     const image = currentTrack.album.images[0]?.url;
     const songName = currentTrack.name;
-    const duration = spotifyContext.playerState.duration;
+    const duration = spotifyContext.state.playerState.duration;
     const artist = currentTrack.artists[0];
 
     const togglePlay = () => {
-      spotifyContext.player.togglePlay();
+      player?.togglePlay();
     };
 
     const nextSong = () => {
-      spotifyContext.player.nextTrack();
+      player?.nextTrack();
     };
 
     const prevSong = () => {
-      spotifyContext.player.previousTrack();
-      spotifyContext.player.previousTrack();
+      player?.previousTrack();
+      player?.previousTrack();
     };
 
     return (

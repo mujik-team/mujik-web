@@ -1,18 +1,15 @@
 import axios from "axios";
 import qs from "querystring";
-import { toast } from "react-toastify";
 
 const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const redirect_uri = process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
-
 const verifyCode = "Zg6klgrnixQJ629GsawRMV8MjWvwRAr-vyvP1MHnB6X8WKZN";
 
-export async function initSpotifyWebPlayer() {
-  (window as any).subscribers.push((s: any) => console.log(s));
-}
-
-export async function authorize() {
+export async function requestAccountAuthorization() {
+  // Create request.
   let code_challenge = await generateChallenge(verifyCode);
+  const scope =
+    "streaming user-read-email user-read-private user-modify-playback-state";
 
   const params = {
     response_type: "code",
@@ -20,8 +17,7 @@ export async function authorize() {
     redirect_uri,
     code_challenge,
     code_challenge_method: "S256",
-    scope:
-      "streaming user-read-email user-read-private user-modify-playback-state",
+    scope,
   };
 
   let url: any = axios.getUri({
@@ -29,12 +25,16 @@ export async function authorize() {
     params,
   });
 
+  // Redirect user to the authorization url.
   window.location.href = url;
 }
 
-export async function getAccessToken(code: string) {
-  console.log("Retrieving initial access_token and refresh_token");
-
+/**
+ * This method retrieves the initial access token after the
+ * client has authorized the use of the API.
+ * @param code The code returned by the callback url.
+ */
+export async function getInitialAccessToken(code: string) {
   const body = {
     client_id,
     grant_type: "authorization_code",
@@ -53,8 +53,14 @@ export async function getAccessToken(code: string) {
 
   localStorage.setItem("spotify_access_token", access_token);
   localStorage.setItem("spotify_refresh_token", refresh_token);
+
+  return { access_token, refresh_token };
 }
 
+/**
+ * Used to retrieve a refreshed access token if the previous one was expired.
+ * @param refresh_token The refresh_token provided earlier.
+ */
 export async function refreshAccessToken(refresh_token: string) {
   try {
     const body = {
@@ -78,65 +84,13 @@ export async function refreshAccessToken(refresh_token: string) {
   }
 }
 
-export async function search(accessToken: string, params: any) {
-  const { data } = await axios.get("https://api.spotify.com/v1/search", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params,
-  });
-
-  return data;
-}
-
-export async function getSeveralSongs(accessToken: string, ids: string[]) {
-  const params = {
-    market: "US",
-    ids: ids.toString(),
-  };
-
-  const { data } = await axios.get("https://api.spotify.com/v1/tracks", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params,
-  });
-
-  return data.tracks;
-}
-
-export async function playSong(
-  accessToken: string,
-  device_id: string,
-  uris: string[]
-) {
-  const body = {
-    uris,
-  };
-
-  const { data } = await axios.put(
-    "https://api.spotify.com/v1/me/player/play",
-
-    body,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        device_id,
-      },
-    }
-  );
-}
-
-// Utility functions to be used.
+// Utility functions used during authorization flow.
 async function sha256(plain: string) {
   const encoder = new TextEncoder();
   const data = encoder.encode(plain);
 
   return window.crypto.subtle.digest("SHA-256", data);
 }
-
 function base64urlencode(a: any) {
   // Convert the ArrayBuffer to string using Uint8 array.
   // btoa takes chars from 0-255 and base64 encodes.

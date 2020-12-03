@@ -11,7 +11,6 @@ function MixtapeBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
   const [sortByAscending, setSortByAscending] = useState(false);
   const [isCardLayout, setIsCardLayout] = useState(true);
-  // const [mixtapes, setMixtapes] = useState(props.mixtapes);
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
@@ -40,9 +39,9 @@ function MixtapeBrowser(props: Props) {
 
     return mixtapes?.map((m, i) => {
       return isCardLayout ? (
-        <MixtapeCard key={i} mixtapeId={m._id} />
+        <MixtapeCard key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} />
       ) : (
-        <MixtapeListItem key={i} mixtapeId={m._id}>
+        <MixtapeListItem key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} mixtape={m}>
           <div className="mixtape-image" />
           <div className="mixtape-details">
             <h2>{m.mixtapeName}</h2>

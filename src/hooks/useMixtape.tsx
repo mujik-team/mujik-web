@@ -38,6 +38,7 @@ function useMixtape(id: string) {
     mixtape: { ...mixtape, mixtapeCoverImage },
     getMixtape,
     updateMixtape,
+    setMixtape,
     isLoading,
   };
 }
