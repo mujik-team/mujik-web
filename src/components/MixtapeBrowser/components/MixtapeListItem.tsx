@@ -43,7 +43,7 @@ const ListItem = styled.div`
   }
 
   & > div.mixtape-details > div {
-    font-family: "Fira Sans";
+    font-family: "Inter";
     color: var(--text-inactive);
     overflow: hidden;
     height: 90px;

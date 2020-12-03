@@ -120,7 +120,7 @@ const PlayButton = styled(Button)`
 
 const SongListItem = styled.div`
   user-select: none;
-  font-family: "Fira Sans";
+  font-family: "Inter";
   border-radius: 6px;
   display: grid;
   grid-template-columns: 50px 2fr 1fr 2fr 100px 80px;

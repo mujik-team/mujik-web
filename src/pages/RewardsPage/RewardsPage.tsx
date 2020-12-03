@@ -81,7 +81,7 @@ const Title = styled.div`
 `;
 
 const Description = styled.div`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   font-size: 20px;
   width: 1000px;
   color: var(--text-inactive);

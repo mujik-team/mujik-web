@@ -130,7 +130,7 @@ const Pill = styled.div`
 `;
 
 const Description = styled.div`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   font-size: 1.2rem;
   color: var(--text-inactive);
   margin-top: 30px;

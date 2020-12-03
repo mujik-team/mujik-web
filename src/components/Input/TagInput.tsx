@@ -3,7 +3,7 @@ import { Chips } from "primereact/chips";
 
 const TagInput = styled(Chips)`
   & > .p-inputtext {
-    font-family: "Fira Sans";
+    font-family: "Inter";
     font-size: 16px;
     padding: 10px 15px;
     background-color: var(--card-color);

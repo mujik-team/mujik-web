@@ -122,14 +122,14 @@ const Container = styled.div`
 
   & > .description {
     margin-top: 10px;
-    font-family: "Fira Sans";
+    font-family: "Inter";
     user-select: none;
     color: var(--text-inactive);
   }
 `;
 
 const SearchResultItem = styled.div`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   user-select: none;
   cursor: pointer;
   background-color: var(--card-color);

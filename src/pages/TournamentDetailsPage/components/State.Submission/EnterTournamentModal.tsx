@@ -1,20 +1,20 @@
-import React, { useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 // import Checkbox from "../../../../components/Input/Checkbox";
 import TextInput from "../../../../components/Input/TextInput";
 import styles from "./EnterTournamentModal.module.css";
-import { AuthContext } from "../../../../App"
+import { AuthContext } from "../../../../App";
 import * as mixtapeService from "../../../../services/mixtapeService";
 import Button from "../../../../components/Button";
 // import { Checkbox } from "primereact"
-import {Checkbox} from 'primereact/checkbox';
+import { Checkbox } from "primereact/checkbox";
 // import { getSeveralSongs } from "../../../../services/spotify"
 import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
 
 const Instructions = styled.div`
   margin-top: 20px;
-  font-family: "Fira Sans";
+  font-family: "Inter";
   color: var(--text-inactive);
   font-size: 16px;
 `;
@@ -29,79 +29,88 @@ function EnterTournamentModal(props: Props) {
   const [showAddedMixtapes, setShowAddedMixtapes] = useState(false);
   const [readTermsAndC, setReadTermsAndC] = useState(false);
   const [meetRestrictions, setMeetRestrictions] = useState(false);
-  const [mixtapeToSubmit, setMixtapeToSubmit] = useState(null as any); 
+  const [mixtapeToSubmit, setMixtapeToSubmit] = useState(null as any);
   const spotifyContext = useContext(SpotifyContext);
   let restrictionsMet = [] as any;
-  
 
-  const checkMixtapeRestrictions = (type : any, value: any) : any => {
-    switch (type){
+  const checkMixtapeRestrictions = (type: any, value: any): any => {
+    switch (type) {
       case "song_limit": {
         // console.log("CHecked song limit")
-        const fulfilled = mixtapeToSubmit ? (mixtapeToSubmit.songs.length < value) : (999 < value)
-        const name = "Number of Songs"
+        const fulfilled = mixtapeToSubmit
+          ? mixtapeToSubmit.songs.length < value
+          : 999 < value;
+        const name = "Number of Songs";
         const RestrictionObject = {
           fulfilled: fulfilled,
-          name: name
-        }
-        restrictionsMet.push(fulfilled)
+          name: name,
+        };
+        restrictionsMet.push(fulfilled);
         // setSongLimitRestriction(songLimitRestriction)
-        return RestrictionObject
+        return RestrictionObject;
       }
       case "lvl_restriction": {
-        const fulfilled = authContext.currentUser.profile.level >= value
-        console.log("fullfulled for level is true : ", fulfilled)
-        const name = "Minumum Level Requirement"
+        const fulfilled = authContext.currentUser.profile.level >= value;
+        console.log("fullfulled for level is true : ", fulfilled);
+        const name = "Minumum Level Requirement";
         const RestrictionObject = {
           fulfilled: fulfilled,
-          name: name
-        }
-        restrictionsMet.push(fulfilled)
+          name: name,
+        };
+        restrictionsMet.push(fulfilled);
         // setLvlRestriction(fulfilled)
         return RestrictionObject;
       }
     }
-  }
+  };
 
-
-  const RestrictionChecklist = props.tournament.restrictions.map((r : any, i : any) => (
-    <div key={i} style={{ display: "inline-block", marginTop: "20px" , marginLeft: "20px" }}>
+  const RestrictionChecklist = props.tournament.restrictions.map(
+    (r: any, i: any) => (
+      <div
+        key={i}
+        style={{
+          display: "inline-block",
+          marginTop: "20px",
+          marginLeft: "20px",
+        }}
+      >
         <Checkbox
           inputId={r.type}
-          checked={checkMixtapeRestrictions(r.type, r.value) ? checkMixtapeRestrictions(r.type, r.value).fulfilled
-            : false// checkMixtapeRestrictions(mixtapesSelected,r.type, r.value)
+          checked={
+            checkMixtapeRestrictions(r.type, r.value)
+              ? checkMixtapeRestrictions(r.type, r.value).fulfilled
+              : false // checkMixtapeRestrictions(mixtapesSelected,r.type, r.value)
           }
         />
-        <span style={{ marginLeft: "20px" }}>{checkMixtapeRestrictions(r.type, r.value)? checkMixtapeRestrictions(r.type, r.value).name : false}</span>
-    </div>
-  ))
+        <span style={{ marginLeft: "20px" }}>
+          {checkMixtapeRestrictions(r.type, r.value)
+            ? checkMixtapeRestrictions(r.type, r.value).name
+            : false}
+        </span>
+      </div>
+    )
+  );
 
   const preSubmissionChecks = () => {
-
-    console.log(restrictionsMet)
-    if (meetRestrictions && readTermsAndC && (!restrictionsMet.includes(false))) {
+    console.log(restrictionsMet);
+    if (meetRestrictions && readTermsAndC && !restrictionsMet.includes(false)) {
       toast.dark("🎵 Submitted mixtape to the tournament");
-    }    
-    else{
+    } else {
       toast.error("🤔 Unable to make a submission");
     }
-
-  }
-
+  };
 
   const addMixtapeToSelected = (mixtape: any) => {
     setMixtapesSelected([...mixtapesSelected, mixtape]);
     setShowAddedMixtapes(!showAddedMixtapes);
-    console.log(mixtape)
-    setMixtapeToSubmit(mixtape)
+    console.log(mixtape);
+    setMixtapeToSubmit(mixtape);
   };
 
-  
-
   const toggleAddedMixtapes = () => {
-    setShowAddedMixtapes(!showAddedMixtapes)
-    setMixtapesSelected([])
-  }
+    setShowAddedMixtapes(!showAddedMixtapes);
+    setMixtapesSelected([]);
+  };
 
   const removeMixtapeFromSelect = (song: any, i: number) => {
     const newSelected = mixtapesSelected.filter((s, index) => index !== i);
@@ -121,7 +130,7 @@ function EnterTournamentModal(props: Props) {
   ));
 
   const results =
-  showAddedMixtapes && mixtapesSelected.length > 0
+    showAddedMixtapes && mixtapesSelected.length > 0
       ? mixtapesSelectedList
       : "";
 
@@ -154,57 +163,85 @@ function EnterTournamentModal(props: Props) {
           <TextInput />
         </div>
         {mixtapesSelected.length > 0 && (
-          <ConfirmSongsAddedButton
-            onClick={() => toggleAddedMixtapes()}
-          >
-            { showAddedMixtapes ? "Back" : "Add Mixtape" }
+          <ConfirmSongsAddedButton onClick={() => toggleAddedMixtapes()}>
+            {showAddedMixtapes ? "Back" : "Add Mixtape"}
           </ConfirmSongsAddedButton>
         )}
 
-        {showAddedMixtapes 
-          ? <Instructions>Make sure that selected mixtape meets all restrictions</Instructions> 
-          : <Instructions>Please select a mixtape to submit.</Instructions>
-        }
-        {showAddedMixtapes ? "" :mixtapes.map((m, i) => (
-          <SearchResultItem key={i} onClick={() => addMixtapeToSelected(m)}>
-            {<span className="name">{m.mixtapeName}</span>}
-            {<span className="artist">{m.createdBy}</span>}
-          </SearchResultItem>
-          ))}
+        {showAddedMixtapes ? (
+          <Instructions>
+            Make sure that selected mixtape meets all restrictions
+          </Instructions>
+        ) : (
+          <Instructions>Please select a mixtape to submit.</Instructions>
+        )}
+        {showAddedMixtapes
+          ? ""
+          : mixtapes.map((m, i) => (
+              <SearchResultItem key={i} onClick={() => addMixtapeToSelected(m)}>
+                {<span className="name">{m.mixtapeName}</span>}
+                {<span className="artist">{m.createdBy}</span>}
+              </SearchResultItem>
+            ))}
         {showAddedMixtapes && (
-        <AddSongsToMixtapeButton onClick={() => console.log("Suk pepepe")}>
-          Add To Mixtape
-        </AddSongsToMixtapeButton> )}
-      {results}
+          <AddSongsToMixtapeButton onClick={() => console.log("Suk pepepe")}>
+            Add To Mixtape
+          </AddSongsToMixtapeButton>
+        )}
+        {results}
       </div>
-      {!showAddedMixtapes ? "" : (
+      {!showAddedMixtapes ? (
+        ""
+      ) : (
         <div>
           {/* {showAddedMixtapes ? : ""} */}
-          <Instructions style={{marginLeft: "20px"}} >Restrictions Met: </Instructions>
+          <Instructions style={{ marginLeft: "20px" }}>
+            Restrictions Met:{" "}
+          </Instructions>
           {RestrictionChecklist}
-          <Instructions style={{marginTop: "20px", marginLeft: "20px"}} >Agree to Terms and Conditions: </Instructions>
-          <div style={{ display: "inline-block", marginTop: "20px" , marginLeft: "20px" }}>
-              <Checkbox
-                inputId="TermsAndCond"
-                checked={readTermsAndC}
-                onChange={(e) => setReadTermsAndC(!readTermsAndC)}
-              />
-              <span style={{ marginLeft: "20px" }}>I have read the contest rules.</span>
+          <Instructions style={{ marginTop: "20px", marginLeft: "20px" }}>
+            Agree to Terms and Conditions:{" "}
+          </Instructions>
+          <div
+            style={{
+              display: "inline-block",
+              marginTop: "20px",
+              marginLeft: "20px",
+            }}
+          >
+            <Checkbox
+              inputId="TermsAndCond"
+              checked={readTermsAndC}
+              onChange={(e) => setReadTermsAndC(!readTermsAndC)}
+            />
+            <span style={{ marginLeft: "20px" }}>
+              I have read the contest rules.
+            </span>
           </div>
-          <div style={{ display: "inline-block", marginTop: "20px" , marginLeft: "20px" }}>
-              <Checkbox
-                  inputId="MeetRestrictions"
-                  checked={meetRestrictions}
-                  onChange={(e) => setMeetRestrictions(!meetRestrictions)}
-                />
-                <span style={{ marginLeft: "20px" }}>My mixtape meets restrictions.</span>
+          <div
+            style={{
+              display: "inline-block",
+              marginTop: "20px",
+              marginLeft: "20px",
+            }}
+          >
+            <Checkbox
+              inputId="MeetRestrictions"
+              checked={meetRestrictions}
+              onChange={(e) => setMeetRestrictions(!meetRestrictions)}
+            />
+            <span style={{ marginLeft: "20px" }}>
+              My mixtape meets restrictions.
+            </span>
           </div>
         </div>
       )}
-      
-      <div onClick={preSubmissionChecks} 
-      // onClick={props.submit}
-      className={styles.submitButton}>
+
+      <div
+        onClick={preSubmissionChecks}
+        // onClick={props.submit}
+        className={styles.submitButton}
+      >
         Submit
       </div>
     </div>
@@ -214,7 +251,7 @@ function EnterTournamentModal(props: Props) {
 export default EnterTournamentModal;
 
 const SearchResultItem = styled.div`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   user-select: none;
   cursor: pointer;
   background-color: var(--card-color);

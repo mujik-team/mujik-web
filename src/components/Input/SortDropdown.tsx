@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Dropdown } from "primereact/dropdown";
 
 const SortDropdown = styled(Dropdown)`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   background: var(--card-color);
   border: none;
   border-radius: 8px;
@@ -25,7 +25,7 @@ const SortDropdown = styled(Dropdown)`
 
   & .p-component,
   & .p-dropdown-label {
-    font-family: "Fira Sans";
+    font-family: "Inter";
     font-size: 16px;
   }
 

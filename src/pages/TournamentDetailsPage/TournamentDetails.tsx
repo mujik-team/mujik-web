@@ -6,16 +6,27 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import useMockTournament from "../../hooks/useMockTournament"
+import useMockTournament from "../../hooks/useMockTournament";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const [tournament, getTournament, updateTournament, isLoading] = useMockTournament('0');
+  const [
+    tournament,
+    getTournament,
+    updateTournament,
+    isLoading,
+  ] = useMockTournament("0");
   // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
 
   const bottomComponent = {
-    submission: <TournamentSubmission tournament={tournament} restrictions={tournament.restrictions} rules={tournament.additional_submission_criteria} />,
+    submission: (
+      <TournamentSubmission
+        tournament={tournament}
+        restrictions={tournament.restrictions}
+        rules={tournament.additional_submission_criteria}
+      />
+    ),
     voting: <TournamentVote />,
     ended: <TournamentResults />,
   };
@@ -160,7 +171,7 @@ const Username = styled.div`
 
 const Description = styled.div`
   width: 70%;
-  font-family: "Fira Sans", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 20px;
   margin-top: 10px;
   color: var(--text-inactive);

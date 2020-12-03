@@ -68,7 +68,7 @@ const Title = styled.div`
 `;
 
 const NavItem = styled.button`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   margin: 5px 20px;
   display: inline-block;
   border: none;
