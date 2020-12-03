@@ -54,6 +54,14 @@ function SongBrowser(props: Props) {
     }
   };
 
+  const convertTime = (sec: number) => {
+    const hours = Number(Math.floor(sec / 3600).toFixed(0));
+    const minutes = Number(Math.floor((sec % 3600) / 60).toFixed(0));
+    const seconds = (sec - hours * 3600 - minutes * 60).toFixed(0);
+    
+    return [`${hours}h`, `${minutes}m`, `${seconds}s`].filter(item => item[0] !== '0').join(' ');
+  }
+
   const songList = songs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
@@ -68,7 +76,7 @@ function SongBrowser(props: Props) {
       <span>{s.artists[0].name}</span>
       <span>{s.album.name}</span>
       <span className="center">{s.album.release_date}</span>
-      <span className="center">{s.duration_ms / 1000}</span>
+      <span className="center">{convertTime(s.duration_ms / 1000)}</span>
     </SongListItem>
   ));
 
