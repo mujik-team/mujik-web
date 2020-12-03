@@ -1,4 +1,4 @@
-import { api } from "../api";
+import { api } from "./api";
 import { toast } from "react-toastify";
 
 export async function register(userDetails: any) {

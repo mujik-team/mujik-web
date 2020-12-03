@@ -12,8 +12,8 @@ function SongBrowser(props: Props) {
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
-    if (spotifyContext.isAuthorized && props.mixtape.songs.length !== 0) {
-      spotifyContext.actions
+    if (spotifyContext.state.isAuthorized && props.mixtape.songs.length !== 0) {
+      spotifyContext.spotifyService.api
         .getSeveralSongs(props.mixtape.songs)
         .then((songs) => {
           setSongs(songs);
@@ -21,7 +21,12 @@ function SongBrowser(props: Props) {
     } else if (props.mixtape.songs.length === 0) {
       setSongs([]);
     }
-  }, [spotifyContext.isAuthorized, props.mixtape]);
+  }, [spotifyContext.state.isAuthorized, props.mixtape]);
+
+  const playSong = (uris: string[]) => {
+    const device_id = spotifyContext.state.deviceId;
+    spotifyContext.spotifyService.api.playSong(device_id, uris);
+  };
 
   const items = [
     // {
@@ -53,7 +58,7 @@ function SongBrowser(props: Props) {
         setSelectedSongIndex(i);
       }}
     >
-      <PlayButton onClick={() => spotifyContext.actions.playSong([s.uri])}>
+      <PlayButton onClick={() => playSong([s.uri])}>
         <i className="mdi mdi-play" />
       </PlayButton>
       <span>{s.name}</span>

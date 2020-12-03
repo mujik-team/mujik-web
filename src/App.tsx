@@ -15,20 +15,21 @@ import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 import { ToastContainer, Slide } from "react-toastify";
 import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
-import useSpotify, { SpotifyState } from "./hooks/useSpotify";
+
+import useSpotify from "./hooks/useSpotify";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
 );
 
-export const SpotifyContext: React.Context<SpotifyState> = React.createContext(
-  {} as SpotifyState
-);
+export const SpotifyContext: React.Context<
+  ReturnType<typeof useSpotify>
+> = React.createContext({} as any);
 
 function App() {
   const [showPlayer, setShowPlayer] = useState(false);
   const [authState, setAuthState] = useAuth();
-  const [spotifyState, actions] = useSpotify();
+  const spotify = useSpotify();
 
   const app = (
     <div className="app">
@@ -60,7 +61,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthContext.Provider value={authState as AuthState}>
-        <SpotifyContext.Provider value={spotifyState}>
+        <SpotifyContext.Provider value={spotify}>
           {(authState as AuthState).isLoggedIn ? app : <WelcomePage />}
           <ToastContainer
             position={"bottom-right"}

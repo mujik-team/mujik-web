@@ -11,7 +11,6 @@ function MixtapeBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
   const [sortByAscending, setSortByAscending] = useState(false);
   const [isCardLayout, setIsCardLayout] = useState(true);
-  // const [mixtapes, setMixtapes] = useState(props.mixtapes);
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {

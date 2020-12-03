@@ -35,7 +35,7 @@ function Navbar() {
       <Button
         onClick={() => {
           authContext.logout();
-          spotifyContext.actions.logout();
+          spotifyContext.logout();
           history.push("/");
         }}
         style={{ marginTop: "50px" }}

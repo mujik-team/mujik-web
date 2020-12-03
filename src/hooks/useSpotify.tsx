@@ -1,6 +1,150 @@
-import React, { useEffect, useState } from "react";
-import * as spotifyService from "../services/spotify";
+import React, { useEffect, useReducer, useRef, useState } from "react";
+import spotifyService from "../services/spotifyService/spotifyService";
 
+function useSpotifyNew() {
+  const player = useRef(null as Player | null);
+  const [state, action] = useReducer(reducer, InitialState);
+
+  const initializeSpotify = async () => {
+    // Check if user has a previous refresh_token.
+    const refreshToken = localStorage.getItem("spotify_refresh_token");
+
+    // User has a previous refreshToken.
+    // Retrieve a new accessToken and initialize player.
+    if (refreshToken) {
+      const accessToken = await spotifyService.auth.refreshAccessToken(
+        refreshToken
+      );
+
+      // Initialize spotify api with new access token.
+      spotifyService.api.init(accessToken);
+
+      // User is now authorized to make API calls.
+      action({ type: "userAuthorized", payload: { accessToken } });
+
+      const deviceId = await initalizePlayer(accessToken);
+
+      // The spotify web player is now ready.
+      action({ type: "playerReady", payload: { deviceId } });
+    }
+  };
+
+  const initalizePlayer = async (accessToken: string): Promise<string> => {
+    // Create instance of new Spotify player.
+    player.current = new (window as any).Spotify.Player({
+      name: "mujik",
+      getOAuthToken: (cb: any) => {
+        cb(accessToken);
+      },
+    });
+
+    // Setup default listeners.
+    const default_events = [
+      "initialization_error",
+      "authentication_error",
+      "account_error",
+      "playback_error",
+      "not_ready",
+    ];
+
+    default_events.forEach((e) =>
+      player.current!.addListener(e, ({ message }) => console.error(message))
+    );
+
+    player.current!.addListener("player_state_changed", (playerState) =>
+      action({ type: "playerStateChanged", payload: { playerState } })
+    );
+
+    const player_id: string = await new Promise((resolve) => {
+      player.current!.addListener("ready", ({ device_id }) => {
+        console.log("player ready...");
+        resolve(device_id);
+      });
+
+      player.current!.connect();
+    });
+
+    console.log(player_id);
+
+    return player_id;
+  };
+
+  const handleUserAuthorizedApp = async (code: string) => {
+    await spotifyService.auth.getInitialAccessToken(code);
+    initializeSpotify();
+  };
+
+  const logout = async () => {
+    player.current?.disconnect();
+
+    localStorage.removeItem("spotify_refresh_token");
+    localStorage.removeItem("spotify_access_token");
+  };
+
+  useEffect(() => {
+    (window as any).onSdkReady.push(() => initializeSpotify());
+  }, []);
+
+  return {
+    state,
+    player,
+    spotifyService,
+    handleUserAuthorizedApp,
+    logout,
+  };
+}
+
+export default useSpotifyNew;
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "userAuthorized":
+      return {
+        ...state,
+        isAuthorized: true,
+        accessToken: action.payload.accessToken,
+      };
+    case "playerReady":
+      return {
+        ...state,
+        playerReady: true,
+        deviceId: action.payload.deviceId,
+      };
+    case "playerStateChanged":
+      return {
+        ...state,
+        playerState: action.payload.playerState,
+      };
+    case "logout":
+      return {
+        ...state,
+        isAuthorized: false,
+        accessToken: "",
+        playerReady: false,
+      };
+  }
+}
+
+const InitialState: State = {
+  isAuthorized: false,
+  playerReady: false,
+  deviceId: "",
+  accessToken: "",
+  playerState: {},
+};
+
+type State = {
+  isAuthorized: boolean;
+  playerReady: boolean;
+  deviceId: string;
+  accessToken: string;
+  playerState: any;
+};
+
+interface Action {
+  type: "userAuthorized" | "logout" | "playerReady" | "playerStateChanged";
+  payload: any;
+}
 export type Player = {
   device_id: string;
   addListener: (event: string, callback: (state: any) => any) => void;
@@ -10,144 +154,3 @@ export type Player = {
   nextTrack: () => void;
   previousTrack: () => void;
 };
-
-type SpotifyActions = {
-  initPlayer: () => void;
-  requestAuthorization: () => Promise<void>;
-  playSong: (uris: string[]) => Promise<void>;
-  search: (query: string) => Promise<any>;
-  getSeveralSongs: (ids: string[]) => Promise<any>;
-  logout: () => void;
-};
-
-export type SpotifyState = {
-  isAuthorized: boolean;
-  spotifySDKReady: boolean;
-  player: Player;
-  playerState: any;
-  actions: SpotifyActions;
-};
-
-function useSpotify() {
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [player, setPlayer] = useState({} as Player);
-  const [playerState, setPlayerState] = useState(null);
-  const [spotifySDKReady, setSpotifyReady] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
-
-  const initPlayer = async () => {
-    const accessToken = await refreshAccessToken();
-
-    if (accessToken) {
-      console.log("Initalizing Spotify Web Player.");
-
-      const newPlayer: Player = new (window as any).Spotify.Player({
-        name: "mujik",
-        getOAuthToken: (cb: any) => {
-          cb(accessToken);
-        },
-      });
-
-      setPlayer(newPlayer);
-
-      // Error handling
-      newPlayer.addListener("initialization_error", ({ message }) => {
-        console.error(message);
-      });
-      newPlayer.addListener("authentication_error", ({ message }) => {
-        console.error(message);
-      });
-      newPlayer.addListener("account_error", ({ message }) => {
-        console.error(message);
-      });
-      newPlayer.addListener("playback_error", ({ message }) => {
-        console.error(message);
-      });
-
-      // Playback status updates
-      newPlayer.addListener("player_state_changed", (state) => {
-        console.log(state);
-        setPlayerState(state);
-      });
-
-      // Ready
-      newPlayer.addListener("ready", ({ device_id }) => {
-        console.log("Ready with Device ID", device_id);
-        newPlayer.device_id = device_id;
-      });
-
-      // Not Ready
-      newPlayer.addListener("not_ready", ({ device_id }) => {
-        console.log("Device ID has gone offline", device_id);
-      });
-
-      newPlayer.connect();
-
-      return newPlayer;
-    } else {
-      console.log("Can't initalize Spotify player. User is not authorized.");
-    }
-  };
-
-  const refreshAccessToken = async () => {
-    const refresh_token = localStorage.getItem("spotify_refresh_token");
-    if (refresh_token) {
-      const newToken = await spotifyService.refreshAccessToken(refresh_token);
-      setAccessToken(newToken);
-      setIsAuthorized(true);
-      return newToken;
-    } else {
-      return null;
-    }
-  };
-
-  const logout = async () => {
-    if (player?.disconnect) {
-      player.disconnect();
-    }
-    localStorage.removeItem("spotify_refresh_token");
-    localStorage.removeItem("spotify_access_token");
-    setIsAuthorized(false);
-  };
-
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("spotify_refresh_token");
-    if (spotifySDKReady && refreshToken) {
-      initPlayer();
-    }
-  }, [spotifySDKReady]);
-
-  useEffect(() => {
-    (window as any).onReadySubscribers.push(() => setSpotifyReady(true));
-  }, []);
-
-  const actions: SpotifyActions = {
-    initPlayer,
-    requestAuthorization: spotifyService.authorize,
-    logout,
-    playSong: (uris: string[]) =>
-      spotifyService.playSong(accessToken, player.device_id, uris),
-    search: async (q) => {
-      const params = {
-        q,
-        type: "track",
-        market: "US",
-      };
-
-      return await spotifyService.search(accessToken, params);
-    },
-    getSeveralSongs: (ids) => spotifyService.getSeveralSongs(accessToken, ids),
-  };
-
-  const spotifyState: SpotifyState = {
-    isAuthorized,
-    spotifySDKReady,
-    player,
-    playerState,
-    actions,
-  };
-
-  return [spotifyState];
-}
-
-export default useSpotify;
