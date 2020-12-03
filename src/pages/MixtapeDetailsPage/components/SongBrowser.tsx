@@ -7,7 +7,6 @@ import { AuthContext, SpotifyContext } from "../../../App";
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
-  const [toggleAsc, setToggleAsc] = useState(true);
   const spotifyContext = useContext(SpotifyContext);
   const authContext = useContext(AuthContext);
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
@@ -47,67 +46,6 @@ function SongBrowser(props: Props) {
       props.updateMixtape(mixtape);
     }
   };
-
-  const sortSongsBy = (option: any) => {
-    switch (option) {
-      case "title" : {
-        console.log('sort by title')
-        console.log(toggleAsc)
-        const songsToSort = songs
-        toggleAsc 
-        ? songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() > b.name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() < b.name.toLowerCase() ) ? 1 : -1)
-        setSongs([...songsToSort])
-        console.log('songs' , songs)
-        setToggleAsc(!toggleAsc)
-        break
-      }
-      case "artist" : {
-        console.log('sort by artist')
-        const songsToSort = songs
-        toggleAsc 
-        ? songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() < b.artists[0].name.toLowerCase() ) ? 1 : -1)
-        setSongs([...songsToSort])
-        console.log('songs' , songs)
-        setToggleAsc(!toggleAsc)
-        break
-      }
-      case "album" : {
-        console.log('sort by album')
-        const songsToSort = songs
-        toggleAsc 
-        ? songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() > b.album.name.toLowerCase() ) ? 1 : -1)
-        : songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() < b.album.name.toLowerCase() ) ? 1 : -1)
-        setSongs([...songsToSort])
-        console.log('songs' , songs)
-        setToggleAsc(!toggleAsc)
-        break
-      }
-      case "releaseDate" : {
-          console.log('sort by releaseDate')
-          const songsToSort = songs
-          toggleAsc 
-          ? songsToSort.sort((a : any,b : any) => ( a.album.release_date > b.album.release_date ) ? 1 : -1)
-          : songsToSort.sort((a : any,b : any) => ( a.album.release_date < b.album.release_date ) ? 1 : -1)
-          setSongs([...songsToSort])
-          console.log('songs' , songs)
-          setToggleAsc(!toggleAsc)
-          break
-      }
-      case "duration" : {
-          console.log('sort by duration')
-          const songsToSort = songs
-          toggleAsc 
-          ? songsToSort.sort((a : any,b : any) => ( a.duration_ms > b.duration_ms ) ? 1 : -1)
-          : songsToSort.sort((a : any,b : any) => ( a.duration_ms < b.duration_ms ) ? 1 : -1)
-          setSongs([...songsToSort])
-          console.log('songs' , songs)
-          setToggleAsc(!toggleAsc)
-          break
-      }
-    }
-  }
 
   const songList = songs?.map((s, i) => (
     <SongListItem
