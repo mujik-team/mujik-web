@@ -20,6 +20,46 @@ function useMixtape(id: string) {
     await mixtapeService.updateMixtape(id, updatedMixtape);
   };
 
+  const sortSongsBy = (option: any) => {
+    switch (option) {
+      case "title" : {
+        const songsToSort = mixtape.songs
+        console.log(songsToSort)
+        songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() > b.name.toLowerCase() ) ? 1 : -1)
+        mixtape.songs = [...songsToSort]
+        break
+      }
+      case "artist" : {
+        console.log('sort by artist')
+        const songsToSort = mixtape.songs
+        songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase() ) ? 1 : -1)
+        mixtape.songs = [...songsToSort]
+        break
+      }
+      case "album" : {
+        console.log('sort by album')
+        const songsToSort = mixtape.songs
+        songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() > b.album.name.toLowerCase() ) ? 1 : -1)
+        mixtape.songs = [...songsToSort]
+        break
+      }
+      case "releaseDate" : {
+          console.log('sort by releaseDate')
+          const songsToSort = mixtape.songs 
+          songsToSort.sort((a : any,b : any) => ( a.album.release_date > b.album.release_date ) ? 1 : -1)
+          mixtape.songs = [...songsToSort]
+          break
+      }
+      case "duration" : {
+          console.log('sort by duration')
+          const songsToSort = mixtape.songs
+          songsToSort.sort((a : any,b : any) => ( a.duration_ms > b.duration_ms ) ? 1 : -1)
+          mixtape.songs = [...songsToSort]
+          break
+      }
+    }
+  }
+
   // This effect retrieves the mixtape's cover image.
   useEffect(() => {
     if (mixtape._id) {
@@ -38,7 +78,9 @@ function useMixtape(id: string) {
     mixtape: { ...mixtape, mixtapeCoverImage },
     getMixtape,
     updateMixtape,
+    setMixtape,
     isLoading,
+    sortSongsBy,
   };
 }
 

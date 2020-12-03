@@ -7,6 +7,7 @@ import { AuthContext, SpotifyContext } from "../../../App";
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
+  const [toggleAsc, setToggleAsc] = useState(true);
   const spotifyContext = useContext(SpotifyContext);
   const authContext = useContext(AuthContext);
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
@@ -22,6 +23,7 @@ function SongBrowser(props: Props) {
       setSongs([]);
     }
   }, [spotifyContext.isAuthorized, props.mixtape]);
+
 
   const items = [
     // {
@@ -46,6 +48,67 @@ function SongBrowser(props: Props) {
     }
   };
 
+  const sortSongsBy = (option: any) => {
+    switch (option) {
+      case "title" : {
+        console.log('sort by title')
+        console.log(toggleAsc)
+        const songsToSort = songs
+        toggleAsc 
+        ? songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() > b.name.toLowerCase() ) ? 1 : -1)
+        : songsToSort.sort((a : any,b : any) => ( a.name.toLowerCase() < b.name.toLowerCase() ) ? 1 : -1)
+        setSongs([...songsToSort])
+        console.log('songs' , songs)
+        setToggleAsc(!toggleAsc)
+        break
+      }
+      case "artist" : {
+        console.log('sort by artist')
+        const songsToSort = songs
+        toggleAsc 
+        ? songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase() ) ? 1 : -1)
+        : songsToSort.sort((a : any,b : any) => ( a.artists[0].name.toLowerCase() < b.artists[0].name.toLowerCase() ) ? 1 : -1)
+        setSongs([...songsToSort])
+        console.log('songs' , songs)
+        setToggleAsc(!toggleAsc)
+        break
+      }
+      case "album" : {
+        console.log('sort by album')
+        const songsToSort = songs
+        toggleAsc 
+        ? songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() > b.album.name.toLowerCase() ) ? 1 : -1)
+        : songsToSort.sort((a : any,b : any) => ( a.album.name.toLowerCase() < b.album.name.toLowerCase() ) ? 1 : -1)
+        setSongs([...songsToSort])
+        console.log('songs' , songs)
+        setToggleAsc(!toggleAsc)
+        break
+      }
+      case "releaseDate" : {
+          console.log('sort by releaseDate')
+          const songsToSort = songs
+          toggleAsc 
+          ? songsToSort.sort((a : any,b : any) => ( a.album.release_date > b.album.release_date ) ? 1 : -1)
+          : songsToSort.sort((a : any,b : any) => ( a.album.release_date < b.album.release_date ) ? 1 : -1)
+          setSongs([...songsToSort])
+          console.log('songs' , songs)
+          setToggleAsc(!toggleAsc)
+          break
+      }
+      case "duration" : {
+          console.log('sort by duration')
+          const songsToSort = songs
+          toggleAsc 
+          ? songsToSort.sort((a : any,b : any) => ( a.duration_ms > b.duration_ms ) ? 1 : -1)
+          : songsToSort.sort((a : any,b : any) => ( a.duration_ms < b.duration_ms ) ? 1 : -1)
+          setSongs([...songsToSort])
+          console.log('songs' , songs)
+          setToggleAsc(!toggleAsc)
+          break
+      }
+    }
+  }
+
   const songList = songs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
@@ -68,15 +131,17 @@ function SongBrowser(props: Props) {
     <Container>
       <HeaderBar>
         <span />
-        <span>Title</span>
-        <span>Artist</span>
-        <span>Album</span>
-        <i className="mdi mdi-calendar center" />
-        <i className="mdi mdi-clock-outline center" />
+        {/* { toggleAsc ? '▲' : '▼' } */}
+        <span onClick={() => {props.setSortBy("title"); props.setAsc(!props.asc);}}>Title</span>
+        <span onClick={() => {props.setSortBy("artist"); props.setAsc(!props.asc);}}>Artist</span>
+        <span onClick={() => {props.setSortBy("album"); props.setAsc(!props.asc);}}>Album</span>
+        <i className="mdi mdi-calendar center" onClick={() => {props.setSortBy("releaseDate"); props.setAsc(!props.asc);}} />
+        <i className="mdi mdi-clock-outline center" onClick={() => {props.setSortBy("duration"); props.setAsc(!props.asc);}} />
       </HeaderBar>
       <hr />
       <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
       {songList}
+      {/* {console.log(songs)} */}
     </Container>
   );
 }
@@ -86,6 +151,9 @@ export default SongBrowser;
 type Props = {
   mixtape: any;
   updateMixtape: (newMixtape: any) => void;
+  setSortBy: (option: any) => void;
+  asc: any;
+  setAsc: (value: any) => void;
 };
 
 const Container = styled.div``;
