@@ -7,8 +7,8 @@ import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
 import useMockTournament from "../../hooks/useMockTournament";
-import { AuthContext } from "../../App";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../App";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
@@ -18,7 +18,6 @@ function TournamentDetails() {
     updateTournament,
     isLoading,
   ] = useMockTournament("0");
-  // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
   const authContext = useContext(AuthContext);
 
@@ -34,10 +33,7 @@ function TournamentDetails() {
     ended: <TournamentResults />,
   };
 
-  console.log(tournament);
-
   const followTournament = async () => {
-    console.log("follow tournament");
     if (authContext.isLoggedIn) {
       const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
         tournament._id

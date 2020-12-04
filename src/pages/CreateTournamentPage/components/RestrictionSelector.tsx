@@ -3,17 +3,9 @@ import styled from "styled-components";
 import { MultiSelect } from "primereact/multiselect";
 import RestrictionEditorCard from "./RestrictionEditorCard";
 
-function RestrictionSelector() {
+function RestrictionSelector(props: Props) {
   const [selectedRestrictions, setSelectedRestrictions] = useState([] as any[]);
-  const [selectedRestrictionValues, setSelectedRestrictionValues] = useState(
-    {} as any
-  );
-
-  const handleChangeValue = (value: any, key: string) => {
-    const values = selectedRestrictionValues;
-    values[key] = value;
-    setSelectedRestrictionValues({ ...values });
-  };
+  const selectedRestrictionValues = props.values;
 
   return (
     <Container>
@@ -37,7 +29,7 @@ function RestrictionSelector() {
             type={r.type}
             valueLabel={r.valueLabel}
             value={selectedRestrictionValues[key]}
-            onChange={(val) => handleChangeValue(val, key)}
+            onChange={(val) => props.handleChangeValue(key, val)}
           />
         );
       })}
@@ -46,6 +38,11 @@ function RestrictionSelector() {
 }
 
 export default RestrictionSelector;
+
+type Props = {
+  values: any;
+  handleChangeValue: (key: string, value: any) => void;
+};
 
 const Container = styled.div`
   & > .multi-select {
