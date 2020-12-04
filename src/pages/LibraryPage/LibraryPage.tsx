@@ -41,22 +41,18 @@ function LibraryPage() {
     const tag = event.target.id;
     const mixtapes = await mixtapeService.getSeveralMixtapes(authContext.currentUser.profile.mixtapes);
     let filteredMixtapes = []
-    console.log(tag);
     switch (tag) {
       case "All":
-        console.log("All mixtapes to be shown");
         setMixtapes([...mixtapes]);
         setCurrentTab("All");
         break;
       case "By Me":
-        console.log("Only mine mixtapes to be shown");
         filteredMixtapes = mixtapes.filter(mixtape => mixtape.createdBy === authContext.currentUser.username);
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Me");
         break;
       case "By Others":
         filteredMixtapes = mixtapes.filter(mixtape => mixtape.createdBy !== authContext.currentUser.username);
-        console.log("Only others' mixtapes to be shown");
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Others");
         break;
