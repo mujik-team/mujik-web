@@ -8,6 +8,7 @@ function MusicPlayer(props: Props) {
   const spotifyContext = useContext(SpotifyContext);
   const [volumeValue, setVolumeValue] = useState(50 as any);
   const [progress, setProgress] = useState(0);
+  const [currentPercentage, setCurrentPercentage] = useState(0 as any);
 
   const player = spotifyContext.player.current;
 
@@ -34,9 +35,23 @@ function MusicPlayer(props: Props) {
     });
   }
 
+  const setDuration = (percentage: any, duration: any) => {
+    player?.seek((percentage/100) * duration).then(() => {
+      console.log('Changed position!');
+    });
+  }
+
   useEffect(() => {
     setVolume(volumeValue/100)
   }, [volumeValue])
+
+  useEffect(() => {
+    // setDuration(progress)
+    const duration = spotifyContext.state.playerState.duration
+    setProgress((currentPercentage/100) * duration);
+    setDuration(currentPercentage, duration)
+    // console.log(progress)
+  }, [currentPercentage])
 
   if (
     spotifyContext.state.playerReady &&
@@ -70,6 +85,10 @@ function MusicPlayer(props: Props) {
       });
     }
 
+    const getDuration = (percentage: any) => {
+      console.log((percentage/100)*duration)
+    }
+    
     return (
       <Container showPlayer={props.showPlayer} toggle={props.toggle}>
         <div>
@@ -120,8 +139,8 @@ function MusicPlayer(props: Props) {
               </div>
             </div>
             <SongTimeProgressBar
-              showValue={false}
               value={(progress / duration) * 100}
+              onChange={(e) => {setCurrentPercentage(e.value)}}
             />
           </div>
         )}
@@ -186,12 +205,25 @@ const SongPlaying = styled.div`
   }
 `;
 
-const SongTimeProgressBar = styled(ProgressBar)`
+
+const SongTimeProgressBar = styled(Slider)`
   height: 8px;
   margin-top: 10px;
   transition: none !important;
 
   & > .p-progressbar-value {
+    background-color: grey;
+  }
+
+  & > .p-slider-handle {
+    width: 1rem;
+    height: 1rem;
+    background-color: grey;
+    border: 2px solid grey;
+    border-radius: 10px;
+  }
+
+  & .p-slider-range {
     background-color: grey;
   }
 `;
@@ -207,14 +239,6 @@ const VolumeProgressBar = styled(Slider)`
   }
 
   & > .p-slider-handle {
-    width: 1rem;
-    height: 1rem;
-    background-color: grey;
-    border: 2px solid grey;
-    border-radius: 10px;
-  }
-
-  & > .p-slider-handle: hover {
     width: 1rem;
     height: 1rem;
     background-color: grey;

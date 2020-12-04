@@ -155,4 +155,5 @@ export type Player = {
   previousTrack: () => void;
   getVolume: () => any;
   setVolume: (value: any) => any;
+  seek: (value: any) => any;
 };
