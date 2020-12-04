@@ -1,102 +1,82 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { MultiSelect } from "primereact/multiselect";
-import DropdownSelect from "../../../components/Input/DropdownSelect";
+import RestrictionEditorCard from "./RestrictionEditorCard";
 
 function RestrictionSelector() {
   const [selectedRestrictions, setSelectedRestrictions] = useState([] as any[]);
+  const [selectedRestrictionValues, setSelectedRestrictionValues] = useState(
+    {} as any
+  );
+
+  const handleChangeValue = (value: any, key: string) => {
+    const values = selectedRestrictionValues;
+    values[key] = value;
+    setSelectedRestrictionValues({ ...values });
+  };
 
   return (
-    <div>
+    <Container>
       <MultiSelect
+        className="multi-select"
         value={selectedRestrictions}
-        options={AvailableRestrictions}
-        optionValue="label"
+        options={Object.keys(AvailableRestrictions).flatMap(
+          (key) => AvailableRestrictions[key]
+        )}
+        optionValue="value"
         onChange={(e) => setSelectedRestrictions([...e.target.value])}
       />
 
-      {selectedRestrictions?.map((r) => (
-        <RestrictionCard restriction={r} />
-      ))}
-    </div>
+      {selectedRestrictions?.map((key) => {
+        const r = AvailableRestrictions[key];
+
+        return (
+          <RestrictionEditorCard
+            label={r.label}
+            valueOptions={r.valueOptions}
+            type={r.type}
+            valueLabel={r.valueLabel}
+            value={selectedRestrictionValues[key]}
+            onChange={(val) => handleChangeValue(val, key)}
+          />
+        );
+      })}
+    </Container>
   );
 }
 
 export default RestrictionSelector;
 
-function RestrictionCard(props: any) {
-  const [selectedValue, setSelectedValue] = useState(null as any);
-  const options = [];
-
-  for (let i = 1; i < 10; i++) {
-    options.push({
-      label: i * 10,
-      value: i * 10,
-    });
-  }
-
-  return (
-    <Card>
-      <RestrictionName> {props.restriction}</RestrictionName>
-      <div>
-        Lvl.
-        <RestrictionDropdown
-          options={options}
-          value={selectedValue}
-          onChange={(e) => setSelectedValue(e.target.value)}
-        />
-      </div>
-    </Card>
-  );
-}
-
-const Card = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  user-select: none;
-  background: var(--card-color);
-  border-radius: 6px;
-  margin: 10px 0px;
-  padding: 20px;
-`;
-
-const RestrictionName = styled.div`
-  font-family: var(--font-secondary);
-  font-weight: 600;
-  font-size: 25px;
-`;
-
-const RestrictionDropdown = styled(DropdownSelect)`
-  font-weight: 600;
-  width: 100px;
-
-  background-color: var(--card-color-highlight);
-
-  & > .p-dropdown-label {
+const Container = styled.div`
+  & > .multi-select {
     width: 100%;
-    font-size: 35px;
   }
 `;
 
-const AvailableRestrictions = [
-  {
+const AvailableRestrictions: any = {
+  song_limit: {
     label: "Song Limit",
+    valueLabel: "Num. Songs",
     value: "song_limit",
+    type: "number",
   },
-  {
+  min_lvl: {
     label: "Minimum Level",
+    valueLabel: "Lvl.",
     value: "min_lvl",
+    type: "dropdown",
+    valueOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   },
-  {
+  time_limit: {
     label: "Time Limit",
+    valueLabel: "Minutes",
     value: "time_limit",
+    type: "number",
   },
-  {
+  allow_duplicates: {
     label: "Allow Duplicates",
+    valueLabel: "",
     value: "allow_duplicates",
+    type: "checkbox",
   },
-];
+};

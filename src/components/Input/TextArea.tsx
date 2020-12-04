@@ -14,7 +14,7 @@ const TextArea = styled(InputTextarea)`
   }
 
   &:focus {
-    box-shadow: inset 0px 0px 0px 2px var(--main-color) !important;
+    box-shadow: 0px 0px 0px 2px var(--main-color) !important;
   }
 `;
 export default TextArea;

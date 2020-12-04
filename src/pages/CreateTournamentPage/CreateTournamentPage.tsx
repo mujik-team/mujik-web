@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useReducer } from "react";
 import styled from "styled-components";
 import ImageEditor from "../../components/ImageEditor";
 import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
+import { FormState, reducer } from "./reducer";
 
 function CreateTournamentPage() {
+  const [tournamentForm, dispatch] = useReducer(reducer, FormState);
   return (
     <Container>
       <div className="form">
@@ -27,6 +29,18 @@ function CreateTournamentPage() {
         <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
 
         <RestrictionSelector />
+        <br />
+        <br />
+        <br />
+
+        <FieldTitle>Rewards</FieldTitle>
+        <FieldDescription>{RewardDescription}</FieldDescription>
+        <br />
+        <br />
+        <br />
+
+        <FieldTitle>Winner Picked By...</FieldTitle>
+        <WinnerCard></WinnerCard>
       </div>
 
       <ThinkingImage src="/images/in_thought.svg" />
@@ -45,8 +59,12 @@ const PromptDescription =
 const SubmissionRestrictionDescription =
   "Select any restrictions you want to add to your tournament, such as a minimum level for entry or to only allow non-explicit songs.";
 
+const RewardDescription =
+  "Select any rewards you want to add to this tournament. By default you are required to award some coins. Other awards are coming in the future.";
+
 const Container = styled.div`
   margin: 30px;
+  padding-bottom: 200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* grid-template-rows: 100%; */
@@ -59,11 +77,6 @@ const Container = styled.div`
     width: 450px;
     height: 420px;
   }
-`;
-
-const Title = styled.div`
-  font-size: 50px;
-  font-weight: 500;
 `;
 
 const FieldTitle = styled.div`
@@ -100,4 +113,11 @@ const ThinkingImage = styled.img`
   right: -5vw;
   bottom: -5vh;
   width: 45vw;
+`;
+
+const WinnerCard = styled.div`
+  background: var(--card-color);
+
+  & > .image {
+  }
 `;

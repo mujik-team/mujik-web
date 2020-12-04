@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import { SpotifyContext } from "../../App";
 import Button from "../../components/Button";
-import { authorize, getAccessToken } from "../../services/spotifyService";
 
 function SpotifyLoginPage() {
   const location = useLocation();
