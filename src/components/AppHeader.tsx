@@ -17,8 +17,30 @@ function AppHeader() {
     setUsername(authContext.currentUser?.username);
   }, [authContext]);
 
+  const goBack = () => {
+    if (history.length !== 0) {
+      history.goBack()
+    } else {
+      console.log("Trying to leave app");
+    }
+  }
+
+  const goForward = () => {
+    history.goForward();
+  }
+
+
   const UserDetailsCard = (
-    <div
+    <div>
+      <div>
+      <ArrowLeft onClick={() => goBack()}>
+      </ArrowLeft>
+      </div>
+      <div>
+      <ArrowRight onClick={() => goForward()}>
+      </ArrowRight>
+      </div>
+      <div
       style={{
         display: "flex",
         justifyContent: "flex-end",
@@ -54,6 +76,7 @@ function AppHeader() {
         <span className="p-badge">3</span>
       </span>
     </div>
+    </div>
   );
   return <div style={{}}>{UserDetailsCard}</div>;
 }
@@ -78,4 +101,22 @@ const UserDetailsContainer = styled.div`
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 20px;
+`;
+
+const Arrow = styled.div`
+  width: 20px;
+  height: 20px;
+  transition: .5s;
+  float: left;
+  box-shadow: -2px 2px 0 rgba(255,255,255,.5);
+  cursor: pointer;
+  margin-top: 15px;
+`;
+
+const ArrowLeft = styled(Arrow)`
+  margin-left: 35px;
+  transform: rotate(45deg);
+`;
+const ArrowRight = styled(Arrow)`
+  transform: rotate(225deg)
 `;
