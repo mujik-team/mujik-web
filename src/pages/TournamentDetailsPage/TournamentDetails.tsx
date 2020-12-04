@@ -6,20 +6,30 @@ import TournamentSubmission from "./components/State.Submission/TournamentSubmis
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import useMockTournament from "../../hooks/useMockTournament"
+import useMockTournament from "../../hooks/useMockTournament";
 import { AuthContext } from "../../App";
-import * as tournamentService from "../../services/tournamentService";
 import { toast } from "react-toastify";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const [tournament, getTournament, updateTournament, isLoading] = useMockTournament('0');
+  const [
+    tournament,
+    getTournament,
+    updateTournament,
+    isLoading,
+  ] = useMockTournament("0");
   // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
   const authContext = useContext(AuthContext);
 
   const bottomComponent = {
-    submission: <TournamentSubmission tournament={tournament} restrictions={tournament.restrictions} rules={tournament.additional_submission_criteria} />,
+    submission: (
+      <TournamentSubmission
+        tournament={tournament}
+        restrictions={tournament.restrictions}
+        rules={tournament.additional_submission_criteria}
+      />
+    ),
     voting: <TournamentVote />,
     ended: <TournamentResults />,
   };
@@ -29,18 +39,20 @@ function TournamentDetails() {
   const followTournament = async () => {
     console.log("follow tournament");
     if (authContext.isLoggedIn) {
-      const follow = authContext.currentUser.profile.tournamentsFollowing.includes(tournament._id);
+      const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
+        tournament._id
+      );
       if (follow === true) {
-        await tournamentService.followTournament(tournament._id, authContext.currentUser, false);
+        // await tournamentService.followTournament(tournament._id, authContext.currentUser, false);
         await authContext.update();
         toast.success("Unfollowed Tournament!");
       } else {
-        await tournamentService.followTournament(tournament._id, authContext.currentUser, true);
+        // await tournamentService.followTournament(tournament._id, authContext.currentUser, true);
         await authContext.update();
         toast.success("Followed Tournament!");
       }
     }
-  }
+  };
 
   return (
     <div>

@@ -26,7 +26,7 @@ function MixtapeDetailsPage() {
           });
       }
     }
-  }, [spotifyContext.state.isAuthorized, mixtape]);
+  }, [spotifyContext.state.isAuthorized, mixtape.songs]);
 
   useEffect(() => {
     const newsongs = sortSongsBy(sortBy, songs);
