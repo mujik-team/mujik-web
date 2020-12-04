@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "primereact/progressbar";
 import { SpotifyContext } from "../../App";
+import { Slider } from 'primereact/slider';
 
 function MusicPlayer(props: Props) {
   const spotifyContext = useContext(SpotifyContext);
-
+  const [volumeValue, setVolumeValue] = useState(50 as any);
   const [progress, setProgress] = useState(0);
+  const [currentPercentage, setCurrentPercentage] = useState(0 as any);
 
   const player = spotifyContext.player.current;
 
@@ -26,6 +28,30 @@ function MusicPlayer(props: Props) {
 
     return () => clearInterval(interval);
   }, [spotifyContext.state.playerState]);
+
+  const setVolume = (vol: any) => {
+    player?.setVolume(vol).then(() => {
+      console.log('Volume updated!');
+    });
+  }
+
+  const setDuration = (percentage: any, duration: any) => {
+    player?.seek((percentage/100) * duration).then(() => {
+      console.log('Changed position!');
+    });
+  }
+
+  useEffect(() => {
+    setVolume(volumeValue/100)
+  }, [volumeValue])
+
+  useEffect(() => {
+    // setDuration(progress)
+    const duration = spotifyContext.state.playerState.duration
+    setProgress((currentPercentage/100) * duration);
+    setDuration(currentPercentage, duration)
+    // console.log(progress)
+  }, [currentPercentage])
 
   if (
     spotifyContext.state.playerReady &&
@@ -52,6 +78,17 @@ function MusicPlayer(props: Props) {
       player?.previousTrack();
     };
 
+    const getVolume = () => {
+      player?.getVolume().then((volume: any) => {
+        let volume_percentage = volume * 100;
+        console.log(`The volume of the player is ${volume_percentage}%`);
+      });
+    }
+
+    const getDuration = (percentage: any) => {
+      console.log((percentage/100)*duration)
+    }
+    
     return (
       <Container showPlayer={props.showPlayer} toggle={props.toggle}>
         <div>
@@ -102,8 +139,8 @@ function MusicPlayer(props: Props) {
               </div>
             </div>
             <SongTimeProgressBar
-              showValue={false}
               value={(progress / duration) * 100}
+              onChange={(e) => {setCurrentPercentage(e.value)}}
             />
           </div>
         )}
@@ -118,8 +155,8 @@ function MusicPlayer(props: Props) {
             }}
           >
             <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
-            <PlaybackIcon className={`mdi mdi-volume-high`}></PlaybackIcon>
-            <VolumeProgressBar showValue={false} value={80} />
+            <PlaybackIcon onClick={() => setVolume(50)} className={`mdi mdi-volume-high`}></PlaybackIcon>
+            <VolumeProgressBar value={volumeValue} onChange={(e) => setVolumeValue(e.value)} />
           </div>
         )}
       </Container>
@@ -168,7 +205,8 @@ const SongPlaying = styled.div`
   }
 `;
 
-const SongTimeProgressBar = styled(ProgressBar)`
+
+const SongTimeProgressBar = styled(Slider)`
   height: 8px;
   margin-top: 10px;
   transition: none !important;
@@ -176,9 +214,21 @@ const SongTimeProgressBar = styled(ProgressBar)`
   & > .p-progressbar-value {
     background-color: grey;
   }
+
+  & > .p-slider-handle {
+    width: 1rem;
+    height: 1rem;
+    background-color: grey;
+    border: 2px solid grey;
+    border-radius: 10px;
+  }
+
+  & .p-slider-range {
+    background-color: grey;
+  }
 `;
 
-const VolumeProgressBar = styled(ProgressBar)`
+const VolumeProgressBar = styled(Slider)`
   height: 4px;
   width: 80px;
   margin-bottom: 10px;
@@ -187,7 +237,20 @@ const VolumeProgressBar = styled(ProgressBar)`
   & > .p-progressbar-value {
     background-color: grey;
   }
+
+  & > .p-slider-handle {
+    width: 1rem;
+    height: 1rem;
+    background-color: grey;
+    border: 2px solid grey;
+    border-radius: 10px;
+  }
+
+  & .p-slider-range {
+    background-color: grey;
+  }
 `;
+
 
 const MixtapeCoverArt = styled.img`
   margin-top: 10px;

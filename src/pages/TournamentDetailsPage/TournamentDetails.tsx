@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import tournaments from "../../services/mock/tournaments";
 import styled from "styled-components";
@@ -7,6 +7,8 @@ import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
 import useMockTournament from "../../hooks/useMockTournament";
+import { AuthContext } from "../../App";
+import { toast } from "react-toastify";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
@@ -18,6 +20,7 @@ function TournamentDetails() {
   ] = useMockTournament("0");
   // const tournament = tournaments[tournamentId as number];
   const state = tournament.state as TournamentState;
+  const authContext = useContext(AuthContext);
 
   const bottomComponent = {
     submission: (
@@ -29,6 +32,26 @@ function TournamentDetails() {
     ),
     voting: <TournamentVote />,
     ended: <TournamentResults />,
+  };
+
+  console.log(tournament);
+
+  const followTournament = async () => {
+    console.log("follow tournament");
+    if (authContext.isLoggedIn) {
+      const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
+        tournament._id
+      );
+      if (follow === true) {
+        // await tournamentService.followTournament(tournament._id, authContext.currentUser, false);
+        await authContext.update();
+        toast.success("Unfollowed Tournament!");
+      } else {
+        // await tournamentService.followTournament(tournament._id, authContext.currentUser, true);
+        await authContext.update();
+        toast.success("Followed Tournament!");
+      }
+    }
   };
 
   return (
@@ -59,7 +82,9 @@ function TournamentDetails() {
                   marginRight: "10px",
                   top: "9px",
                 }}
+                onClick={(e) => followTournament()}
               >
+                {/* {authContext.currentUser.tournamentsFollowing.includes(tournament._id) ? "UNFOLLOW" : "FOLLOW"} */}
                 FOLLOW
               </Button>
 

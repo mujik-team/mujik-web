@@ -146,7 +146,7 @@ const Description = styled.div`
 `;
 
 const TagsContainer = styled.div`
-  position: absolute;
+  position: sticky;
   right: 325px;
   top: 175px;
 `;

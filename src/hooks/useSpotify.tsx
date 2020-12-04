@@ -153,4 +153,7 @@ export type Player = {
   togglePlay: () => void;
   nextTrack: () => void;
   previousTrack: () => void;
+  getVolume: () => any;
+  setVolume: (value: any) => any;
+  seek: (value: any) => any;
 };
