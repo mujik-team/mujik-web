@@ -111,6 +111,10 @@ const Arrow = styled.div`
   box-shadow: -2px 2px 0 rgba(255,255,255,.5);
   cursor: pointer;
   margin-top: 15px;
+
+  &:hover {
+    box-shadow: -2px 2px 0 white;
+  }
 `;
 
 const ArrowLeft = styled(Arrow)`
