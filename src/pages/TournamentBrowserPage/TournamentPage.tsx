@@ -4,11 +4,11 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import tournaments from "../../services/mock/tournaments";
 import TournamentCard from "./TournamentCard";
-import Button from "../../components/Button"
+import Button from "../../components/Button";
 import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import SortDropdown from "../../components/Input/SortDropdown";
-import TournamentBrowser from "./TournamentBrowser"
+import TournamentBrowser from "./TournamentBrowser";
 
 function TournamentPage() {
   const history = useHistory();
@@ -16,7 +16,7 @@ function TournamentPage() {
   const [sortBy, setSortBy] = useState("");
   const [isCardLayout, setIsCardLayout] = useState(true);
   const toggleShowNewTournamentModel = () =>
-  setShowNewTournamentModal(!showNewTournamentModal);
+    setShowNewTournamentModal(!showNewTournamentModal);
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
@@ -36,7 +36,6 @@ function TournamentPage() {
     </ChangeLayoutButton>
   );
 
-  
   const headerBrowser = (
     <div style={{ marginBottom: "30px" }}>
       <span className={styles.title}>Tournaments</span>
@@ -72,47 +71,10 @@ function TournamentPage() {
     );
   }
 
-  const tournamentBrowser = (
-    <div>
-    {/* <Container>
-    <Header>
-      <LeftHeader>
-        <div className="p-input-icon-left">
-          <i
-            style={{ fontSize: "20px", top: "45%" }}
-            className="pi mdi mdi-magnify"
-          ></i>
-          <TextInput />
-        </div>
-        <Button onClick={() => toggleShowNewTournamentModel()}>New</Button>
-      </LeftHeader>
-      <RightHeader>
-        <div
-              style={{ display: "inline-block", marginRight: "10px" }}
-              className="p-float-label"
-            >
-              <SortDropdown
-                id="sort-dropdown"
-                value={sortBy}
-                onChange={(e: any) => setSortBy(e.value)}
-                options={sortDropdownOptions}
-              />
-              <label htmlFor="sort-dropdown">Sort By</label>
-            </div>
-            {changeLayoutButton}
-      </RightHeader>
-    </Header>
-    </Container> */}
-    <hr />
-    </div>
-  );
-
-  
-
   return (
     <Container>
       <div className={styles.container}>
-      <SideModal
+        <SideModal
           isActive={showNewTournamentModal}
           toggle={toggleShowNewTournamentModel}
         ></SideModal>
@@ -122,8 +84,8 @@ function TournamentPage() {
           {/* <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} /> */}
         </div>
         <div className={styles.usertournamentBrowser}>
-           <h2>Your Tournaments</h2>
-           {tabsYour.map((t) => (
+          <h2>Your Tournaments</h2>
+          {tabsYour.map((t) => (
             <span className={styles.tabTitle}>{t}</span>
           ))}
           <hr />
@@ -131,30 +93,7 @@ function TournamentPage() {
         </div>
       </div>
     </Container>
-  )
-
-  // return (
-  //   <div>
-  //     <div className={styles.container}>
-  //     <SideModal
-  //         isActive={showNewTournamentModal}
-  //         toggle={toggleShowNewTournamentModel}
-  //       ></SideModal>
-  //       <div>
-  //         {headerBrowser}
-  //         {tournamentBrowser}
-  //       </div>
-  //       <div className={styles.usertournamentBrowser}>
-  //         <h2>Your Tournaments</h2>
-  //         {tabsYour.map((t) => (
-  //           <span className={styles.tabTitle}>{t}</span>
-  //         ))}
-  //         <hr />
-  //         <div className={styles.yourtournamentBrowser}>{yourtournaments}</div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
+  );
 }
 
 export default TournamentPage;
