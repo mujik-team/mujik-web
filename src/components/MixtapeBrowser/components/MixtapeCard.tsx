@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getImageToBase64 } from "../../../services/util";
-import { Tooltip } from 'primereact/tooltip';
-
+import { Tooltip } from "primereact/tooltip";
 
 function MixtapeCard(props: Props) {
   const [image, setImage] = useState("");
@@ -22,10 +21,15 @@ function MixtapeCard(props: Props) {
   // return <Card base64image={image} onClick={handleClick} />;
   return (
     <div>
-      <Tooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
-      <Card className="customClassName" data-pr-tooltip={props.mixtapeName} base64image={image} onClick={handleClick} />
+      <InfoTooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
+      <Card
+        className="customClassName"
+        data-pr-tooltip={props.mixtapeName}
+        base64image={image}
+        onClick={handleClick}
+      />
     </div>
-  )
+  );
 }
 
 export default MixtapeCard;
@@ -57,5 +61,11 @@ const Card = styled.div`
     content: "";
     padding-bottom: 100%;
     display: block;
+  }
+`;
+
+const InfoTooltip = styled(Tooltip)`
+  & > .p-tooltip-text {
+    background: var(--card-color);
   }
 `;

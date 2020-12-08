@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
@@ -17,6 +17,7 @@ import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
 
 import useSpotify from "./hooks/useSpotify";
+import styled from "styled-components";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -32,14 +33,10 @@ function App() {
   const spotify = useSpotify();
 
   const app = (
-    <div className="app">
+    <AppContainer>
       <Navbar />
-      <MusicPlayer
-        showPlayer={showPlayer}
-        toggle={() => setShowPlayer(!showPlayer)}
-      />
 
-      <div className="router">
+      <RouterContainer>
         <AppHeader />
         <Switch>
           <Route path="/" exact component={HomePage} />
@@ -54,8 +51,12 @@ function App() {
           <Route path="/user/:username" component={UserProfileScreen} />
           <Route path="/spotify/authorize" component={SpotifyLoginPage} />
         </Switch>
-      </div>
-    </div>
+      </RouterContainer>
+
+      <MusicPlayerContainer>
+        <MusicPlayer />
+      </MusicPlayerContainer>
+    </AppContainer>
   );
 
   return (
@@ -65,7 +66,7 @@ function App() {
           {(authState as AuthState).isLoggedIn ? app : <WelcomePage />}
           <ToastContainer
             position={"bottom-right"}
-            autoClose={3000}
+            autoClose={2000}
             transition={Slide}
           />
         </SpotifyContext.Provider>
@@ -75,3 +76,19 @@ function App() {
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: calc(100vh - 120px) 120px;
+`;
+
+const RouterContainer = styled.div`
+  overflow-y: scroll;
+`;
+
+const MusicPlayerContainer = styled.div`
+  grid-column: 1 / span 2;
+  background: var(--card-color-secondary);
+  box-shadow: 0 -4px 15px 0px rgba(0, 0, 0, 0.25);
+`;

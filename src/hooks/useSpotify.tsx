@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import spotifyService from "../services/spotifyService/spotifyService";
 
 function useSpotifyNew() {
