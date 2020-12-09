@@ -5,6 +5,61 @@ import styled from "styled-components";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
 
+function TournamentSubmission(props: any) {
+  const toggleSubmitModal = () => {
+    setShowEntryModal(!showEntryModal);
+  };
+
+  const toggleSubmitSuccessModal = () =>
+    setShowSubmitSuccessModal(!showSubmitSuccessModal);
+
+  const [showEntryModal, setShowEntryModal] = useState(false);
+
+  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
+
+  const submitMixtape = () => {
+    toggleSubmitModal();
+    setTimeout({}, 200);
+    toggleSubmitSuccessModal();
+  };
+
+  return (
+    <Container>
+      <FullScreenModal
+        isActive={showSubmitSuccessModal}
+        toggle={toggleSubmitSuccessModal}
+      >
+        <SubmitSuccessModal />
+      </FullScreenModal>
+
+      <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
+        <EnterTournamentModal
+          submit={submitMixtape}
+          tournament={props.tournament}
+        />
+      </SideModal>
+      <div>
+        <h1>Mixtape Restrictions</h1>
+        {props.tournament.Restrictions.map((t: any, i: any) => (
+          <RestrictionCard key={i}>{`${t.Type}:${t.Value}`}</RestrictionCard>
+        ))}
+      </div>
+
+      <TournamentStatusContainer>
+        <SubmissionDate>Ends Septemeber 28th</SubmissionDate>
+        <SubmissionTimeLeft>12D 13H 45M 30S</SubmissionTimeLeft>
+
+        <JumboButton onClick={() => toggleSubmitModal()}>
+          ENTER TOURNEY
+        </JumboButton>
+        <div>Unsure about something? Ask a question.</div>
+      </TournamentStatusContainer>
+    </Container>
+  );
+}
+
+export default TournamentSubmission;
+
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
@@ -58,62 +113,3 @@ const JumboButton = styled.button`
     background-color: var(--main-color);
   }
 `;
-
-function TournamentSubmission(props : any) {
-  const toggleSubmitModal = () => {
-    setShowEntryModal(!showEntryModal);
-  };
-
-  const toggleSubmitSuccessModal = () =>
-    setShowSubmitSuccessModal(!showSubmitSuccessModal);
-
-  const [showEntryModal, setShowEntryModal] = useState(false);
-
-  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
-
-  const submitMixtape = () => {
-    toggleSubmitModal();
-    setTimeout({}, 200);
-    toggleSubmitSuccessModal();
-  };
-
-  return (
-    <Container>
-      <FullScreenModal
-        isActive={showSubmitSuccessModal}
-        toggle={toggleSubmitSuccessModal}
-      >
-        <SubmitSuccessModal />
-      </FullScreenModal>
-
-      <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
-        <EnterTournamentModal submit={submitMixtape} tournament={props.tournament} />
-      </SideModal>
-      <div>
-        <h1>Mixtape Restrictions</h1>
-        {
-          props.tournament.restrictions.map((m : any, i : any) => (
-            <RestrictionCard key={i} >{`${props.tournament.restrictions[i].type}:${props.tournament.restrictions[i].value}`}</RestrictionCard>
-          ))
-        }
-      </div>
-
-      <div>
-        <h1>Rules</h1>
-        <RuleCard>{props.rules}</RuleCard>
-      </div>
-
-      <TournamentStatusContainer>
-        <SubmissionDate>Ends Septemeber 28th</SubmissionDate>
-        <SubmissionTimeLeft>12D 13H 45M 30S</SubmissionTimeLeft>
-
-        <JumboButton onClick={() => toggleSubmitModal()}>
-          ENTER TOURNEY
-        </JumboButton>
-        <div>Unsure about something? Ask a question.</div>
-      </TournamentStatusContainer>
-    </Container>
-  );
-}
-
-export default TournamentSubmission;

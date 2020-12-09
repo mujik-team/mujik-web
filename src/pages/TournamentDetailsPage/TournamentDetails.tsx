@@ -1,36 +1,37 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
-import tournaments from "../../services/mock/tournaments";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import useMockTournament from "../../hooks/useMockTournament";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../App";
+import useTournament from "../../hooks/useTournament";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const [
-    tournament,
-    getTournament,
-    updateTournament,
-    isLoading,
-  ] = useMockTournament("0");
-  const state = tournament.state as TournamentState;
+  const { tournament, isLoading } = useTournament(tournamentId);
   const authContext = useContext(AuthContext);
 
-  const bottomComponent = {
-    submission: (
-      <TournamentSubmission
-        tournament={tournament}
-        restrictions={tournament.restrictions}
-        rules={tournament.additional_submission_criteria}
-      />
-    ),
-    voting: <TournamentVote />,
-    ended: <TournamentResults />,
+  const bottomComponent = () => {
+    if (!isLoading && tournament) {
+      const submissionDate = Date.parse(tournament.SubmissionDate);
+      const voteDate = Date.parse(tournament.VoteDate);
+      const now = new Date().getTime();
+
+      if (now < submissionDate)
+        return (
+          <TournamentSubmission
+            tournament={tournament}
+            restrictions={tournament.Restrictions}
+            rules={tournament.additional_submission_criteria}
+          />
+        );
+      else if (now > submissionDate && now < voteDate)
+        return <TournamentVote />;
+      else return <TournamentResults />;
+    }
   };
 
   const followTournament = async () => {
@@ -55,7 +56,7 @@ function TournamentDetails() {
       <Container>
         <Image />
         <div>
-          <TournamentTitle>{tournament.title}</TournamentTitle>
+          <TournamentTitle>{tournament.Title}</TournamentTitle>
           <div>
             <ProfilePicture />
             <Username
@@ -66,7 +67,7 @@ function TournamentDetails() {
                 bottom: "20px",
               }}
             >
-              by {tournament.creator_username}
+              by {tournament.CreatedBy}
             </Username>
             <div style={{ position: "relative", float: "right" }}>
               <Button
@@ -80,7 +81,6 @@ function TournamentDetails() {
                 }}
                 onClick={(e) => followTournament()}
               >
-                {/* {authContext.currentUser.tournamentsFollowing.includes(tournament._id) ? "UNFOLLOW" : "FOLLOW"} */}
                 FOLLOW
               </Button>
 
@@ -120,23 +120,17 @@ function TournamentDetails() {
           </div>
 
           <Description style={{ marginBottom: "20px" }}>
-            {tournament.description}
+            {tournament.Description}
           </Description>
         </div>
       </Container>
 
-      <StateBasedContainer>{bottomComponent[state]}</StateBasedContainer>
+      <StateBasedContainer>{bottomComponent()}</StateBasedContainer>
     </div>
   );
 }
 
 export default TournamentDetails;
-
-enum TournamentState {
-  SUBMISSION = "submission",
-  VOTING = "voting",
-  ENDED = "ended",
-}
 
 const Container = styled.div`
   margin: 0 50px;

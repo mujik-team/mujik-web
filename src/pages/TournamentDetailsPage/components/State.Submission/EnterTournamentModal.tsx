@@ -64,7 +64,7 @@ function EnterTournamentModal(props: Props) {
     }
   };
 
-  const RestrictionChecklist = props.tournament.restrictions.map(
+  const RestrictionChecklist = props.tournament.Restrictions.map(
     (r: any, i: any) => (
       <div
         key={i}

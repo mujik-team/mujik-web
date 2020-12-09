@@ -44,7 +44,7 @@ const TournamentCard = styled.div`
   }
 
   &::before {
-    content: "";
+    content: ${(props: Props) => props.tournament.Title};
     padding-bottom: 60%;
     display: block;
   }

@@ -3,53 +3,19 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import DropdownSelect from "../../components/Input/DropdownSelect";
+import { GetAllActiveTournaments } from "../../services/tournamentService";
 import TournamentCard from "./TournamentCard";
-import styles from "./TournamentBrowser.module.css";
-// import tournaments from "../../services/mock/tournaments";
-// import CardLayout from "./components/CardLayout";
-// import ListLayout from "./components/ListLayout";
-// import MixtapeCard from "./components/MixtapeCard";
-// import MixtapeListItem from "./components/MixtapeListItem";
-import useMockTournament from "../../hooks/useMockTournament";
 
 function TournamentBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
-  const [isCardLayout, setIsCardLayout] = useState(true);
-  const [
-    tournament,
-    getTournament,
-    updateTournament,
-    isLoading,
-  ] = useMockTournament("0");
+  const [tournaments, setTournaments] = useState([] as any[]);
 
   useEffect(() => {
-    if (localStorage.getItem("layout")) {
-      const setTo = localStorage.getItem("layout") === "card";
-      setIsCardLayout(setTo);
-    }
-  }, []);
-
-  const toggleCardLayout = () => {
-    setIsCardLayout(!isCardLayout);
-    localStorage.setItem("layout", !isCardLayout ? "card" : "list");
-  };
-
-  const yourtournaments = [];
-
-  for (let i = 0; i < 8; i++) {
-    yourtournaments.push(
-      <div
-        onClick={() => history.push(`/tournament/${i}`)}
-        className={styles.tournamentListCard}
-      ></div>
+    GetAllActiveTournaments().then((tournaments) =>
+      setTournaments([...tournaments])
     );
-  }
-
-  let tournaments = [];
-  for (let i = 0; i < 8; i++) {
-    tournaments.push(tournament);
-  }
+  }, []);
 
   const tournamentStuff = (
     <div>
@@ -58,19 +24,13 @@ function TournamentBrowser(props: Props) {
           <TournamentCard
             tournament={t}
             // ${i}
-            onClick={() => history.push(`/tournament/0`)}
+            onClick={() => history.push(`/tournament/${t.TournamentId}`)}
           >
             <span>{t.title}</span>
           </TournamentCard>
         ))}
       </TournamentGrid>
     </div>
-  );
-
-  const changeLayoutButton = (
-    <ChangeLayoutButton onClick={() => toggleCardLayout()}>
-      <i className={`mdi mdi-${isCardLayout ? "card" : "view-list"}`} />
-    </ChangeLayoutButton>
   );
 
   return (
@@ -90,7 +50,6 @@ function TournamentBrowser(props: Props) {
             />
             <label htmlFor="sort-dropdown">Sort By</label>
           </div>
-          {changeLayoutButton}
         </RightHeader>
       </Header>
       <hr />

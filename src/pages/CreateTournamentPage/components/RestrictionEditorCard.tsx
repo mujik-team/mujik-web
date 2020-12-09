@@ -116,6 +116,12 @@ const Card = styled.div`
         color: var(--main-color) !important;
         border: none !important;
       }
+
+      & > button:hover,
+      & > button:focus {
+        background: var(--main-color) !important;
+        color: black !important;
+      }
     }
   }
 

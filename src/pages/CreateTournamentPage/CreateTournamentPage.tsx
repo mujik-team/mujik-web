@@ -10,6 +10,7 @@ import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
 import { FormState, reducer } from "./reducer";
+import { CreateNewTournament } from "../../services/tournamentService";
 
 function CreateTournamentPage() {
   const [tournamentForm, dispatch] = useReducer(reducer, FormState);
@@ -23,6 +24,11 @@ function CreateTournamentPage() {
     dispatch({ type: "restriction-update", payload: { key, value } });
   };
 
+  const handleCreateTournament = () => {
+    const username = authContext.currentUser.username;
+    CreateNewTournament({ ...tournamentForm.form, createdBy: username });
+  };
+
   return (
     <Container>
       <div className="form">
@@ -31,15 +37,18 @@ function CreateTournamentPage() {
         <FieldTitle>Create a catchy title.</FieldTitle>
         <FieldDescription>{CatchyTitleDescription}</FieldDescription>
         <FieldInput
+          value={tournamentForm.form.title}
+          onChange={(e: any) => handleFieldUpdate("title", e.target.value)}
+        />
+
+        <FieldTitle>Write a prompt for your tournament.</FieldTitle>
+        <FieldDescription>{PromptDescription}</FieldDescription>
+        <FieldTextArea
           value={tournamentForm.form.description}
           onChange={(e: any) =>
             handleFieldUpdate("description", e.target.value)
           }
         />
-
-        <FieldTitle>Write a prompt for your tournament.</FieldTitle>
-        <FieldDescription>{PromptDescription}</FieldDescription>
-        <FieldTextArea />
 
         <FieldTitle>Submission Restrictions</FieldTitle>
         <FieldDescription>{SubmissionRestrictionDescription}</FieldDescription>
@@ -70,6 +79,7 @@ function CreateTournamentPage() {
         <br />
 
         <FieldTitle>Winner Picked By...</FieldTitle>
+        <FieldDescription>{PickedByDescription}</FieldDescription>
         <br />
         <WinnerCard
           className={
@@ -109,7 +119,7 @@ function CreateTournamentPage() {
               showTime
               hourFormat="12"
               minDate={new Date()}
-              dateFormat="dd/mm/yy"
+              dateFormat="mm/dd/yy"
               value={tournamentForm.form.submissionDate}
               onChange={(e) => handleFieldUpdate("submissionDate", e.value)}
             />
@@ -121,6 +131,7 @@ function CreateTournamentPage() {
               showTime
               hourFormat="12"
               minDate={new Date(tournamentForm.form.submissionDate)}
+              dateFormat="mm/dd/yy"
               value={tournamentForm.form.voteDate}
               onChange={(e) => handleFieldUpdate("voteDate", e.value)}
             />
@@ -132,7 +143,9 @@ function CreateTournamentPage() {
           <ImageEditor editorType="tournament_image" />
         </div> */}
 
-        <CreateButton>Create Tournament</CreateButton>
+        <CreateButton onClick={handleCreateTournament}>
+          Create Tournament
+        </CreateButton>
       </div>
 
       <ThinkingImage src="/images/in_thought.svg" />
@@ -156,6 +169,9 @@ const RewardDescription =
 
 const TournamentDeadlinesDescription =
   "Choose the specific deadlines for your tournament. Such as when submission and voting end.";
+
+const PickedByDescription =
+  "Select who will decide on the winner for this tournament.";
 
 const Container = styled.div`
   margin: 30px;
@@ -190,6 +206,7 @@ const FieldDescription = styled.div`
 
 const FieldInput = styled(TextInput)`
   font-size: 30px;
+  font-weight: 600;
   height: 60px;
   padding: 20px 30px;
   width: 100%;
