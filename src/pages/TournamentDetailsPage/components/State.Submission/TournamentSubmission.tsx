@@ -41,7 +41,10 @@ function TournamentSubmission(props: any) {
       <div>
         <h1>Mixtape Restrictions</h1>
         {props.tournament.Restrictions.map((t: any, i: any) => (
-          <RestrictionCard key={i}>{`${t.Type}:${t.Value}`}</RestrictionCard>
+          <RestrictionCard key={i}>
+            <div className="type">{t.Type}</div>
+            <div className="value">{t.Value}</div>
+          </RestrictionCard>
         ))}
       </div>
 
@@ -73,16 +76,25 @@ const TournamentStatusContainer = styled.div`
 `;
 
 const RestrictionCard = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
   background-color: var(--card-color);
+  padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
-  height: 50px;
-`;
 
-const RuleCard = styled.div`
-  background-color: var(--card-color);
-  border-radius: 8px;
-  height: 200px;
+  & > .name {
+    font-weight: 600;
+    font-size: 30px;
+  }
+
+  & > .value {
+    font-size: 25px;
+  }
 `;
 
 const SubmissionDate = styled.div`

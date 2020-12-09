@@ -34,7 +34,7 @@ function TournamentDetails() {
     }
   };
 
-  const followTournament = async () => {
+  const handleFollowTournament = async () => {
     if (authContext.isLoggedIn) {
       const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
         tournament._id
@@ -55,59 +55,28 @@ function TournamentDetails() {
     <div>
       <Container>
         <Image />
-        <div>
-          <TournamentTitle>{tournament.Title}</TournamentTitle>
+        <DetailsContainer>
+          <div className="title">{tournament.Title}</div>
+
           <div>
             <ProfilePicture />
-            <Username
-              style={{
-                marginLeft: "10px",
-                display: "inline-block",
-                position: "relative",
-                bottom: "20px",
-              }}
-            >
-              by {tournament.CreatedBy}
-            </Username>
-            <div style={{ position: "relative", float: "right" }}>
-              <Button
-                style={{
-                  position: "relative",
-                  fontSize: "15px",
-                  fontWeight: "bold",
-                  padding: "10px 20px",
-                  marginRight: "10px",
-                  top: "9px",
-                }}
-                onClick={(e) => followTournament()}
-              >
+            <div className="username">by {tournament.CreatedBy}</div>
+            <div style={{ display: "inline-block" }}>
+              <Button id="follow-button" onClick={handleFollowTournament}>
                 FOLLOW
               </Button>
 
               <TagContainer>
                 <img
+                  id="coin"
                   height="20"
                   src="/icons/coin.svg"
                   alt="mujik-coin"
-                  style={{
-                    position: "relative",
-                    top: "25%",
-                    marginRight: "5px",
-                  }}
                 ></img>
-                <div
-                  style={{
-                    position: "relative",
-                    display: "inline-block",
-                    top: "20%",
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                    marginRight: "20px",
-                  }}
-                >
-                  {tournament.rewards ? tournament.rewards[0].value : ""}
+                <div id="coin-value">
+                  {tournament.Rewards ? tournament.Rewards[0].Value : ""}
                 </div>
-                <span style={{ position: "relative", top: "12%" }}>
+                <span className="tags">
                   <Tag>DOUBLE XP</Tag>
                   <Tag
                     style={{ backgroundColor: "#FF6464", marginLeft: "5px" }}
@@ -122,7 +91,7 @@ function TournamentDetails() {
           <Description style={{ marginBottom: "20px" }}>
             {tournament.Description}
           </Description>
-        </div>
+        </DetailsContainer>
       </Container>
 
       <StateBasedContainer>{bottomComponent()}</StateBasedContainer>
@@ -140,6 +109,42 @@ const Container = styled.div`
   gap: 20px;
 `;
 
+const DetailsContainer = styled.div`
+  & .title {
+    user-select: none;
+    margin-top: 20px;
+    /* margin-bottom: 10px; */
+    font-size: 50px;
+    font-weight: 500;
+  }
+
+  & .username {
+    margin-left: 10px;
+    display: inline-block;
+    position: relative;
+    bottom: 20px;
+
+    color: var(--text-inactive);
+    font-size: 25px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  & #follow-button {
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin-right: 10px;
+    top: 9px;
+  }
+`;
+
 const StateBasedContainer = styled.div`
   margin: 60px;
 `;
@@ -151,6 +156,26 @@ const TagContainer = styled.div`
   display: inline-block;
   border-radius: 8px;
   background-color: var(--card-color);
+
+  & > #coin {
+    position: relative;
+    top: 25%;
+    margin-right: 5px;
+  }
+
+  & > #coin-value {
+    position: relative;
+    display: inline-block;
+    top: 20%;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 20px;
+  }
+
+  & > span.tags {
+    position: relative;
+    top: 12%;
+  }
 `;
 
 const Tag = styled.div`
@@ -177,24 +202,10 @@ const ProfilePicture = styled.div`
   border-radius: 50px;
 `;
 
-const Username = styled.div`
-  display: inline-block;
-  font-size: 1.5em;
-  font-weight: 500;
-  color: var(--text-inactive);
-`;
-
 const Description = styled.div`
   width: 70%;
   font-family: "Inter", sans-serif;
   font-size: 20px;
   margin-top: 10px;
   color: var(--text-inactive);
-`;
-
-const TournamentTitle = styled.div`
-  margin-top: 20px;
-  /* margin-bottom: 10px; */
-  font-size: 50px;
-  font-weight: 500;
 `;
