@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
@@ -46,8 +46,9 @@ function TournamentSubmission(props: any) {
       </div>
 
       <TournamentStatusContainer>
-        <SubmissionDate>Ends Septemeber 28th</SubmissionDate>
-        <SubmissionTimeLeft>12D 13H 45M 30S</SubmissionTimeLeft>
+        {TimeLeftCountdown(
+          new Date(props.tournament?.SubmissionDate) || new Date()
+        )}
 
         <JumboButton onClick={() => toggleSubmitModal()}>
           ENTER TOURNEY
@@ -62,7 +63,7 @@ export default TournamentSubmission;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1fr 2fr;
   gap: 20px;
 `;
 
@@ -113,3 +114,49 @@ const JumboButton = styled.button`
     background-color: var(--main-color);
   }
 `;
+
+function TimeLeftCountdown(countdownTo: Date) {
+  const [timeLeftString, setTimeLeftString] = useState("LOADING");
+  const [dueDate, setDueDate] = useState("...");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Get today's date.
+      const now = new Date().getTime();
+      const countdownDate = countdownTo.getTime();
+
+      // Find the distance between now and the count down date.
+      const distance = countdownDate - now;
+
+      if (distance < 0) {
+        setTimeLeftString("EXPIRED");
+        clearInterval(interval);
+        return;
+      }
+
+      // Time calculations for days, hours, minutes and seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeftString(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdownTo]);
+
+  return (
+    <div>
+      <SubmissionDate>
+        Submit By {countdownTo.toDateString() + " "}{" "}
+        {countdownTo.toLocaleTimeString("en-us")}{" "}
+      </SubmissionDate>
+      <SubmissionTimeLeft>{timeLeftString}</SubmissionTimeLeft>
+    </div>
+  );
+}
