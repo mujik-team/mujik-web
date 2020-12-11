@@ -1,43 +1,51 @@
-import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
-import tournaments from "../../services/mock/tournaments";
+import React, { useContext, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
 import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
-import useMockTournament from "../../hooks/useMockTournament";
-import { AuthContext } from "../../App";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../App";
+import useTournament from "../../hooks/useTournament";
+import SideModal from "../../components/SideModal";
+import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
+import TagInfo from "./TagInfo";
+import AvatarImage from "../../components/AvatarImage";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const [
+  const {
     tournament,
-    getTournament,
-    updateTournament,
     isLoading,
-  ] = useMockTournament("0");
-  // const tournament = tournaments[tournamentId as number];
-  const state = tournament.state as TournamentState;
+    tournamentImage,
+    updateTournament,
+  } = useTournament(tournamentId);
+  const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
   const authContext = useContext(AuthContext);
+  const history = useHistory();
 
-  const bottomComponent = {
-    submission: (
-      <TournamentSubmission
-        tournament={tournament}
-        restrictions={tournament.restrictions}
-        rules={tournament.additional_submission_criteria}
-      />
-    ),
-    voting: <TournamentVote />,
-    ended: <TournamentResults />,
+  const bottomComponent = () => {
+    if (!isLoading && tournament) {
+      const submissionDate = Date.parse(tournament.SubmissionDate);
+      const voteDate = Date.parse(tournament.VoteDate);
+      const now = new Date().getTime();
+
+      if (now < submissionDate)
+        return (
+          <TournamentSubmission
+            tournament={{ ...tournament, tournamentImage }}
+            restrictions={tournament.Restrictions}
+            rules={tournament.additional_submission_criteria}
+          />
+        );
+      else if (now > submissionDate && now < voteDate)
+        return <TournamentVote tournament={tournament} />;
+      else return <TournamentResults />;
+    }
   };
 
-  console.log(tournament);
-
-  const followTournament = async () => {
-    console.log("follow tournament");
+  const handleFollowTournament = async () => {
     if (authContext.isLoggedIn) {
       const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
         tournament._id
@@ -54,128 +62,147 @@ function TournamentDetails() {
     }
   };
 
+  const toggleShowEditTournamentModal = () => {
+    setShowEditTournamentModal(!showEditTournamentModal);
+  };
+
+  const handleUpdateTournament = async (updatedTournament: any) => {
+    updateTournament(updatedTournament);
+  };
+
+  const rewardAmount = tournament.Rewards ? tournament.Rewards[0].Value : 0;
+
   return (
     <div>
       <Container>
-        <Image />
-        <div>
-          <TournamentTitle>{tournament.title}</TournamentTitle>
-          <div>
-            <ProfilePicture />
-            <Username
-              style={{
-                marginLeft: "10px",
-                display: "inline-block",
-                position: "relative",
-                bottom: "20px",
-              }}
-            >
-              by {tournament.creator_username}
-            </Username>
-            <div style={{ position: "relative", float: "right" }}>
-              <Button
-                style={{
-                  position: "relative",
-                  fontSize: "15px",
-                  fontWeight: "bold",
-                  padding: "10px 20px",
-                  marginRight: "10px",
-                  top: "9px",
-                }}
-                onClick={(e) => followTournament()}
+        <Image image={tournamentImage} />
+
+        <SideModal
+          isActive={showEditTournamentModal}
+          toggle={toggleShowEditTournamentModal}
+          width={600}
+        >
+          {!isLoading && (
+            <EditTournamentDetailsModal
+              updateTournament={handleUpdateTournament}
+              tournament={{ ...tournament, tournamentImage }}
+              toggleModal={toggleShowEditTournamentModal}
+            />
+          )}
+        </SideModal>
+        <DetailsContainer>
+          <div className="title">{tournament.Title}</div>
+
+          <DetailsBar>
+            <div className="created-by">
+              <AvatarImage username={tournament.CreatedBy} size={50} />
+              <div
+                onClick={() => history.push(`/user/${tournament.CreatedBy}`)}
+                className="username"
               >
-                {/* {authContext.currentUser.tournamentsFollowing.includes(tournament._id) ? "UNFOLLOW" : "FOLLOW"} */}
+                {tournament.CreatedBy}
+              </div>
+            </div>
+
+            <div className="user-actions">
+              <Button id="follow-button" onClick={handleFollowTournament}>
                 FOLLOW
               </Button>
 
-              <TagContainer>
-                <img
-                  height="20"
-                  src="/icons/coin.svg"
-                  alt="mujik-coin"
-                  style={{
-                    position: "relative",
-                    top: "25%",
-                    marginRight: "5px",
-                  }}
-                ></img>
-                <div
-                  style={{
-                    position: "relative",
-                    display: "inline-block",
-                    top: "20%",
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                    marginRight: "20px",
-                  }}
-                >
-                  {tournament.rewards ? tournament.rewards[0].value : ""}
-                </div>
-                <span style={{ position: "relative", top: "12%" }}>
-                  <Tag>DOUBLE XP</Tag>
-                  <Tag
-                    style={{ backgroundColor: "#FF6464", marginLeft: "5px" }}
-                  >
-                    NEW
-                  </Tag>
-                </span>
-              </TagContainer>
+              <Button id="edit-button" onClick={toggleShowEditTournamentModal}>
+                <i className="mdi mdi-pencil" />
+              </Button>
             </div>
-          </div>
+
+            <div>
+              <TagInfo coins={rewardAmount} />
+            </div>
+          </DetailsBar>
 
           <Description style={{ marginBottom: "20px" }}>
-            {tournament.description}
+            {tournament.Description}
           </Description>
-        </div>
+        </DetailsContainer>
       </Container>
 
-      <StateBasedContainer>{bottomComponent[state]}</StateBasedContainer>
+      <StateBasedContainer>{bottomComponent()}</StateBasedContainer>
     </div>
   );
 }
 
 export default TournamentDetails;
 
-enum TournamentState {
-  SUBMISSION = "submission",
-  VOTING = "voting",
-  ENDED = "ended",
-}
-
 const Container = styled.div`
   margin: 0 50px;
   display: grid;
-  grid-template-columns: 500px 1fr;
+  grid-template-columns: 450px 1fr;
   grid-auto-rows: 300px;
   gap: 20px;
+`;
+
+const DetailsContainer = styled.div`
+  & .title {
+    user-select: none;
+    margin-top: 20px;
+    /* margin-bottom: 10px; */
+    font-size: 50px;
+    font-weight: 500;
+  }
+
+  & .username {
+    margin-left: 10px;
+    display: inline-block;
+    position: relative;
+    bottom: 20px;
+
+    color: var(--text-inactive);
+    font-size: 25px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  & #follow-button,
+  #edit-button {
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin-right: 10px;
+    top: 9px;
+  }
+`;
+
+const DetailsBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+
+  .user-actions {
+    margin-right: 5px;
+  }
+
+  .created-by {
+    margin-right: 20px;
+  }
 `;
 
 const StateBasedContainer = styled.div`
   margin: 60px;
 `;
 
-const TagContainer = styled.div`
-  height: 50px;
-  padding: 0 20px;
-  margin: auto;
-  display: inline-block;
-  border-radius: 8px;
-  background-color: var(--card-color);
-`;
-
-const Tag = styled.div`
-  user-select: none;
-  display: inline-block;
-  border-radius: 99px;
-  padding: 4px 15px;
-  font-size: 12px;
-  background-color: #6c63ff;
-  letter-spacing: 2px;
-  font-weight: 600;
-`;
-
+type ImageProps = {
+  image?: string;
+};
 const Image = styled.div`
-  background: var(--card-color);
+  background: ${(props: ImageProps) => `url(${props.image})`};
+  background-color: var(--card-color);
+  width: 450px;
+  height: 300px;
   border-radius: 8px;
 `;
 
@@ -187,24 +214,10 @@ const ProfilePicture = styled.div`
   border-radius: 50px;
 `;
 
-const Username = styled.div`
-  display: inline-block;
-  font-size: 1.5em;
-  font-weight: 500;
-  color: var(--text-inactive);
-`;
-
 const Description = styled.div`
   width: 70%;
-  font-family: "Fira Sans", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 20px;
   margin-top: 10px;
   color: var(--text-inactive);
-`;
-
-const TournamentTitle = styled.div`
-  margin-top: 20px;
-  /* margin-bottom: 10px; */
-  font-size: 50px;
-  font-weight: 500;
 `;

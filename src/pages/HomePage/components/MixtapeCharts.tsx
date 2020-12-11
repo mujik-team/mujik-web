@@ -11,7 +11,6 @@ function MixtapeCharts() {
     items.push(
       <ChartItem>
         <h3 style={{ color: "var(--text-inactive)" }}>{i + 1}.</h3>
-
         <div className="details">
           <div className="song-title">{mixtapes[i].name}</div>
           <div className="song-artist">{mixtapes[i].createdBy}</div>

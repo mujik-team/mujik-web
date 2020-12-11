@@ -1,20 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { getImageToBase64 } from "../../services/util";
+
+function TournamentCard(props: Props) {
+  const [image, setImage] = useState("");
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/tournament/${props.tournamentId}`);
+  };
+
+  useEffect(() => {
+    getImageToBase64(`/tournament/${props.tournamentId}/cover`).then((image) =>
+      setImage(image || "")
+    );
+  }, [props.tournamentId]);
+
+  return (
+    <div>
+      <Card
+        onClick={handleClick}
+        base64image={image}
+        title={props.tournamentTitle}
+      />
+    </div>
+  );
+}
 
 type Props = {
-  tournament: any;
+  tournamentId: string;
+  tournamentTitle: string;
 };
 
-const TournamentCard = styled.div`
+type CardProps = {
+  base64image: string;
+  title: string;
+};
+
+const Card = styled.div`
   background-color: var(--card-color);
   border-radius: 8px;
   padding: 1rem;
   cursor: pointer;
   transition: 0.3s linear all;
-  background-image: ${(props: Props) =>
-    `url(/images/tournaments/${props.tournament.image})`};
+  background-image: ${(props: CardProps) => `url(${props.base64image})`};
   background-position: center;
   background-size: cover;
+
   filter: grayscale(80%);
 
   & > span {
@@ -45,7 +78,8 @@ const TournamentCard = styled.div`
 
   &::before {
     content: "";
-    padding-bottom: 60%;
+    /* padding-bottom: calc(9 / 16 * 100%); */
+    padding-bottom: 65%;
     display: block;
   }
 `;

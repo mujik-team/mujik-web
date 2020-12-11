@@ -1,10 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&family=Poppins:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 
 :root {
+  --font-main: "Poppins";
+  --font-secondary: "Inter";
   --main-bg-color: #26282d;
   --secondary-bg-color: #222325;
   --card-color: #191c21;
-  --card-color-highlight: #333334;
+  --card-color-highlight: #21242a;
   --main-color: #ffff64;
   --text-primary: whitesmoke;
   --text-inactive: #777777;
@@ -32,20 +35,6 @@ body {
   padding: 0;
 }
 
-/* input[type="text"] {
-  padding: 8px 12px;
-  border-radius: 25px;
-  background-color: var(--card-color);
-  border: none;
-  color: var(--text-primary);
-
-  transition: 0.1s linear all;
-}
-
-input[type="text"]:focus {
-  box-shadow: inset 0px 0px 0px 2px var(--main-color);
-} */
-
 .app {
   display: grid;
   grid-template-columns: 250px 1fr;
@@ -54,13 +43,7 @@ input[type="text"]:focus {
 
 .router {
   overflow-y: scroll;
-  /* background-image: linear-gradient(
-      to bottom,
-      rgba(245, 246, 252, 0.52),
-      rgba(117, 19, 93, 0.73)
-    ),
-    url("/images/weeknd.png");
-  background-size: cover; */
+  height: 100%;
 }
 
 .title {

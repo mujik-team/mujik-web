@@ -1,13 +1,95 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
+import { AvailableRestrictions } from "../../../CreateTournamentPage/components/RestrictionSelector";
+import { AuthContext } from "../../../../App";
+import { SubmitMixtapeToTournament } from "../../../../services/tournamentService";
+import { toast } from "react-toastify";
+
+function TournamentSubmission(props: any) {
+  const authContext = useContext(AuthContext);
+
+  const [showEntryModal, setShowEntryModal] = useState(false);
+  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
+  const [userHasEnteredTournament, setUserHasEnteredTournament] = useState(
+    false
+  );
+
+  useEffect(() => {
+    setUserHasEnteredTournament(username in props.tournament.Entrants);
+  }, [props.tournament]);
+
+  const submitMixtape = async (mixtapeId: string) => {
+    try {
+      await SubmitMixtapeToTournament(props.tournament._id, mixtapeId);
+      toast.success("🙌 Successfully entered tournament.");
+      toggleSubmitModal();
+      toggleSubmitSuccessModal();
+      setUserHasEnteredTournament(true);
+    } catch (err) {
+      toast.warn("Unable to submit this mixtape.");
+    }
+  };
+  const toggleSubmitModal = () => {
+    setShowEntryModal(!showEntryModal);
+  };
+
+  const toggleSubmitSuccessModal = () =>
+    setShowSubmitSuccessModal(!showSubmitSuccessModal);
+
+  const username = authContext.currentUser.username;
+  return (
+    <Container>
+      <FullScreenModal
+        isActive={showSubmitSuccessModal}
+        toggle={toggleSubmitSuccessModal}
+      >
+        <SubmitSuccessModal />
+      </FullScreenModal>
+
+      <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
+        <EnterTournamentModal
+          submit={submitMixtape}
+          tournament={props.tournament}
+        />
+      </SideModal>
+      <div>
+        <h1>Mixtape Restrictions</h1>
+        {props.tournament.Restrictions.map((r: any, i: any) => {
+          const meta = AvailableRestrictions[r.Type];
+
+          return (
+            <RestrictionCard key={i}>
+              <div className="type">{meta.label}</div>
+              <div className="value">{`${meta.valueLabel} ${r.Value}`}</div>
+            </RestrictionCard>
+          );
+        })}
+      </div>
+
+      <TournamentStatusContainer>
+        {TimeLeftCountdown(
+          new Date(props.tournament?.SubmissionDate) || new Date()
+        )}
+
+        {!userHasEnteredTournament && (
+          <JumboButton onClick={() => toggleSubmitModal()}>
+            ENTER TOURNEY
+          </JumboButton>
+        )}
+      </TournamentStatusContainer>
+    </Container>
+  );
+}
+
+export default TournamentSubmission;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1fr 2fr;
   gap: 20px;
 `;
 
@@ -17,16 +99,33 @@ const TournamentStatusContainer = styled.div`
 `;
 
 const RestrictionCard = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  user-select: none;
+  transition: 0.2s linear all;
+
   background-color: var(--card-color);
+  padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
-  height: 50px;
-`;
 
-const RuleCard = styled.div`
-  background-color: var(--card-color);
-  border-radius: 8px;
-  height: 200px;
+  & > .type {
+    font-family: var(--font-secondary);
+    color: var(--text-inactive);
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  & > .value {
+    font-size: 25px;
+  }
+
+  &:hover {
+    background-color: var(--card-color-highlight);
+  }
 `;
 
 const SubmissionDate = styled.div`
@@ -59,61 +158,48 @@ const JumboButton = styled.button`
   }
 `;
 
-function TournamentSubmission(props : any) {
-  const toggleSubmitModal = () => {
-    setShowEntryModal(!showEntryModal);
-  };
+function TimeLeftCountdown(countdownTo: Date) {
+  const [timeLeftString, setTimeLeftString] = useState("LOADING");
+  const [dueDate, setDueDate] = useState("...");
 
-  const toggleSubmitSuccessModal = () =>
-    setShowSubmitSuccessModal(!showSubmitSuccessModal);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Get today's date.
+      const now = new Date().getTime();
+      const countdownDate = countdownTo.getTime();
 
-  const [showEntryModal, setShowEntryModal] = useState(false);
+      // Find the distance between now and the count down date.
+      const distance = countdownDate - now;
 
-  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
+      if (distance < 0) {
+        setTimeLeftString("EXPIRED");
+        clearInterval(interval);
+        return;
+      }
 
-  const submitMixtape = () => {
-    toggleSubmitModal();
-    setTimeout({}, 200);
-    toggleSubmitSuccessModal();
-  };
+      // Time calculations for days, hours, minutes and seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeftString(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdownTo]);
 
   return (
-    <Container>
-      <FullScreenModal
-        isActive={showSubmitSuccessModal}
-        toggle={toggleSubmitSuccessModal}
-      >
-        <SubmitSuccessModal />
-      </FullScreenModal>
-
-      <SideModal isActive={showEntryModal} toggle={toggleSubmitModal}>
-        <EnterTournamentModal submit={submitMixtape} tournament={props.tournament} />
-      </SideModal>
-      <div>
-        <h1>Mixtape Restrictions</h1>
-        {
-          props.tournament.restrictions.map((m : any, i : any) => (
-            <RestrictionCard key={i} >{`${props.tournament.restrictions[i].type}:${props.tournament.restrictions[i].value}`}</RestrictionCard>
-          ))
-        }
-      </div>
-
-      <div>
-        <h1>Rules</h1>
-        <RuleCard>{props.rules}</RuleCard>
-      </div>
-
-      <TournamentStatusContainer>
-        <SubmissionDate>Ends Septemeber 28th</SubmissionDate>
-        <SubmissionTimeLeft>12D 13H 45M 30S</SubmissionTimeLeft>
-
-        <JumboButton onClick={() => toggleSubmitModal()}>
-          ENTER TOURNEY
-        </JumboButton>
-        <div>Unsure about something? Ask a question.</div>
-      </TournamentStatusContainer>
-    </Container>
+    <div>
+      <SubmissionDate>
+        Submit By {countdownTo.toDateString() + " "}{" "}
+        {countdownTo.toLocaleTimeString("en-us")}{" "}
+      </SubmissionDate>
+      <SubmissionTimeLeft>{timeLeftString}</SubmissionTimeLeft>
+    </div>
   );
 }
-
-export default TournamentSubmission;

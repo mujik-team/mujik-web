@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../Button";
-import SortDropdown from "../Input/SortDropdown";
+import DropdownSelect from "../Input/DropdownSelect";
 import CardLayout from "./components/CardLayout";
 import ListLayout from "./components/ListLayout";
 import MixtapeCard from "./components/MixtapeCard";
@@ -75,7 +75,7 @@ function MixtapeBrowser(props: Props) {
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
-            <SortDropdown
+            <DropdownSelect
               id="sort-dropdown"
               value={sortBy}
               onChange={(e: any) => setSortBy(e.value)}

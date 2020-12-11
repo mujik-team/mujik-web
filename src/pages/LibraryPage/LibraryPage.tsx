@@ -25,10 +25,9 @@ function LibraryPage() {
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentTab, setCurrentTab] = useState("All")
+  const [currentTab, setCurrentTab] = useState("All");
 
   const getUserMixtapes = async () => {
-    console.log(authContext.currentUser);
     const userMixtapes = await mixtapeService.getSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
@@ -36,29 +35,33 @@ function LibraryPage() {
     setMixtapes([...userMixtapes]);
   };
 
-
   const filterTag = async (event: any) => {
     const tag = event.target.id;
-    const mixtapes = await mixtapeService.getSeveralMixtapes(authContext.currentUser.profile.mixtapes);
-    let filteredMixtapes = []
+    const mixtapes = await mixtapeService.getSeveralMixtapes(
+      authContext.currentUser.profile.mixtapes
+    );
+    let filteredMixtapes = [];
     switch (tag) {
       case "All":
         setMixtapes([...mixtapes]);
         setCurrentTab("All");
         break;
       case "By Me":
-        filteredMixtapes = mixtapes.filter(mixtape => mixtape.createdBy === authContext.currentUser.username);
+        filteredMixtapes = mixtapes.filter(
+          (mixtape) => mixtape.createdBy === authContext.currentUser.username
+        );
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Me");
         break;
       case "By Others":
-        filteredMixtapes = mixtapes.filter(mixtape => mixtape.createdBy !== authContext.currentUser.username);
+        filteredMixtapes = mixtapes.filter(
+          (mixtape) => mixtape.createdBy !== authContext.currentUser.username
+        );
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Others");
         break;
     }
-
-  }
+  };
 
   const createNewMixtape = async (mixtape: any, imageBlob?: any) => {
     try {
@@ -93,11 +96,30 @@ function LibraryPage() {
     <div style={{ marginBottom: "30px" }}>
       <span className={styles.title}>My Library</span>
       <span style={{ marginLeft: "30px" }}>
-        {tabs.map((t) => (
-          currentTab === t ?
-            <span className={styles.tabTitle} id={t} onClick={(e) => { filterTag(e) }} style={{ color: "white"}}>{t}</span> : 
-          <span className={styles.tabTitle} id={t}  onClick={(e) => {filterTag(e)}}>{t}</span>
-        ))}
+        {tabs.map((t) =>
+          currentTab === t ? (
+            <span
+              className={styles.tabTitle}
+              id={t}
+              onClick={(e) => {
+                filterTag(e);
+              }}
+              style={{ color: "white" }}
+            >
+              {t}
+            </span>
+          ) : (
+            <span
+              className={styles.tabTitle}
+              id={t}
+              onClick={(e) => {
+                filterTag(e);
+              }}
+            >
+              {t}
+            </span>
+          )
+        )}
       </span>
     </div>
   );

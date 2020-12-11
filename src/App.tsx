@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
@@ -17,6 +17,8 @@ import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
 
 import useSpotify from "./hooks/useSpotify";
+
+import CreateTournamentPage from "./pages/CreateTournamentPage/CreateTournamentPage";
 
 export const AuthContext: React.Context<AuthState> = React.createContext(
   {} as AuthState
@@ -46,6 +48,7 @@ function App() {
           <Route path="/library" component={LibraryPage} />
           <Route path="/tournament" exact component={TournamentPage} />
           <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsPage} />
+          <Route path="/tournament/new" component={CreateTournamentPage} />
           <Route
             path="/tournament/:tournamentId"
             component={TournamentDetails}
