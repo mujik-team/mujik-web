@@ -7,12 +7,7 @@ import TextInput from "../../../components/Input/TextInput";
 import { UploadTournamentImage } from "../../../services/tournamentService";
 
 function EditTournamentDetailsModal(props: Props) {
-  const {
-    Title,
-    Description,
-    TournamentId,
-    tournamentImage,
-  } = props.tournament;
+  const { Title, Description, _id, tournamentImage } = props.tournament;
 
   const [tournamentCoverImage, setTournamentCoverImage] = useState(null as any);
   const [title, setTitle] = useState(Title);
@@ -28,7 +23,7 @@ function EditTournamentDetailsModal(props: Props) {
     if (tournamentCoverImage) {
       // Upload new tournament cover image.
       // console.log(props.tournament);
-      await UploadTournamentImage(TournamentId, tournamentCoverImage);
+      await UploadTournamentImage(_id, tournamentCoverImage);
       toast.dark("✨ Updated tournament cover image.");
       setTournamentCoverImage(null);
     }
@@ -43,7 +38,7 @@ function EditTournamentDetailsModal(props: Props) {
 
   const imageUrl =
     process.env.REACT_APP_API_URL ||
-    "http://localhost:3001" + `/tournament/${TournamentId}/cover`;
+    "http://localhost:3001" + `/tournament/${_id}/cover`;
 
   return (
     <div>

@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 function TagInfo(props: Props) {
-  const tags = [
-    { name: "DOUBLE XP", color: "#FF6464" },
-    { name: "NEW", color: "#6c63ff" },
-  ];
+  // const tags = [
+  //   { name: "DOUBLE XP", color: "#FF6464" },
+  //   { name: "NEW", color: "#6c63ff" },
+  // ];
 
   return (
     <Container>
       <div className="tags">
         <img id="coin" height="20" src="/icons/coin.svg" alt="mujik-coin" />
-        <span className="coin-value">{103040}</span>
-        {tags.map((t) => (
+        <span className="coin-value">{props.coins}</span>
+        {props.tags?.map((t) => (
           <Tag color={t.color}>{t.name}</Tag>
         ))}
       </div>
@@ -23,8 +23,8 @@ function TagInfo(props: Props) {
 export default TagInfo;
 
 type Props = {
-  // tags: string[];
-  // coins: number;
+  tags?: { name: string; color: string }[];
+  coins: number;
 };
 
 const Container = styled.div`
@@ -41,8 +41,8 @@ const Container = styled.div`
     & > .coin-value {
       font-weight: 600;
       font-size: 20px;
-      margin-right: 15px;
-      margin-left: 8px;
+      /* margin-right: 15px; */
+      /* margin-left: 8px; */
     }
   }
 `;

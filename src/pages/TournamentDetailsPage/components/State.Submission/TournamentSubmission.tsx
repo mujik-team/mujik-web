@@ -1,12 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideModal from "../../../../components/SideModal";
 import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
 import { AvailableRestrictions } from "../../../CreateTournamentPage/components/RestrictionSelector";
+import { AuthContext } from "../../../../App";
+import { SubmitMixtapeToTournament } from "../../../../services/tournamentService";
+import { toast } from "react-toastify";
 
 function TournamentSubmission(props: any) {
+  const authContext = useContext(AuthContext);
+
+  const [showEntryModal, setShowEntryModal] = useState(false);
+  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
+  const [userHasEnteredTournament, setUserHasEnteredTournament] = useState(
+    false
+  );
+
+  useEffect(() => {
+    setUserHasEnteredTournament(username in props.tournament.Entrants);
+  }, [props.tournament]);
+
+  const submitMixtape = async (mixtapeId: string) => {
+    try {
+      await SubmitMixtapeToTournament(props.tournament._id, mixtapeId);
+      toast.success("🙌 Successfully entered tournament.");
+      toggleSubmitModal();
+      toggleSubmitSuccessModal();
+      setUserHasEnteredTournament(true);
+    } catch (err) {
+      toast.warn("Unable to submit this mixtape.");
+    }
+  };
   const toggleSubmitModal = () => {
     setShowEntryModal(!showEntryModal);
   };
@@ -14,15 +40,7 @@ function TournamentSubmission(props: any) {
   const toggleSubmitSuccessModal = () =>
     setShowSubmitSuccessModal(!showSubmitSuccessModal);
 
-  const [showEntryModal, setShowEntryModal] = useState(false);
-
-  const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
-
-  const submitMixtape = () => {
-    toggleSubmitModal();
-    toggleSubmitSuccessModal();
-  };
-
+  const username = authContext.currentUser.username;
   return (
     <Container>
       <FullScreenModal
@@ -57,10 +75,11 @@ function TournamentSubmission(props: any) {
           new Date(props.tournament?.SubmissionDate) || new Date()
         )}
 
-        <JumboButton onClick={() => toggleSubmitModal()}>
-          ENTER TOURNEY
-        </JumboButton>
-        <div>Unsure about something? Ask a question.</div>
+        {!userHasEnteredTournament && (
+          <JumboButton onClick={() => toggleSubmitModal()}>
+            ENTER TOURNEY
+          </JumboButton>
+        )}
       </TournamentStatusContainer>
     </Container>
   );

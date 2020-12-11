@@ -10,12 +10,14 @@ function AppHeader() {
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const spotifyContext = useContext(SpotifyContext);
-
   const [username, setUsername] = useState(authContext.currentUser.username);
 
   useEffect(() => {
     setUsername(authContext.currentUser?.username);
   }, [authContext]);
+
+  const coins = authContext.currentUser?.profile.coins;
+  const level = authContext.currentUser?.profile.level;
 
   const UserDetailsCard = (
     <div
@@ -35,7 +37,7 @@ function AppHeader() {
         </Button>
       ) : null}
       <UserDetailsContainer>
-        <span style={{ margin: "0 8px" }}>LEVEL 3</span>
+        <span style={{ margin: "0 8px" }}>LEVEL {level}</span>
         <span style={{ width: "250px" }}>
           <ProgressBar
             style={{ backgroundColor: "#282c34", height: "7px" }}
@@ -47,11 +49,11 @@ function AppHeader() {
         <span style={{ margin: "0 10px" }}>
           <img src="/icons/coin.svg" width="18px"></img>
         </span>
-        <UserCoinsText>30000</UserCoinsText>
+        <UserCoinsText>{coins}</UserCoinsText>
       </UserDetailsContainer>
       <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
         <AvatarImage size={50} username={username} />
-        <span className="p-badge">3</span>
+        {/* <span className="p-badge">3</span> */}
       </span>
     </div>
   );

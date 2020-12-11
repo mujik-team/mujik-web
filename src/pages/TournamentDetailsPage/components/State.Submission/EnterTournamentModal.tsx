@@ -12,6 +12,7 @@ import { Checkbox } from "primereact/checkbox";
 import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
 import TournamentResults from "../State.Ended/TournamentResults";
+import { SubmitMixtapeToTournament } from "../../../../services/tournamentService";
 
 const Instructions = styled.div`
   margin-top: 20px;
@@ -20,21 +21,21 @@ const Instructions = styled.div`
   font-size: 16px;
 `;
 type Props = {
-  submit: any;
+  submit: (id: string) => Promise<void>;
   tournament: any;
 };
 function EnterTournamentModal(props: Props) {
   const authContext = useContext(AuthContext);
   const [mixtapes, setMixtapes] = useState([] as any[]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [mixtapesSelected, setMixtapesSelected] = useState([] as any[]);
   const [showAddedMixtapes, setShowAddedMixtapes] = useState(false);
   const [readTermsAndC, setReadTermsAndC] = useState(false);
-  const [meetRestrictions, setMeetRestrictions] = useState(false);
   const [mixtapeToSubmit, setMixtapeToSubmit] = useState(null as any);
   const { spotifyService } = useContext(SpotifyContext);
   let restrictionsMet = [] as any;
 
-  const checkMixtapeRestrictions = (type: any, value: any): any => {
+  const checkMixtapeRestrictions = (type: string, value: any): any => {
     switch (type) {
       case "song_limit": {
         // console.log("CHecked song limit")
@@ -71,24 +72,26 @@ function EnterTournamentModal(props: Props) {
         return RestrictionObject;
       }
 
-      // case "allow_duplicates": {
-      //   const songSet = new Set<string>();
-      //   const name = "No Duplicates";
-      //   const fulfilled: boolean = mixtapeToSubmit.songs.every((m: string) => {
-      //     if (songSet.has(m)) return false;
+      case "allow_duplicates": {
+        const songSet = new Set<string>();
+        const name = "No Duplicates";
+        const fulfilled: boolean = mixtapeToSubmit
+          ? mixtapeToSubmit.songs.every((m: string) => {
+              if (songSet.has(m)) return false;
 
-      //     songSet.add(m);
-      //     return true;
-      //   });
+              songSet.add(m);
+              return true;
+            })
+          : false;
 
-      //   const RestrictionObject = {
-      //     fulfilled,
-      //     name,
-      //   };
+        const RestrictionObject = {
+          fulfilled,
+          name,
+        };
 
-      //   restrictionsMet.push(fulfilled);
-      //   return RestrictionObject;
-      // }
+        restrictionsMet.push(fulfilled);
+        return RestrictionObject;
+      }
     }
   };
 
@@ -119,12 +122,20 @@ function EnterTournamentModal(props: Props) {
     )
   );
 
-  const preSubmissionChecks = () => {
-    if (meetRestrictions && readTermsAndC && !restrictionsMet.includes(false)) {
-      toast.dark("🎵 Submitted mixtape to the tournament");
-    } else {
-      toast.error("🤔 Unable to make a submission");
+  const submitMixtapeToTournament = async () => {
+    if (restrictionsMet.includes(false)) {
+      toast.error("🤔 Mixtape doesn't meet restrictions.");
+      return;
     }
+
+    if (!readTermsAndC) {
+      toast.dark("Please read tournament rules.");
+      return;
+    }
+
+    if (!mixtapeToSubmit) return;
+
+    props.submit(mixtapeToSubmit._id);
   };
 
   const addMixtapeToSelected = (mixtape: any) => {
@@ -136,6 +147,8 @@ function EnterTournamentModal(props: Props) {
   const toggleAddedMixtapes = () => {
     setShowAddedMixtapes(!showAddedMixtapes);
     setMixtapesSelected([]);
+    setMixtapeToSubmit(null);
+    setReadTermsAndC(false);
   };
 
   const removeMixtapeFromSelect = (song: any, i: number) => {
@@ -196,7 +209,7 @@ function EnterTournamentModal(props: Props) {
 
         {showAddedMixtapes ? (
           <Instructions>
-            Make sure that selected mixtape meets all restrictions
+            Make sure that selected mixtape meets all restrictions.
           </Instructions>
         ) : (
           <Instructions>Please select a mixtape to submit.</Instructions>
@@ -250,26 +263,19 @@ function EnterTournamentModal(props: Props) {
               marginTop: "20px",
               marginLeft: "20px",
             }}
-          >
-            <Checkbox
-              inputId="MeetRestrictions"
-              checked={meetRestrictions}
-              onChange={(e) => setMeetRestrictions(!meetRestrictions)}
-            />
-            <span style={{ marginLeft: "20px" }}>
-              My mixtape meets restrictions.
-            </span>
-          </div>
+          ></div>
         </div>
       )}
 
-      <div
-        onClick={preSubmissionChecks}
-        // onClick={props.submit}
-        className={styles.submitButton}
-      >
-        Submit
-      </div>
+      {showAddedMixtapes && (
+        <div
+          onClick={submitMixtapeToTournament}
+          // onClick={props.submit}
+          className={styles.submitButton}
+        >
+          Submit
+        </div>
+      )}
     </div>
   );
 }

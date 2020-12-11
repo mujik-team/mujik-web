@@ -60,3 +60,18 @@ export async function UpdateTournament(id: string, updatedTournament: any) {
   });
   return data.payload.tournament;
 }
+
+export async function SubmitMixtapeToTournament(
+  tournamentId: string,
+  mixtapeId: string
+) {
+  const { data } = await api.post(`/tournament/${tournamentId}/enter`, {
+    mixtapeId,
+  });
+}
+
+export async function VoteForMixtape(tournamentId: string, mixtapeId: string) {
+  const { data } = await api.post(`/tournament/${tournamentId}/vote`, {
+    mixtapeId,
+  });
+}

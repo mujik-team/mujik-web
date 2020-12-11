@@ -40,7 +40,7 @@ function TournamentDetails() {
           />
         );
       else if (now > submissionDate && now < voteDate)
-        return <TournamentVote />;
+        return <TournamentVote tournament={tournament} />;
       else return <TournamentResults />;
     }
   };
@@ -69,6 +69,8 @@ function TournamentDetails() {
   const handleUpdateTournament = async (updatedTournament: any) => {
     updateTournament(updatedTournament);
   };
+
+  const rewardAmount = tournament.Rewards ? tournament.Rewards[0].Value : 0;
 
   return (
     <div>
@@ -113,7 +115,7 @@ function TournamentDetails() {
             </div>
 
             <div>
-              <TagInfo />
+              <TagInfo coins={rewardAmount} />
             </div>
           </DetailsBar>
 

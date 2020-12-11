@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
@@ -9,22 +9,41 @@ import TournamentCard from "./TournamentCard";
 function TournamentBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
-  const [tournaments, setTournaments] = useState([] as any[]);
 
-  useEffect(() => {
-    GetAllActiveTournaments().then((tournaments) =>
-      setTournaments([...tournaments])
-    );
-  }, []);
+  const sortedTournaments = useMemo(() => {
+    if (!sortBy) return props.tournaments;
+
+    let comparator: (a: any, b: any) => number;
+
+    switch (sortBy) {
+      case "Title":
+        comparator = (a, b) => (a.Title < b.Title ? 0 : 1);
+        break;
+
+      case "Reward":
+        comparator = (a, b) =>
+          a.Rewards[0].Value < b.Rewards[0].Value ? 0 : 1;
+        break;
+
+      case "Deadline":
+        comparator = (a, b) => (a.SubmissionDate < b.SubmissionDate ? 1 : 0);
+        break;
+
+      default:
+        comparator = (a, b) => (Math.random() < 0.5 ? 0 : 1);
+        break;
+    }
+
+    const tournaments = props.tournaments;
+    tournaments?.sort(comparator);
+    return tournaments;
+  }, [sortBy, props.tournaments]);
 
   const tournamentStuff = (
     <div>
       <TournamentGrid>
-        {tournaments.map((t, i) => (
-          <TournamentCard
-            tournamentTitle={t.Title}
-            tournamentId={t.TournamentId}
-          />
+        {sortedTournaments?.map((t, i) => (
+          <TournamentCard tournamentTitle={t.Title} tournamentId={t._id} />
         ))}
       </TournamentGrid>
     </div>
@@ -87,10 +106,10 @@ const ChangeLayoutButton = styled(Button)`
 `;
 
 const sortDropdownOptions = [
-  { label: "Title", value: "name" },
-  { label: "Length", value: "length" },
-  { label: "Date Added", value: "submit" },
-  { label: "Random", value: "random" },
+  { label: "Title", value: "Title" },
+  { label: "Bounty Size", value: "Reward" },
+  { label: "Submission Deadline", value: "Deadline" },
+  { label: "Random", value: "Random" },
 ];
 
 const TournamentGrid = styled.div`
