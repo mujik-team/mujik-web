@@ -62,7 +62,7 @@ export const AvailableRestrictions: any = {
     valueLabel: "Lvl.",
     value: "min_lvl",
     type: "dropdown",
-    valueOptions: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+    valueOptions: [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   },
   time_limit: {
     label: "Time Limit",

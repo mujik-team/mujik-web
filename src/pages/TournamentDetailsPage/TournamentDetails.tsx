@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
 import TournamentVote from "./components/State.Voting/TournamentVote";
@@ -10,6 +10,8 @@ import { AuthContext } from "../../App";
 import useTournament from "../../hooks/useTournament";
 import SideModal from "../../components/SideModal";
 import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
+import TagInfo from "./TagInfo";
+import AvatarImage from "../../components/AvatarImage";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
@@ -21,6 +23,7 @@ function TournamentDetails() {
   } = useTournament(tournamentId);
   const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
   const authContext = useContext(AuthContext);
+  const history = useHistory();
 
   const bottomComponent = () => {
     if (!isLoading && tournament) {
@@ -88,38 +91,31 @@ function TournamentDetails() {
         <DetailsContainer>
           <div className="title">{tournament.Title}</div>
 
-          <div>
-            <ProfilePicture />
-            <div className="username">by {tournament.CreatedBy}</div>
-            <div style={{ display: "inline-block" }}>
+          <DetailsBar>
+            <div className="created-by">
+              <AvatarImage username={tournament.CreatedBy} size={50} />
+              <div
+                onClick={() => history.push(`/user/${tournament.CreatedBy}`)}
+                className="username"
+              >
+                {tournament.CreatedBy}
+              </div>
+            </div>
+
+            <div className="user-actions">
               <Button id="follow-button" onClick={handleFollowTournament}>
                 FOLLOW
               </Button>
+
               <Button id="edit-button" onClick={toggleShowEditTournamentModal}>
                 <i className="mdi mdi-pencil" />
               </Button>
-
-              <TagContainer>
-                <img
-                  id="coin"
-                  height="20"
-                  src="/icons/coin.svg"
-                  alt="mujik-coin"
-                ></img>
-                <div id="coin-value">
-                  {tournament.Rewards ? tournament.Rewards[0].Value : ""}
-                </div>
-                <span className="tags">
-                  <Tag>DOUBLE XP</Tag>
-                  <Tag
-                    style={{ backgroundColor: "#FF6464", marginLeft: "5px" }}
-                  >
-                    NEW
-                  </Tag>
-                </span>
-              </TagContainer>
             </div>
-          </div>
+
+            <div>
+              <TagInfo />
+            </div>
+          </DetailsBar>
 
           <Description style={{ marginBottom: "20px" }}>
             {tournament.Description}
@@ -179,48 +175,22 @@ const DetailsContainer = styled.div`
   }
 `;
 
-const StateBasedContainer = styled.div`
-  margin: 60px;
-`;
+const DetailsBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
 
-const TagContainer = styled.div`
-  height: 50px;
-  padding: 0 20px;
-  margin: auto;
-  display: inline-block;
-  border-radius: 8px;
-  background-color: var(--card-color);
-
-  & > #coin {
-    position: relative;
-    top: 25%;
+  .user-actions {
     margin-right: 5px;
   }
 
-  & > #coin-value {
-    position: relative;
-    display: inline-block;
-    top: 20%;
-    font-weight: bold;
-    font-size: 20px;
+  .created-by {
     margin-right: 20px;
-  }
-
-  & > span.tags {
-    position: relative;
-    top: 12%;
   }
 `;
 
-const Tag = styled.div`
-  user-select: none;
-  display: inline-block;
-  border-radius: 99px;
-  padding: 4px 15px;
-  font-size: 12px;
-  background-color: #6c63ff;
-  letter-spacing: 2px;
-  font-weight: 600;
+const StateBasedContainer = styled.div`
+  margin: 60px;
 `;
 
 type ImageProps = {

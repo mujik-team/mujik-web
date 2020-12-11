@@ -11,6 +11,7 @@ import { Checkbox } from "primereact/checkbox";
 // import { getSeveralSongs } from "../../../../services/spotify"
 import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
+import TournamentResults from "../State.Ended/TournamentResults";
 
 const Instructions = styled.div`
   margin-top: 20px;
@@ -30,7 +31,7 @@ function EnterTournamentModal(props: Props) {
   const [readTermsAndC, setReadTermsAndC] = useState(false);
   const [meetRestrictions, setMeetRestrictions] = useState(false);
   const [mixtapeToSubmit, setMixtapeToSubmit] = useState(null as any);
-  const spotifyContext = useContext(SpotifyContext);
+  const { spotifyService } = useContext(SpotifyContext);
   let restrictionsMet = [] as any;
 
   const checkMixtapeRestrictions = (type: any, value: any): any => {
@@ -49,9 +50,8 @@ function EnterTournamentModal(props: Props) {
         // setSongLimitRestriction(songLimitRestriction)
         return RestrictionObject;
       }
-      case "lvl_restriction": {
+      case "min_lvl": {
         const fulfilled = authContext.currentUser.profile.level >= value;
-        console.log("fullfulled for level is true : ", fulfilled);
         const name = "Minumum Level Requirement";
         const RestrictionObject = {
           fulfilled: fulfilled,
@@ -61,6 +61,34 @@ function EnterTournamentModal(props: Props) {
         // setLvlRestriction(fulfilled)
         return RestrictionObject;
       }
+      case "time_limit": {
+        // const fulfilled =
+        const name = "Max Time Limit";
+        const RestrictionObject = {
+          name,
+          fulfilled: true,
+        };
+        return RestrictionObject;
+      }
+
+      // case "allow_duplicates": {
+      //   const songSet = new Set<string>();
+      //   const name = "No Duplicates";
+      //   const fulfilled: boolean = mixtapeToSubmit.songs.every((m: string) => {
+      //     if (songSet.has(m)) return false;
+
+      //     songSet.add(m);
+      //     return true;
+      //   });
+
+      //   const RestrictionObject = {
+      //     fulfilled,
+      //     name,
+      //   };
+
+      //   restrictionsMet.push(fulfilled);
+      //   return RestrictionObject;
+      // }
     }
   };
 
@@ -77,14 +105,14 @@ function EnterTournamentModal(props: Props) {
         <Checkbox
           inputId={r.type}
           checked={
-            checkMixtapeRestrictions(r.type, r.value)
-              ? checkMixtapeRestrictions(r.type, r.value).fulfilled
+            checkMixtapeRestrictions(r.Type, r.Value)
+              ? checkMixtapeRestrictions(r.Type, r.Value).fulfilled
               : false // checkMixtapeRestrictions(mixtapesSelected,r.type, r.value)
           }
         />
         <span style={{ marginLeft: "20px" }}>
-          {checkMixtapeRestrictions(r.type, r.value)
-            ? checkMixtapeRestrictions(r.type, r.value).name
+          {checkMixtapeRestrictions(r.Type, r.Value)
+            ? checkMixtapeRestrictions(r.Type, r.Value).name
             : false}
         </span>
       </div>
@@ -92,7 +120,6 @@ function EnterTournamentModal(props: Props) {
   );
 
   const preSubmissionChecks = () => {
-    console.log(restrictionsMet);
     if (meetRestrictions && readTermsAndC && !restrictionsMet.includes(false)) {
       toast.dark("🎵 Submitted mixtape to the tournament");
     } else {
@@ -103,7 +130,6 @@ function EnterTournamentModal(props: Props) {
   const addMixtapeToSelected = (mixtape: any) => {
     setMixtapesSelected([...mixtapesSelected, mixtape]);
     setShowAddedMixtapes(!showAddedMixtapes);
-    console.log(mixtape);
     setMixtapeToSubmit(mixtape);
   };
 
@@ -198,7 +224,7 @@ function EnterTournamentModal(props: Props) {
           <Instructions style={{ marginLeft: "20px" }}>
             Restrictions Met:{" "}
           </Instructions>
-          {RestrictionChecklist}
+          {mixtapeToSubmit !== null ? RestrictionChecklist : null}
           <Instructions style={{ marginTop: "20px", marginLeft: "20px" }}>
             Agree to Terms and Conditions:{" "}
           </Instructions>
