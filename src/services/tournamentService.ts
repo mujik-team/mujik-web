@@ -27,7 +27,7 @@ export async function CreateNewTournament(form: any) {
 
   const { data } = await api.post("/tournament", tournamentDetails);
 
-  return data.tournament;
+  return data.payload.tournament;
 }
 
 export async function UploadTournamentImage(id: string, imageBlob: Blob) {
@@ -52,4 +52,11 @@ export async function GetTournament(id: string) {
   const { data } = await api.get(`/tournament/${id}`);
   const { tournament } = data.payload;
   return tournament;
+}
+
+export async function UpdateTournament(id: string, updatedTournament: any) {
+  const { data } = await api.put(`/tournament/${id}`, {
+    tournament: updatedTournament,
+  });
+  return data.payload.tournament;
 }

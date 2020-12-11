@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import TournamentSubmission from "./components/State.Submission/TournamentSubmission";
@@ -8,10 +8,18 @@ import TournamentResults from "./components/State.Ended/TournamentResults";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../App";
 import useTournament from "../../hooks/useTournament";
+import SideModal from "../../components/SideModal";
+import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
-  const { tournament, isLoading } = useTournament(tournamentId);
+  const {
+    tournament,
+    isLoading,
+    tournamentImage,
+    updateTournament,
+  } = useTournament(tournamentId);
+  const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
   const authContext = useContext(AuthContext);
 
   const bottomComponent = () => {
@@ -23,7 +31,7 @@ function TournamentDetails() {
       if (now < submissionDate)
         return (
           <TournamentSubmission
-            tournament={tournament}
+            tournament={{ ...tournament, tournamentImage }}
             restrictions={tournament.Restrictions}
             rules={tournament.additional_submission_criteria}
           />
@@ -51,10 +59,32 @@ function TournamentDetails() {
     }
   };
 
+  const toggleShowEditTournamentModal = () => {
+    setShowEditTournamentModal(!showEditTournamentModal);
+  };
+
+  const handleUpdateTournament = async (updatedTournament: any) => {
+    updateTournament(updatedTournament);
+  };
+
   return (
     <div>
       <Container>
-        <Image />
+        <Image image={tournamentImage} />
+
+        <SideModal
+          isActive={showEditTournamentModal}
+          toggle={toggleShowEditTournamentModal}
+          width={600}
+        >
+          {!isLoading && (
+            <EditTournamentDetailsModal
+              updateTournament={handleUpdateTournament}
+              tournament={{ ...tournament, tournamentImage }}
+              toggleModal={toggleShowEditTournamentModal}
+            />
+          )}
+        </SideModal>
         <DetailsContainer>
           <div className="title">{tournament.Title}</div>
 
@@ -64,6 +94,9 @@ function TournamentDetails() {
             <div style={{ display: "inline-block" }}>
               <Button id="follow-button" onClick={handleFollowTournament}>
                 FOLLOW
+              </Button>
+              <Button id="edit-button" onClick={toggleShowEditTournamentModal}>
+                <i className="mdi mdi-pencil" />
               </Button>
 
               <TagContainer>
@@ -104,7 +137,7 @@ export default TournamentDetails;
 const Container = styled.div`
   margin: 0 50px;
   display: grid;
-  grid-template-columns: 500px 1fr;
+  grid-template-columns: 450px 1fr;
   grid-auto-rows: 300px;
   gap: 20px;
 `;
@@ -135,7 +168,8 @@ const DetailsContainer = styled.div`
     }
   }
 
-  & #follow-button {
+  & #follow-button,
+  #edit-button {
     position: relative;
     font-size: 15px;
     font-weight: bold;
@@ -189,8 +223,14 @@ const Tag = styled.div`
   font-weight: 600;
 `;
 
+type ImageProps = {
+  image?: string;
+};
 const Image = styled.div`
-  background: var(--card-color);
+  background: ${(props: ImageProps) => `url(${props.image})`};
+  background-color: var(--card-color);
+  width: 450px;
+  height: 300px;
   border-radius: 8px;
 `;
 

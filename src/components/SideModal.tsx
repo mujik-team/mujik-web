@@ -1,6 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
+function SideModal(props: Props) {
+  return (
+    <Container
+      onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        props.toggle();
+      }}
+      className={`side-modal-container ${props.isActive ? "active" : ""}`}
+    >
+      <Modal
+        width={props.width || 450}
+        onClick={(e: any) => e.stopPropagation()}
+      >
+        {props.children}
+      </Modal>
+    </Container>
+  );
+}
+
+export default SideModal;
+
 interface Props {
   width?: number;
   isActive: boolean;
@@ -44,23 +64,3 @@ const Container = styled.div`
     transform: translateX(0%);
   }
 `;
-
-function SideModal(props: Props) {
-  return (
-    <Container
-      onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        props.toggle();
-      }}
-      className={`side-modal-container ${props.isActive ? "active" : ""}`}
-    >
-      <Modal
-        width={props.width || 450}
-        onClick={(e: any) => e.stopPropagation()}
-      >
-        {props.children}
-      </Modal>
-    </Container>
-  );
-}
-
-export default SideModal;

@@ -22,12 +22,9 @@ function TournamentBrowser(props: Props) {
       <TournamentGrid>
         {tournaments.map((t, i) => (
           <TournamentCard
-            tournament={t}
-            // ${i}
-            onClick={() => history.push(`/tournament/${t.TournamentId}`)}
-          >
-            <span>{t.title}</span>
-          </TournamentCard>
+            tournamentTitle={t.Title}
+            tournamentId={t.TournamentId}
+          />
         ))}
       </TournamentGrid>
     </div>
@@ -98,7 +95,7 @@ const sortDropdownOptions = [
 
 const TournamentGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
-  padding-bottom: 100px;
+  margin-top: 20px;
 `;
