@@ -1,29 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
-// import Checkbox from "../../../../components/Input/Checkbox";
 import TextInput from "../../../../components/Input/TextInput";
 import styles from "./EnterTournamentModal.module.css";
 import { AuthContext } from "../../../../App";
 import * as mixtapeService from "../../../../services/mixtapeService";
 import Button from "../../../../components/Button";
-// import { Checkbox } from "primereact"
 import { Checkbox } from "primereact/checkbox";
-// import { getSeveralSongs } from "../../../../services/spotify"
 import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
-import TournamentResults from "../State.Ended/TournamentResults";
-import { SubmitMixtapeToTournament } from "../../../../services/tournamentService";
 
-const Instructions = styled.div`
-  margin-top: 20px;
-  font-family: "Inter";
-  color: var(--text-inactive);
-  font-size: 16px;
-`;
-type Props = {
-  submit: (id: string) => Promise<void>;
-  tournament: any;
-};
 function EnterTournamentModal(props: Props) {
   const authContext = useContext(AuthContext);
   const [mixtapes, setMixtapes] = useState([] as any[]);
@@ -161,8 +146,6 @@ function EnterTournamentModal(props: Props) {
 
   const mixtapesSelectedList = mixtapesSelected.map((s, i) => (
     <SearchResultItem key={i} onClick={() => removeMixtapeFromSelect(s, i)}>
-      {/* <span className="name">{s.name}</span>
-      <span className="artist">{s.artists[0].name}</span> */}
       {<span className="name">{s.mixtapeName}</span>}
       {<span className="artist">{s.createdBy}</span>}
     </SearchResultItem>
@@ -191,6 +174,12 @@ function EnterTournamentModal(props: Props) {
     }
   }, [authContext.isLoggedIn, authContext.currentUser]);
 
+  const filteredMixtapeResults = useMemo(() => {
+    return mixtapes.filter((m) =>
+      m.mixtapeName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [mixtapes, searchTerm]);
+
   return (
     <div>
       <div className={styles.mixtapeSearchContainer}>
@@ -199,7 +188,10 @@ function EnterTournamentModal(props: Props) {
             style={{ fontSize: "20px", top: "45%" }}
             className="pi mdi mdi-magnify"
           ></i>
-          <TextInput />
+          <TextInput
+            value={searchTerm}
+            onChange={(e: any) => setSearchTerm(e.target.value)}
+          />
         </div>
         {mixtapesSelected.length > 0 && (
           <ConfirmSongsAddedButton onClick={() => toggleAddedMixtapes()}>
@@ -216,7 +208,7 @@ function EnterTournamentModal(props: Props) {
         )}
         {showAddedMixtapes
           ? ""
-          : mixtapes.map((m, i) => (
+          : filteredMixtapeResults.map((m, i) => (
               <SearchResultItem key={i} onClick={() => addMixtapeToSelected(m)}>
                 {<span className="name">{m.mixtapeName}</span>}
                 {<span className="artist">{m.createdBy}</span>}
@@ -337,3 +329,14 @@ const AddSongsToMixtapeButton = styled.div`
     color: black;
   }
 `;
+
+const Instructions = styled.div`
+  margin-top: 20px;
+  font-family: "Inter";
+  color: var(--text-inactive);
+  font-size: 16px;
+`;
+type Props = {
+  submit: (id: string) => Promise<void>;
+  tournament: any;
+};
