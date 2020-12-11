@@ -34,59 +34,76 @@ function useMockTournament(id: string) {
 export default useMockTournament;
 
 const default_tournament = {
-    "_id": "0",
-    "title": "DnD Campaign Music",
-    "creator_username": "cptmango",
-    "description": "Me and my friends are starting a new campaign and we are looking for",
-    "additional_submission_criteria": "No bad language plis",
-    "state": "submission",
-    "image": null,
-    "followers": 43358,
-    "submission_date": Date.now(),
-    "vote_date": Date.now(),
-    "winner_by": "community_vote", 
-    "ongoing": true,
-    "rewards": [
-        {
-            "type": "coin",
-            "value": 1500000
-        },
-        {
-            "type": "xp",
-            "value": 3000000,
-        }
-    ],
-    "restrictions": [
-      {
-        "type": "song_limit",
-        "value": 100
-      },
-      {
-        "type": "lvl_restriction",
-        "value": 1// Minimum Level Restriction
-      },
-      // {
-      //   "type": "allow_duplicates",
-      //   "value": false
-      // },
-      // {
-      //   "type": "min_time",
-      //   "value": 64 // in minutes
-      // }
-    ],
-    "tournament_modifiers": [
-      "double_xp"
-    ],
-    "submissions": [
-      {
-        "id": "799d3b8c-0aa7-11eb-adc1-0242ac120002",
-        "votes": 89
-      },
-      {
-        "id": "43265fca-0b06-11eb-adc1-0242ac120002",
-        "votes": 32
-      }
-    ]
-  
-}
-  
+  _id: "0",
+  title: "DnD Campaign Music",
+  creatorUsername: "cptmango",
+  description:
+    "Me and my friends are starting a new campaign and we are looking for",
+  additionalSubmissionCriteria: "",
+  state: "voting",
+  image: null,
+  followers: 43358,
+  submissionDate: Date.now(),
+  voteDate: Date.now(),
+  winnerBy: "community_vote",
+  ongoing: true,
+  rewards: [
+    {
+      type: "coin",
+      value: 1500000,
+    },
+    {
+      type: "xp",
+      value: 3000000,
+    },
+  ],
+  restrictions: [
+    {
+      type: "song_limit",
+      value: 100,
+    },
+    {
+      type: "lvl_restriction",
+      value: 70, // Minimum Level Restriction
+    },
+    {
+      type: "allow_duplicates",
+      value: false,
+    },
+    {
+      type: "min_time",
+      value: 640, // in minutes
+    },
+  ],
+  tournamentModifiers: ["double_xp"],
+  submissions: [
+    {
+      id: "5fb7598a41686c011e10f777",
+      votes: 89,
+    },
+    {
+      id: "5fb7599141686c011e10f778",
+      votes: 32,
+    },
+    {
+      id: "5fb7599741686c011e10f779",
+      votes: 45,
+    },
+    {
+      id: "5fb7599e41686c011e10f77a",
+      votes: 65,
+    },
+    {
+      id: "5fb759a541686c011e10f77b",
+      votes: 76,
+    },
+    {
+      id: "5fb759ac41686c011e10f77c",
+      votes: 34,
+    },
+    {
+      id: "5fb759b341686c011e10f77d",
+      votes: 21,
+    },
+  ],
+};
