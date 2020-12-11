@@ -10,6 +10,9 @@ export function reducer(state: typeof FormState, action: FormActions) {
       const restrictions: any = form.restrictions;
       restrictions[key] = value;
       return { ...state, form };
+    case "tournament-image-update":
+      const { image } = action.payload;
+      return { ...state, tournamentImage: image };
     default:
       return state;
   }
@@ -20,6 +23,7 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 
 export const FormState = {
   isValid: true,
+  tournamentImage: null as any,
   form: {
     title: "",
     description: "",
@@ -32,6 +36,10 @@ export const FormState = {
 };
 
 export type FormActions = {
-  type: "form-update" | "submit" | "restriction-update";
+  type:
+    | "form-update"
+    | "submit"
+    | "tournament-image-update"
+    | "restriction-update";
   payload: any;
 };

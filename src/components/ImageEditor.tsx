@@ -84,7 +84,7 @@ function ImageEditor(props: Props) {
   );
 
   return (
-    <Container>
+    <Container className="image-editor">
       {editorImage ? (
         Editor
       ) : (

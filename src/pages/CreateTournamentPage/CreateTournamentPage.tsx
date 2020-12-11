@@ -10,11 +10,17 @@ import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
 import { FormState, reducer } from "./reducer";
-import { CreateNewTournament } from "../../services/tournamentService";
+import {
+  CreateNewTournament,
+  UploadTournamentImage,
+} from "../../services/tournamentService";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 function CreateTournamentPage() {
   const [tournamentForm, dispatch] = useReducer(reducer, FormState);
   const authContext = useContext(AuthContext);
+  const history = useHistory();
 
   const handleFieldUpdate = (key: string, value: any) => {
     dispatch({ type: "form-update", payload: { key, value } });
@@ -24,15 +30,37 @@ function CreateTournamentPage() {
     dispatch({ type: "restriction-update", payload: { key, value } });
   };
 
-  const handleCreateTournament = () => {
+  const handleCreateNewTournament = async () => {
+    // Add validation here....
+
     const username = authContext.currentUser.username;
-    CreateNewTournament({ ...tournamentForm.form, createdBy: username });
+
+    // Create tournament.
+    const tournament = await CreateNewTournament({
+      ...tournamentForm.form,
+      createdBy: username,
+    });
+
+    // Upload image for tournament.
+    await UploadTournamentImage(tournament._id, tournamentForm.tournamentImage);
+
+    toast.dark("Successfully created tournament!");
+    history.push("/tournament");
+  };
+
+  const handleTournamentImageChanged = (image: any) => {
+    dispatch({ type: "tournament-image-update", payload: { image } });
   };
 
   return (
     <Container>
       <div className="form">
         {/* <Title>New Tournament</Title> */}
+
+        <ImageEditor
+          editorType="tournament_image"
+          imageSelected={handleTournamentImageChanged}
+        />
 
         <FieldTitle>Create a catchy title.</FieldTitle>
         <FieldDescription>{CatchyTitleDescription}</FieldDescription>
@@ -143,7 +171,7 @@ function CreateTournamentPage() {
           <ImageEditor editorType="tournament_image" />
         </div> */}
 
-        <CreateButton onClick={handleCreateTournament}>
+        <CreateButton onClick={handleCreateNewTournament}>
           Create Tournament
         </CreateButton>
       </div>
@@ -187,6 +215,10 @@ const Container = styled.div`
     /* margin-bottom: 80px; */
     width: 450px;
     height: 420px;
+  }
+
+  & .image-editor {
+    margin-bottom: 50px;
   }
 `;
 

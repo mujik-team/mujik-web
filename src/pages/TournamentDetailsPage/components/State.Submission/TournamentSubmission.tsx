@@ -4,6 +4,7 @@ import EnterTournamentModal from "./EnterTournamentModal";
 import styled from "styled-components";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
+import { AvailableRestrictions } from "../../../CreateTournamentPage/components/RestrictionSelector";
 
 function TournamentSubmission(props: any) {
   const toggleSubmitModal = () => {
@@ -19,7 +20,6 @@ function TournamentSubmission(props: any) {
 
   const submitMixtape = () => {
     toggleSubmitModal();
-    setTimeout({}, 200);
     toggleSubmitSuccessModal();
   };
 
@@ -40,12 +40,16 @@ function TournamentSubmission(props: any) {
       </SideModal>
       <div>
         <h1>Mixtape Restrictions</h1>
-        {props.tournament.Restrictions.map((t: any, i: any) => (
-          <RestrictionCard key={i}>
-            <div className="type">{t.Type}</div>
-            <div className="value">{t.Value}</div>
-          </RestrictionCard>
-        ))}
+        {props.tournament.Restrictions.map((r: any, i: any) => {
+          const meta = AvailableRestrictions[r.Type];
+
+          return (
+            <RestrictionCard key={i}>
+              <div className="type">{meta.label}</div>
+              <div className="value">{`${meta.valueLabel} ${r.Value}`}</div>
+            </RestrictionCard>
+          );
+        })}
       </div>
 
       <TournamentStatusContainer>
@@ -81,19 +85,27 @@ const RestrictionCard = styled.div`
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
+  user-select: none;
+  transition: 0.2s linear all;
 
   background-color: var(--card-color);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
 
-  & > .name {
-    font-weight: 600;
-    font-size: 30px;
+  & > .type {
+    font-family: var(--font-secondary);
+    color: var(--text-inactive);
+    font-weight: bold;
+    font-size: 20px;
   }
 
   & > .value {
     font-size: 25px;
+  }
+
+  &:hover {
+    background-color: var(--card-color-highlight);
   }
 `;
 

@@ -25,9 +25,19 @@ export async function CreateNewTournament(form: any) {
     });
   });
 
-  console.log(JSON.stringify(tournamentDetails));
+  const { data } = await api.post("/tournament", tournamentDetails);
 
-  // TODO Make post request.
+  return data.tournament;
+}
+
+export async function UploadTournamentImage(id: string, imageBlob: Blob) {
+  const formData = new FormData();
+  formData.append("tournament", imageBlob);
+  await api.post(`/upload/tournament/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 }
 
 export async function GetAllActiveTournaments() {

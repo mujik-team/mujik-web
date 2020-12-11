@@ -50,7 +50,7 @@ const Container = styled.div`
   }
 `;
 
-const AvailableRestrictions: any = {
+export const AvailableRestrictions: any = {
   song_limit: {
     label: "Song Limit",
     valueLabel: "Num. Songs",
