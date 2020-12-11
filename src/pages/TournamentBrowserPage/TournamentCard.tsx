@@ -23,7 +23,9 @@ function TournamentCard(props: Props) {
         onClick={handleClick}
         base64image={image}
         title={props.tournamentTitle}
-      />
+      >
+        <span className="title">{props.tournamentTitle}</span>
+      </Card>
     </div>
   );
 }

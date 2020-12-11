@@ -71,6 +71,8 @@ function TournamentDetails() {
   };
 
   const rewardAmount = tournament.Rewards ? tournament.Rewards[0].Value : 0;
+  const ownedByLoggedIn =
+    tournament.CreatedBy === authContext.currentUser.username;
 
   return (
     <div>
@@ -109,9 +111,14 @@ function TournamentDetails() {
                 FOLLOW
               </Button>
 
-              <Button id="edit-button" onClick={toggleShowEditTournamentModal}>
-                <i className="mdi mdi-pencil" />
-              </Button>
+              {ownedByLoggedIn && (
+                <Button
+                  id="edit-button"
+                  onClick={toggleShowEditTournamentModal}
+                >
+                  <i className="mdi mdi-pencil" />
+                </Button>
+              )}
             </div>
 
             <div>
