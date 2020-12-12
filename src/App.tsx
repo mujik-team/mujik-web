@@ -30,8 +30,7 @@ export const SpotifyContext: React.Context<
 > = React.createContext({} as any);
 
 function App() {
-  const [showPlayer, setShowPlayer] = useState(false);
-  const [authState, setAuthState] = useAuth();
+  const [authState] = useAuth();
   const spotify = useSpotify();
 
   const app = (
@@ -91,6 +90,7 @@ const RouterContainer = styled.div`
 `;
 
 const MusicPlayerContainer = styled.div`
+  z-index: 1;
   grid-column: 1 / span 2;
   background: var(--card-color-secondary);
   box-shadow: 0 -4px 15px 0px rgba(0, 0, 0, 0.25);

@@ -103,25 +103,27 @@ function MusicPlayer() {
             <div className="artist">{artist.name}</div>
           </SongPlaying>
 
-          <div
-            style={{
-              position: "relative",
-              top: "-55px",
-            }}
-          >
-            <PlaybackIcon
-              onClick={() => prevSong()}
-              className={`mdi mdi-skip-previous`}
-            ></PlaybackIcon>
-            <PlaybackIcon
-              onClick={() => togglePlay()}
-              className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
-            ></PlaybackIcon>
-            <PlaybackIcon
-              onClick={() => nextSong()}
-              className={`mdi mdi-skip-next`}
-            ></PlaybackIcon>
-          </div>
+          {currentTrack && (
+            <div
+              style={{
+                position: "relative",
+                top: "-55px",
+              }}
+            >
+              <PlaybackIcon
+                onClick={() => prevSong()}
+                className={`mdi mdi-skip-previous`}
+              ></PlaybackIcon>
+              <PlaybackIcon
+                onClick={() => togglePlay()}
+                className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
+              ></PlaybackIcon>
+              <PlaybackIcon
+                onClick={() => nextSong()}
+                className={`mdi mdi-skip-next`}
+              ></PlaybackIcon>
+            </div>
+          )}
         </div>
         <SongTimeProgressBar
           value={(progress / duration) * 100}

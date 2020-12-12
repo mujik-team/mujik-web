@@ -8,36 +8,30 @@ function TournamentCard(props: Props) {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(`/tournament/${props.tournamentId}`);
+    history.push(`/tournament/${props.tournament._id}`);
   };
 
   useEffect(() => {
-    getImageToBase64(`/tournament/${props.tournamentId}/cover`).then((image) =>
-      setImage(image || "")
-    );
-  }, [props.tournamentId]);
+    getImageToBase64(
+      `/tournament/${props.tournament._id}/cover`
+    ).then((image) => setImage(image || ""));
+  }, [props.tournament._id]);
 
   return (
     <div>
-      <Card
-        onClick={handleClick}
-        base64image={image}
-        title={props.tournamentTitle}
-      >
-        <span className="title">{props.tournamentTitle}</span>
+      <Card onClick={handleClick} base64image={image}>
+        <span className="title">{props.tournament.Title}</span>
       </Card>
     </div>
   );
 }
 
 type Props = {
-  tournamentId: string;
-  tournamentTitle: string;
+  tournament: any;
 };
 
 type CardProps = {
   base64image: string;
-  title: string;
 };
 
 const Card = styled.div`

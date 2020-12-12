@@ -39,11 +39,11 @@ function TournamentBrowser(props: Props) {
     return tournaments;
   }, [sortBy, props.tournaments]);
 
-  const tournamentStuff = (
+  const Grid = (
     <div>
       <TournamentGrid>
         {sortedTournaments?.map((t, i) => (
-          <TournamentCard tournamentTitle={t.Title} tournamentId={t._id} />
+          <TournamentCard tournament={t} />
         ))}
       </TournamentGrid>
     </div>
@@ -69,13 +69,12 @@ function TournamentBrowser(props: Props) {
         </RightHeader>
       </Header>
       <hr />
-      {tournamentStuff}
-      {/* {mixtapeLayout(mixtapeItems)} */}
+      {Grid}
     </Container>
   );
 }
 
-export default TournamentBrowser;
+export default React.memo(TournamentBrowser);
 
 type Props = {
   tournaments?: any[];
@@ -96,13 +95,6 @@ const LeftHeader = styled.div`
 const RightHeader = styled.div`
   display: block;
   float: right;
-`;
-
-const ChangeLayoutButton = styled(Button)`
-  position: relative;
-  bottom: 8px;
-  display: inline-block;
-  font-size: 16px;
 `;
 
 const sortDropdownOptions = [
