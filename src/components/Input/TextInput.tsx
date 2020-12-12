@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { InputText } from "primereact/inputtext";
 
 const TextInput = styled(InputText)`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   font-size: 16px;
   margin-right: 10px;
   background-color: var(--card-color);

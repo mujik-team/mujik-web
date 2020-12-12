@@ -38,6 +38,7 @@ const Image = styled.div`
   cursor: pointer;
   display: inline-block;
   background-image: ${(props: ImageProps) => `url(${props.base64image})`};
+  background-color: var(--card-color);
   background-size: cover;
   border-radius: ${(props: ImageProps) => props.size / 2 + "px"};
   background-position: center;

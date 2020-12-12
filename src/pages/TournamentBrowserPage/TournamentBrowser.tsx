@@ -1,76 +1,52 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import SortDropdown from "../../components/Input/SortDropdown";
+import DropdownSelect from "../../components/Input/DropdownSelect";
+import { GetAllActiveTournaments } from "../../services/tournamentService";
 import TournamentCard from "./TournamentCard";
-import styles from "./TournamentBrowser.module.css";
-// import tournaments from "../../services/mock/tournaments";
-// import CardLayout from "./components/CardLayout";
-// import ListLayout from "./components/ListLayout";
-// import MixtapeCard from "./components/MixtapeCard";
-// import MixtapeListItem from "./components/MixtapeListItem";
-import useMockTournament from "../../hooks/useMockTournament";
 
 function TournamentBrowser(props: Props) {
   const history = useHistory();
   const [sortBy, setSortBy] = useState("");
-  const [isCardLayout, setIsCardLayout] = useState(true);
-  const [
-    tournament,
-    getTournament,
-    updateTournament,
-    isLoading,
-  ] = useMockTournament("0");
 
-  useEffect(() => {
-    if (localStorage.getItem("layout")) {
-      const setTo = localStorage.getItem("layout") === "card";
-      setIsCardLayout(setTo);
+  const sortedTournaments = useMemo(() => {
+    if (!sortBy) return props.tournaments;
+
+    let comparator: (a: any, b: any) => number;
+
+    switch (sortBy) {
+      case "Title":
+        comparator = (a, b) => (a.Title < b.Title ? 0 : 1);
+        break;
+
+      case "Reward":
+        comparator = (a, b) =>
+          a.Rewards[0].Value < b.Rewards[0].Value ? 0 : 1;
+        break;
+
+      case "Deadline":
+        comparator = (a, b) => (a.SubmissionDate < b.SubmissionDate ? 1 : 0);
+        break;
+
+      default:
+        comparator = (a, b) => (Math.random() < 0.5 ? 0 : 1);
+        break;
     }
-  }, []);
 
-  const toggleCardLayout = () => {
-    setIsCardLayout(!isCardLayout);
-    localStorage.setItem("layout", !isCardLayout ? "card" : "list");
-  };
-
-  const yourtournaments = [];
-
-  for (let i = 0; i < 8; i++) {
-    yourtournaments.push(
-      <div
-        onClick={() => history.push(`/tournament/${i}`)}
-        className={styles.tournamentListCard}
-      ></div>
-    );
-  }
-
-  let tournaments = [];
-  for (let i = 0; i < 8; i++) {
-    tournaments.push(tournament);
-  }
+    const tournaments = props.tournaments;
+    tournaments?.sort(comparator);
+    return tournaments;
+  }, [sortBy, props.tournaments]);
 
   const tournamentStuff = (
     <div>
       <TournamentGrid>
-        {tournaments.map((t, i) => (
-          <TournamentCard
-            tournament={t}
-            // ${i}
-            onClick={() => history.push(`/tournament/0`)}
-          >
-            <span>{t.title}</span>
-          </TournamentCard>
+        {sortedTournaments?.map((t, i) => (
+          <TournamentCard tournamentTitle={t.Title} tournamentId={t._id} />
         ))}
       </TournamentGrid>
     </div>
-  );
-
-  const changeLayoutButton = (
-    <ChangeLayoutButton onClick={() => toggleCardLayout()}>
-      <i className={`mdi mdi-${isCardLayout ? "card" : "view-list"}`} />
-    </ChangeLayoutButton>
   );
 
   return (
@@ -82,7 +58,7 @@ function TournamentBrowser(props: Props) {
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
-            <SortDropdown
+            <DropdownSelect
               id="sort-dropdown"
               value={sortBy}
               onChange={(e: any) => setSortBy(e.value)}
@@ -90,7 +66,6 @@ function TournamentBrowser(props: Props) {
             />
             <label htmlFor="sort-dropdown">Sort By</label>
           </div>
-          {changeLayoutButton}
         </RightHeader>
       </Header>
       <hr />
@@ -131,15 +106,15 @@ const ChangeLayoutButton = styled(Button)`
 `;
 
 const sortDropdownOptions = [
-  { label: "Title", value: "name" },
-  { label: "Length", value: "length" },
-  { label: "Date Added", value: "submit" },
-  { label: "Random", value: "random" },
+  { label: "Title", value: "Title" },
+  { label: "Bounty Size", value: "Reward" },
+  { label: "Submission Deadline", value: "Deadline" },
+  { label: "Random", value: "Random" },
 ];
 
 const TournamentGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
-  padding-bottom: 100px;
+  margin-top: 20px;
 `;

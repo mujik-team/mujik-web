@@ -6,20 +6,8 @@ import { AuthContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import * as mixtapeService from "../../../services/mixtapeService";
-import { Dialog } from 'primereact/dialog';
-import { Button as PrimeReactButton} from 'primereact/button'
-
-const copyToClipboard = (str: string) => {
-  const el = document.createElement("textarea");
-  el.value = str;
-  el.setAttribute("readonly", "");
-  el.style.position = "absolute";
-  el.style.left = "-9999px";
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
-};
+import { Dialog } from "primereact/dialog";
+import { Button as PrimeReactButton } from "primereact/button";
 
 function MixtapeActions(props: Props) {
   const [menu, setMenu] = useState(null as any);
@@ -49,8 +37,8 @@ function MixtapeActions(props: Props) {
 
   const deleteMixtapeModal = () => {
     // <Button onClick={() => console.log("Hellooooo")} >Delete</Button>
-    setShowConfirmDeleteModal(true)
-  }
+    setShowConfirmDeleteModal(true);
+  };
 
   const followMixtape = async () => {
     if (ownedByUser) {
@@ -128,13 +116,25 @@ function MixtapeActions(props: Props) {
         <i className="mdi mdi-menu" />
       </ActionButton>
       <PopupMenu popup ref={(el) => setMenu(el)} model={items} />
-      <Dialog header="Confirmation" visible={showConfirmDeleteModal} modal style={{ width: '500px' }} 
-        footer={<PrimeReactButton onClick={() => deleteMixtape()}>Confirm Delete</PrimeReactButton>} 
-        onHide={() => setShowConfirmDeleteModal(false)}>
-          <div className="confirmation-content">
-            <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
-            <span>Are you sure you want to delete this mixtape?</span>
-          </div>
+      <Dialog
+        header="Confirmation"
+        visible={showConfirmDeleteModal}
+        modal
+        style={{ width: "500px" }}
+        footer={
+          <PrimeReactButton onClick={() => deleteMixtape()}>
+            Confirm Delete
+          </PrimeReactButton>
+        }
+        onHide={() => setShowConfirmDeleteModal(false)}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle p-mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          <span>Are you sure you want to delete this mixtape?</span>
+        </div>
       </Dialog>
     </div>
   );
@@ -168,3 +168,15 @@ const ActionButton = styled(Button)`
     border-radius: 25px;
   }
 `;
+
+const copyToClipboard = (str: string) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};

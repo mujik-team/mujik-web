@@ -23,7 +23,10 @@ const SubMessage = styled.div`
   color: var(--text-inactive);
 `;
 
-function VoteSuccessModal() {
+function VoteSuccessModal(props: any) {
+
+  console.log(props);
+
   return (
     <Container>
       <img
@@ -37,7 +40,7 @@ function VoteSuccessModal() {
         <SubMessage>
           You still have{" "}
           <span style={{ fontWeight: "bold", color: "var(--main-color)" }}>
-            6 votes remaining.
+            {props.votesLeft()} votes remaining.
           </span>
         </SubMessage>
       </MessageContainer>

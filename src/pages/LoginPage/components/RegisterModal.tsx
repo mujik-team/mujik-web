@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Introduction = styled.div`
-  font-family: "Fira Sans";
+  font-family: "Inter";
   color: var(--text-inactive);
   margin: 20px 0;
   font-size: 18px;

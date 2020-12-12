@@ -1,19 +1,30 @@
 import React from "react";
 import styled from "styled-components";
+import mixtapes from "../../../../services/mock/mixtapes";
 
 function VoteModal(props: Props) {
+
+  console.log(props);
+
+  const cards = props.mixtapes.map((m: any, i: number) => {
+    return <MixtapeCard
+      style={{backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`}}
+    />
+  });
+
   return (
     <div>
       <Container>
-        <h2>After you confirm your vote, you will have 6 votes remaining.</h2>
+        <h2>After you confirm your vote, you will have {props.getVotesLeft()} votes remaining.</h2>
 
         <h1>Your Selections</h1>
         <hr />
         <SelectedMixtapesGrid>
+          {/* <MixtapeCard />
           <MixtapeCard />
           <MixtapeCard />
-          <MixtapeCard />
-          <MixtapeCard />
+          <MixtapeCard /> */}
+          {cards}
         </SelectedMixtapesGrid>
       </Container>
 
@@ -71,4 +82,6 @@ const VoteStatusText = styled.div``;
 
 type Props = {
   submit: () => any;
+  mixtapes: string[];
+  getVotesLeft: () => number;
 };

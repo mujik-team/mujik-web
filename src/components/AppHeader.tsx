@@ -10,72 +10,70 @@ function AppHeader() {
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const spotifyContext = useContext(SpotifyContext);
-
   const [username, setUsername] = useState(authContext.currentUser.username);
 
   useEffect(() => {
     setUsername(authContext.currentUser?.username);
   }, [authContext]);
 
+  const coins = authContext.currentUser?.profile.coins;
+  const level = authContext.currentUser?.profile.level;
   const goBack = () => {
     if (history.length !== 0) {
-      history.goBack()
+      history.goBack();
     } else {
       console.log("Trying to leave app");
     }
-  }
+  };
 
   const goForward = () => {
     history.goForward();
-  }
-
+  };
 
   const UserDetailsCard = (
     <div>
       <div>
-      <ArrowLeft onClick={() => goBack()}>
-      </ArrowLeft>
+        <ArrowLeft onClick={() => goBack()}></ArrowLeft>
       </div>
       <div>
-      <ArrowRight onClick={() => goForward()}>
-      </ArrowRight>
+        <ArrowRight onClick={() => goForward()}></ArrowRight>
       </div>
       <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        marginTop: "20px",
-        marginRight: "15px",
-      }}
-    >
-      {!spotifyContext.state.isAuthorized ? (
-        <Button
-          style={{ height: "40px", marginRight: "20px" }}
-          onClick={() => history.push("/spotify/authorize")}
-        >
-          Authorize Spotify
-        </Button>
-      ) : null}
-      <UserDetailsContainer>
-        <span style={{ margin: "0 8px" }}>LEVEL 3</span>
-        <span style={{ width: "250px" }}>
-          <ProgressBar
-            style={{ backgroundColor: "#282c34", height: "7px" }}
-            showValue={false}
-            value={50}
-            color="#ffff64"
-          />
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginTop: "20px",
+          marginRight: "15px",
+        }}
+      >
+        {!spotifyContext.state.isAuthorized ? (
+          <Button
+            style={{ height: "40px", marginRight: "20px" }}
+            onClick={() => history.push("/spotify/authorize")}
+          >
+            Authorize Spotify
+          </Button>
+        ) : null}
+        <UserDetailsContainer>
+          <span style={{ margin: "0 8px" }}>LEVEL {level}</span>
+          <span style={{ width: "250px" }}>
+            <ProgressBar
+              style={{ backgroundColor: "#282c34", height: "7px" }}
+              showValue={false}
+              value={50}
+              color="#ffff64"
+            />
+          </span>
+          <span style={{ margin: "0 10px" }}>
+            <img src="/icons/coin.svg" width="18px"></img>
+          </span>
+          <UserCoinsText>{coins}</UserCoinsText>
+        </UserDetailsContainer>
+        <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
+          <AvatarImage size={50} username={username} />
+          {/* <span className="p-badge">3</span> */}
         </span>
-        <span style={{ margin: "0 10px" }}>
-          <img src="/icons/coin.svg" width="18px"></img>
-        </span>
-        <UserCoinsText>30000</UserCoinsText>
-      </UserDetailsContainer>
-      <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
-        <AvatarImage size={50} username={username} />
-        <span className="p-badge">3</span>
-      </span>
-    </div>
+      </div>
     </div>
   );
   return <div style={{}}>{UserDetailsCard}</div>;
@@ -106,9 +104,9 @@ const UserDetailsContainer = styled.div`
 const Arrow = styled.div`
   width: 20px;
   height: 20px;
-  transition: .5s;
+  transition: 0.5s;
   float: left;
-  box-shadow: -2px 2px 0 rgba(255,255,255,.5);
+  box-shadow: -2px 2px 0 rgba(255, 255, 255, 0.5);
   cursor: pointer;
   margin-top: 15px;
 
@@ -122,5 +120,5 @@ const ArrowLeft = styled(Arrow)`
   transform: rotate(45deg);
 `;
 const ArrowRight = styled(Arrow)`
-  transform: rotate(225deg)
+  transform: rotate(225deg);
 `;

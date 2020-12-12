@@ -1,29 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./TournamentBrowser.module.css";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import tournaments from "../../services/mock/tournaments";
-import TournamentCard from "./TournamentCard";
 import Button from "../../components/Button";
 import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
-import SortDropdown from "../../components/Input/SortDropdown";
 import TournamentBrowser from "./TournamentBrowser";
+import { GetAllActiveTournaments } from "../../services/tournamentService";
 
 function TournamentPage() {
   const history = useHistory();
-  const [showNewTournamentModal, setShowNewTournamentModal] = useState(false);
-  const [sortBy, setSortBy] = useState("");
   const [isCardLayout, setIsCardLayout] = useState(true);
-  const toggleShowNewTournamentModel = () =>
-    setShowNewTournamentModal(!showNewTournamentModal);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tournaments, setTournaments] = useState([] as any[]);
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
       const setTo = localStorage.getItem("layout") === "card";
       setIsCardLayout(setTo);
     }
+
+    GetAllActiveTournaments().then((tournaments) =>
+      setTournaments([...tournaments])
+    );
   }, []);
+
+  const filteredTournaments = useMemo(
+    () =>
+      tournaments.filter((t) =>
+        t.Title.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [tournaments, searchTerm]
+  );
 
   const toggleCardLayout = () => {
     setIsCardLayout(!isCardLayout);
@@ -54,9 +62,12 @@ function TournamentPage() {
           style={{ fontSize: "20px", top: "45%" }}
           className="pi mdi mdi-magnify"
         ></i>
-        <TextInput />
+        <TextInput
+          value={searchTerm}
+          onChange={(e: any) => setSearchTerm(e.target.value)}
+        />
       </div>
-      <Button onClick={() => toggleShowNewTournamentModel()}>New</Button>
+      <Button onClick={() => history.push("/tournament/new")}>New</Button>
     </div>
   );
 
@@ -74,13 +85,12 @@ function TournamentPage() {
   return (
     <Container>
       <div className={styles.container}>
-        <SideModal
-          isActive={showNewTournamentModal}
-          toggle={toggleShowNewTournamentModel}
-        ></SideModal>
         <div>
           {headerBrowser}
-          <TournamentBrowser LeftHeaderContent={LeftHeader}></TournamentBrowser>
+          <TournamentBrowser
+            tournaments={filteredTournaments}
+            LeftHeaderContent={LeftHeader}
+          ></TournamentBrowser>
           {/* <MixtapeBrowser LeftHeaderContent={LeftHeader} mixtapes={mixtapes} /> */}
         </div>
         <div className={styles.usertournamentBrowser}>

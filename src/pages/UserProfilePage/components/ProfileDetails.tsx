@@ -129,7 +129,7 @@ const Tag = styled.div`
   display: inline-block;
   background-color: var(--card-color);
   border-radius: 4px;
-  font-family: "Fira Sans";
+  font-family: "Inter";
   padding: 5px;
   margin-right: 10px;
 `;
@@ -206,7 +206,7 @@ const EditProfileButton = styled.i`
 
 const UserBio = styled.div`
   margin-top: 15px;
-  font-family: "Fira Sans";
+  font-family: "Inter";
   font-size: 20px;
   color: var(--text-inactive);
 `;
