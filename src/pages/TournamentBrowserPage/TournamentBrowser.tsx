@@ -1,9 +1,7 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
 import DropdownSelect from "../../components/Input/DropdownSelect";
-import { GetAllActiveTournaments } from "../../services/tournamentService";
 import TournamentCard from "./TournamentCard";
 
 function TournamentBrowser(props: Props) {
@@ -22,7 +20,7 @@ function TournamentBrowser(props: Props) {
 
       case "Reward":
         comparator = (a, b) =>
-          a.Rewards[0].Value < b.Rewards[0].Value ? 0 : 1;
+          a.Rewards[0].Value > b.Rewards[0].Value ? 0 : 1;
         break;
 
       case "Deadline":
