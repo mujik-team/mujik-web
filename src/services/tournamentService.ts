@@ -54,6 +54,12 @@ export async function GetTournament(id: string) {
   return tournament;
 }
 
+export async function GetMultipleTournaments(ids: string[]) {
+  const { data } = await api.post("/tournament/query", { ids });
+
+  return data.payload.tournaments;
+}
+
 export async function UpdateTournament(id: string, updatedTournament: any) {
   const { data } = await api.put(`/tournament/${id}`, {
     tournament: updatedTournament,
@@ -74,4 +80,15 @@ export async function VoteForMixtape(tournamentId: string, mixtapeId: string) {
   const { data } = await api.post(`/tournament/${tournamentId}/vote`, {
     mixtapeId,
   });
+}
+
+export async function FollowTournament(
+  tournamentId: string,
+  toFollow: boolean
+) {
+  const { data } = await api.post(
+    `/tournament/${tournamentId}/follow`,
+    {},
+    { params: { toFollow } }
+  );
 }
