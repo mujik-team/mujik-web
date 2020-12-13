@@ -2,30 +2,35 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import tournaments from "../../../services/mock/tournaments";
-import styles from "./FeaturedMixtapes.module.css";
+import { Carousel } from "primereact/carousel";
 
 function FeaturedMixtapes() {
   const history = useHistory();
 
-  const featured = [];
-
-  for (let i = 0; i < 4; i++) {
-    featured.push(
+  const getTournamentCard = (tourney: any) => {
+    return (
       <MixtapeCard
         style={{
-          backgroundImage: `url(/images/tournaments/${tournaments[i].image})`,
+          backgroundImage: `url(/images/tournaments/${tourney.image})`,
         }}
-        onClick={() => history.push(`/tournament/${i}`)}
+        // onClick={() => history.push(`/tournament/${i}`)}
       >
-        <span>{tournaments[i].title}</span>
+        <span>{tourney.title}</span>
       </MixtapeCard>
     );
-  }
+  };
 
   return (
     <Container>
-      <Title>Featured</Title>
-      <FeaturedTournamentsGrid>{featured}</FeaturedTournamentsGrid>
+      <Carousel
+        autoplayInterval={5000}
+        value={tournaments}
+        itemTemplate={getTournamentCard}
+        numVisible={3}
+        numScroll={1}
+        // header={<Title>Featured</Title>}
+      />
+      {/* <FeaturedTournamentsGrid>{featured}</FeaturedTournamentsGrid> */}
     </Container>
   );
 }
@@ -49,6 +54,7 @@ const Title = styled.div`
 `;
 
 const MixtapeCard = styled.div`
+  user-select: none;
   background-color: var(--card-color);
   border-radius: 8px;
   padding: 1rem;
@@ -61,6 +67,7 @@ const MixtapeCard = styled.div`
   filter: grayscale(60%);
 
   & > span {
+    font-family: var(--font-main);
     font-size: 16px;
     font-weight: 500;
     overflow: none;
@@ -83,7 +90,6 @@ const MixtapeCard = styled.div`
 
   &:hover > span {
     opacity: 1;
-    transform: translateY(0%);
   }
 
   &::before {

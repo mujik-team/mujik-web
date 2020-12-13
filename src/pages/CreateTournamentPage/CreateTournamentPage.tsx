@@ -254,6 +254,7 @@ const FieldTextArea = styled(TextArea)`
 `;
 
 const ThinkingImage = styled.img`
+  z-index: 0;
   position: fixed;
   pointer-events: none;
   right: -8vw;

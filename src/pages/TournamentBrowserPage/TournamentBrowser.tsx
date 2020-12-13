@@ -1,9 +1,7 @@
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
 import DropdownSelect from "../../components/Input/DropdownSelect";
-import { GetAllActiveTournaments } from "../../services/tournamentService";
 import TournamentCard from "./TournamentCard";
 
 function TournamentBrowser(props: Props) {
@@ -22,7 +20,7 @@ function TournamentBrowser(props: Props) {
 
       case "Reward":
         comparator = (a, b) =>
-          a.Rewards[0].Value < b.Rewards[0].Value ? 0 : 1;
+          a.Rewards[0].Value > b.Rewards[0].Value ? 0 : 1;
         break;
 
       case "Deadline":
@@ -39,11 +37,11 @@ function TournamentBrowser(props: Props) {
     return tournaments;
   }, [sortBy, props.tournaments]);
 
-  const tournamentStuff = (
+  const Grid = (
     <div>
       <TournamentGrid>
         {sortedTournaments?.map((t, i) => (
-          <TournamentCard tournamentTitle={t.Title} tournamentId={t._id} />
+          <TournamentCard tournament={t} />
         ))}
       </TournamentGrid>
     </div>
@@ -69,13 +67,12 @@ function TournamentBrowser(props: Props) {
         </RightHeader>
       </Header>
       <hr />
-      {tournamentStuff}
-      {/* {mixtapeLayout(mixtapeItems)} */}
+      {Grid}
     </Container>
   );
 }
 
-export default TournamentBrowser;
+export default React.memo(TournamentBrowser);
 
 type Props = {
   tournaments?: any[];
@@ -96,13 +93,6 @@ const LeftHeader = styled.div`
 const RightHeader = styled.div`
   display: block;
   float: right;
-`;
-
-const ChangeLayoutButton = styled(Button)`
-  position: relative;
-  bottom: 8px;
-  display: inline-block;
-  font-size: 16px;
 `;
 
 const sortDropdownOptions = [

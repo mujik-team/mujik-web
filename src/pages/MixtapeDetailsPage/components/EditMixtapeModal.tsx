@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import ImageEditor from "../../../components/ImageEditor";
-import { api } from "../../../services/api";
 import { toast } from "react-toastify";
 import { uploadMixtapeImage } from "../../../services/mixtapeService";
 

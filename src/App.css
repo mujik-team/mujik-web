@@ -24,6 +24,7 @@ h1 {
 
 hr {
   color: #555b66 !important;
+  border: 1px solid #555b66;
 }
 
 body {
@@ -43,7 +44,6 @@ body {
 
 .router {
   overflow-y: scroll;
-  height: 100%;
 }
 
 .title {

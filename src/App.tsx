@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import LibraryPage from "./pages/LibraryPage/LibraryPage";
 import TournamentPage from "./pages/TournamentBrowserPage/TournamentPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
+import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetailsPage";
 import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
 import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";
@@ -17,6 +17,7 @@ import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
 
 import useSpotify from "./hooks/useSpotify";
+import styled from "styled-components";
 
 import CreateTournamentPage from "./pages/CreateTournamentPage/CreateTournamentPage";
 
@@ -29,19 +30,14 @@ export const SpotifyContext: React.Context<
 > = React.createContext({} as any);
 
 function App() {
-  const [showPlayer, setShowPlayer] = useState(false);
-  const [authState, setAuthState] = useAuth();
+  const [authState] = useAuth();
   const spotify = useSpotify();
 
   const app = (
-    <div className="app">
+    <AppContainer>
       <Navbar />
-      <MusicPlayer
-        showPlayer={showPlayer}
-        toggle={() => setShowPlayer(!showPlayer)}
-      />
 
-      <div className="router">
+      <RouterContainer>
         <AppHeader />
         <Switch>
           <Route path="/" exact component={HomePage} />
@@ -57,8 +53,12 @@ function App() {
           <Route path="/user/:username" component={UserProfileScreen} />
           <Route path="/spotify/authorize" component={SpotifyLoginPage} />
         </Switch>
-      </div>
-    </div>
+      </RouterContainer>
+
+      <MusicPlayerContainer>
+        <MusicPlayer />
+      </MusicPlayerContainer>
+    </AppContainer>
   );
 
   return (
@@ -68,7 +68,7 @@ function App() {
           {(authState as AuthState).isLoggedIn ? app : <WelcomePage />}
           <ToastContainer
             position={"bottom-right"}
-            autoClose={3000}
+            autoClose={2000}
             transition={Slide}
           />
         </SpotifyContext.Provider>
@@ -78,3 +78,20 @@ function App() {
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: calc(100vh - 120px) 120px;
+`;
+
+const RouterContainer = styled.div`
+  overflow-y: scroll;
+`;
+
+const MusicPlayerContainer = styled.div`
+  z-index: 1;
+  grid-column: 1 / span 2;
+  background: var(--card-color-secondary);
+  box-shadow: 0 -4px 15px 0px rgba(0, 0, 0, 0.25);
+`;

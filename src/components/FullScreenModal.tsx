@@ -1,6 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
+function FullScreenModal(props: Props) {
+  return (
+    <Container
+      onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        props.toggle();
+      }}
+      className={`side-modal-container ${props.isActive ? "active" : ""}`}
+    >
+      <Modal onClick={(e: any) => e.stopPropagation()} className="side-modal">
+        {props.children}
+      </Modal>
+    </Container>
+  );
+}
+
+export default FullScreenModal;
+
 interface Props {
   isActive: boolean;
   toggle: () => any;
@@ -43,20 +60,3 @@ const Container = styled.div`
     /* transform: scale(1); */
   }
 `;
-
-function FullScreenModal(props: Props) {
-  return (
-    <Container
-      onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        props.toggle();
-      }}
-      className={`side-modal-container ${props.isActive ? "active" : ""}`}
-    >
-      <Modal onClick={(e: any) => e.stopPropagation()} className="side-modal">
-        {props.children}
-      </Modal>
-    </Container>
-  );
-}
-
-export default FullScreenModal;

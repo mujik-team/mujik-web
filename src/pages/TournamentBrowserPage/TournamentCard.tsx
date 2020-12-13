@@ -8,39 +8,38 @@ function TournamentCard(props: Props) {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(`/tournament/${props.tournamentId}`);
+    history.push(`/tournament/${props.tournament._id}`);
   };
 
   useEffect(() => {
-    getImageToBase64(`/tournament/${props.tournamentId}/cover`).then((image) =>
-      setImage(image || "")
-    );
-  }, [props.tournamentId]);
+    getImageToBase64(
+      `/tournament/${props.tournament._id}/cover`
+    ).then((image) => setImage(image || ""));
+  }, [props.tournament._id]);
 
   return (
     <div>
-      <Card
-        onClick={handleClick}
-        base64image={image}
-        title={props.tournamentTitle}
-      >
-        <span className="title">{props.tournamentTitle}</span>
+      <Card onClick={handleClick} base64image={image}>
+        <span className="title">{props.tournament.Title}</span>
+        <span className="coins">
+          <img src="/icons/coin.svg" width="18px"></img>
+          {props.tournament.Rewards[0].Value}
+        </span>
       </Card>
     </div>
   );
 }
 
 type Props = {
-  tournamentId: string;
-  tournamentTitle: string;
+  tournament: any;
 };
 
 type CardProps = {
   base64image: string;
-  title: string;
 };
 
 const Card = styled.div`
+  position: relative;
   background-color: var(--card-color);
   border-radius: 8px;
   padding: 1rem;
@@ -52,7 +51,7 @@ const Card = styled.div`
 
   filter: grayscale(80%);
 
-  & > span {
+  & > .title {
     font-size: 16px;
     font-weight: 500;
     overflow: none;
@@ -63,8 +62,18 @@ const Card = styled.div`
     border-radius: 99px;
     padding: 5px 10px;
     background-color: rgba(0, 0, 0, 0.6);
+  }
 
-    transform: translateY(100%);
+  & > .coins {
+    position: absolute;
+    display: flex;
+    font-weight: 600;
+    top: 10px;
+    right: 10px;
+
+    & > img {
+      margin-right: 5px;
+    }
   }
 
   &:hover,
@@ -73,7 +82,7 @@ const Card = styled.div`
     filter: none;
   }
 
-  &:hover > span {
+  &:hover > .title {
     opacity: 1;
     transform: translateY(0%);
   }

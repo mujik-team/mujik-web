@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "primereact/progressbar";
 import { SpotifyContext } from "../../App";
-import { Slider } from 'primereact/slider';
+import { Slider } from "primereact/slider";
 
-function MusicPlayer(props: Props) {
+function MusicPlayer() {
   const spotifyContext = useContext(SpotifyContext);
-  const [volumeValue, setVolumeValue] = useState(50 as any);
+  const [volumeValue, setVolumeValue] = useState(100 as any);
   const [progress, setProgress] = useState(0);
   const [currentPercentage, setCurrentPercentage] = useState(0 as any);
 
@@ -30,156 +30,134 @@ function MusicPlayer(props: Props) {
   }, [spotifyContext.state.playerState]);
 
   const setVolume = (vol: any) => {
-    player?.setVolume(vol).then(() => {
-      console.log('Volume updated!');
-    });
-  }
+    player?.setVolume(vol);
+  };
 
   const setDuration = (percentage: any, duration: any) => {
-    player?.seek((percentage/100) * duration).then(() => {
-      console.log('Changed position!');
-    });
-  }
+    player?.seek((percentage / 100) * duration);
+  };
 
   useEffect(() => {
-    setVolume(volumeValue/100)
-  }, [volumeValue])
+    setVolume(volumeValue / 100);
+  }, [volumeValue]);
 
   useEffect(() => {
     // setDuration(progress)
-    const duration = spotifyContext.state.playerState.duration
-    setProgress((currentPercentage/100) * duration);
-    setDuration(currentPercentage, duration)
-    // console.log(progress)
-  }, [currentPercentage])
-
-  if (
-    spotifyContext.state.playerReady &&
-    spotifyContext.state.playerState.track_window
-  ) {
-    const isPlaying = !spotifyContext.state.playerState.paused;
-    const currentTrack =
-      spotifyContext.state.playerState.track_window.current_track;
-    const image = currentTrack.album.images[0]?.url;
-    const songName = currentTrack.name;
     const duration = spotifyContext.state.playerState.duration;
-    const artist = currentTrack.artists[0];
+    setProgress((currentPercentage / 100) * duration);
+    setDuration(currentPercentage, duration);
+    // console.log(progress)
+  }, [currentPercentage]);
 
-    const togglePlay = () => {
-      player?.togglePlay();
-    };
+  const isPlaying = !spotifyContext.state.playerState.paused || false;
+  const currentTrack =
+    spotifyContext.state.playerState.track_window?.current_track || null;
+  const image = currentTrack?.album.images[0]?.url || "";
+  const songName = currentTrack?.name || "Please play a song.";
+  const duration = spotifyContext.state.playerState.duration || 0;
+  const artist = currentTrack?.artists[0] || "...";
 
-    const nextSong = () => {
-      player?.nextTrack();
-    };
+  const togglePlay = () => {
+    player?.togglePlay();
+  };
 
-    const prevSong = () => {
-      player?.previousTrack();
-      player?.previousTrack();
-    };
+  const nextSong = () => {
+    player?.nextTrack();
+  };
 
-    const getVolume = () => {
-      player?.getVolume().then((volume: any) => {
-        let volume_percentage = volume * 100;
-        console.log(`The volume of the player is ${volume_percentage}%`);
-      });
-    }
+  const prevSong = () => {
+    player?.previousTrack();
+    player?.previousTrack();
+  };
 
-    const getDuration = (percentage: any) => {
-      console.log((percentage/100)*duration)
-    }
-    
-    return (
-      <Container showPlayer={props.showPlayer} toggle={props.toggle}>
-        <div>
-          <MixtapeCoverArt
-            width="100"
-            showPlayer={props.showPlayer}
-            onClick={() => props.toggle()}
-            src={image}
-          />
-        </div>
+  const getVolume = () => {
+    player?.getVolume().then((volume: any) => {
+      let volume_percentage = volume * 100;
+      console.log(`The volume of the player is ${volume_percentage}%`);
+    });
+  };
 
-        {props.showPlayer && (
-          <div
-            style={{
-              marginTop: "20px",
-            }}
-          >
+  const getDuration = (percentage: any) => {
+    console.log((percentage / 100) * duration);
+  };
+
+  return (
+    <Container>
+      <div>
+        <MixtapeCoverArt width="100" src={image} />
+      </div>
+      <div
+        style={{
+          marginTop: "20px",
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            height: "35px",
+            marginBottom: "30px",
+          }}
+        >
+          <SongPlaying>
+            <span className="name">{songName}</span>
+            <div className="artist">{artist.name}</div>
+          </SongPlaying>
+
+          {currentTrack && (
             <div
               style={{
-                textAlign: "center",
-                height: "35px",
-                marginBottom: "30px",
+                position: "relative",
+                top: "-55px",
               }}
             >
-              <SongPlaying>
-                <span className="name">{songName}</span>
-                <div className="artist">{artist.name}</div>
-              </SongPlaying>
-
-              <div
-                style={{
-                  position: "relative",
-                  top: "-55px",
-                }}
-              >
-                <PlaybackIcon
-                  onClick={() => prevSong()}
-                  className={`mdi mdi-skip-previous`}
-                ></PlaybackIcon>
-                <PlaybackIcon
-                  onClick={() => togglePlay()}
-                  className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
-                ></PlaybackIcon>
-                <PlaybackIcon
-                  onClick={() => nextSong()}
-                  className={`mdi mdi-skip-next`}
-                ></PlaybackIcon>
-              </div>
+              <PlaybackIcon
+                onClick={() => prevSong()}
+                className={`mdi mdi-skip-previous`}
+              ></PlaybackIcon>
+              <PlaybackIcon
+                onClick={() => togglePlay()}
+                className={`mdi ${isPlaying ? "mdi-pause" : "mdi-play"}`}
+              ></PlaybackIcon>
+              <PlaybackIcon
+                onClick={() => nextSong()}
+                className={`mdi mdi-skip-next`}
+              ></PlaybackIcon>
             </div>
-            <SongTimeProgressBar
-              value={(progress / duration) * 100}
-              onChange={(e) => {setCurrentPercentage(e.value)}}
-            />
-          </div>
-        )}
-
-        {props.showPlayer && (
-          <div
-            style={{
-              marginTop: "30px",
-              marginRight: "20px",
-              textAlign: "right",
-              fontSize: "15px",
-            }}
-          >
-            <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
-            <PlaybackIcon onClick={() => setVolume(50)} className={`mdi mdi-volume-high`}></PlaybackIcon>
-            <VolumeProgressBar value={volumeValue} onChange={(e) => setVolumeValue(e.value)} />
-          </div>
-        )}
-      </Container>
-    );
-  } else {
-    return null;
-  }
+          )}
+        </div>
+        <SongTimeProgressBar
+          value={(progress / duration) * 100}
+          onChange={(e) => {
+            setCurrentPercentage(e.value);
+          }}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: "30px",
+          marginRight: "20px",
+          textAlign: "right",
+          fontSize: "15px",
+        }}
+      >
+        <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
+        <PlaybackIcon
+          onClick={() => setVolume(50)}
+          className={`mdi mdi-volume-high`}
+        ></PlaybackIcon>
+        <VolumeProgressBar
+          value={volumeValue}
+          onChange={(e) => setVolumeValue(e.value)}
+        />
+      </div>
+    </Container>
+  );
 }
 
 export default MusicPlayer;
 
 const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  z-index: 3;
-  left: 0;
-  right: 0;
-  background-color: var(--card-color);
-  width: ${(props: Props) => (props.showPlayer ? "100%" : "200px")};
-  height: 120px;
-  box-shadow: ${(props: Props) =>
-    props.showPlayer ? "-2px 0 20px 2px rgba(0, 0, 0, 0.3)" : ""};
-
+  width: 100%;
   display: grid;
   grid-template-columns: 150px 1fr 200px;
   gap: 20px;
@@ -204,7 +182,6 @@ const SongPlaying = styled.div`
     font-size: 15px;
   }
 `;
-
 
 const SongTimeProgressBar = styled(Slider)`
   height: 8px;
@@ -251,10 +228,9 @@ const VolumeProgressBar = styled(Slider)`
   }
 `;
 
-
 const MixtapeCoverArt = styled.img`
   margin-top: 10px;
-  margin-left: ${(props: IsShowing) => (props.showPlayer ? "30px" : "70px")};
+  margin-left: 30px;
   border-radius: 4px;
   background-color: var(--card-color);
 `;
@@ -271,12 +247,3 @@ const PlaybackIcon = styled.span`
     color: whitesmoke;
   }
 `;
-
-type Props = {
-  showPlayer: boolean;
-  toggle: any;
-};
-
-type IsShowing = {
-  showPlayer: boolean;
-};

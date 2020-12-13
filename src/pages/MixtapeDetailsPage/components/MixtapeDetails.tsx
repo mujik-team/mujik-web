@@ -45,7 +45,7 @@ function MixtapeDetails(props: Props) {
     <span>Loading</span>
   ) : (
     <Container>
-      <SideModal width={550} toggle={toggleModal} isActive={showModal}>
+      <SideModal width={500} toggle={toggleModal} isActive={showModal}>
         {modals[modalToShow]}
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
@@ -66,14 +66,14 @@ function MixtapeDetails(props: Props) {
         showEditMixtapeModal={toggleEditMixtapeModal}
         showAddSongModal={toggleAddSongsModal}
         mixtape={mixtape}
-        />
-        <TagsContainer>
-          <div>
-            <TagTitle>{props.mixtape.tags.length? "Tags" : ""}</TagTitle>
-            {props.mixtape.tags?.map((a: string) => (
-              <Tag>{a}</Tag>
-            ))}
-          </div>
+      />
+      <TagsContainer>
+        <div>
+          <TagTitle>{props.mixtape.tags.length ? "Tags" : ""}</TagTitle>
+          {props.mixtape.tags?.map((a: string) => (
+            <Tag>{a}</Tag>
+          ))}
+        </div>
       </TagsContainer>
     </Container>
   );

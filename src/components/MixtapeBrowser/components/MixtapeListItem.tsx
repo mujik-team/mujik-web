@@ -2,7 +2,36 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getImageToBase64 } from "../../../services/util";
-import { Tooltip } from 'primereact/tooltip';
+
+function MixtapeListItem(props: Props) {
+  const [image, setImage] = useState("");
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/mixtape/${props.mixtapeId}`);
+  };
+
+  useEffect(() => {
+    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
+      setImage(image || "")
+    );
+  }, [props.mixtapeId]);
+
+  return (
+    <div>
+      <ListItem
+        className="customClassName"
+        data-pr-tooltip={`${props.mixtape.songs.length} songs`}
+        onClick={handleClick}
+        base64image={image}
+      >
+        {props.children}{" "}
+      </ListItem>
+    </div>
+  );
+}
+
+export default MixtapeListItem;
 
 type Props = {
   mixtapeId: string;
@@ -20,12 +49,10 @@ const ListItem = styled.div`
   grid-template-columns: 120px 1fr;
   grid-template-rows: 120px;
   gap: 20px;
-
   cursor: pointer;
-
   transition: 0.2s linear all;
-
   padding: 15px;
+  border-radius: 8px;
 
   &:hover {
     background-color: var(--card-color-highlight);
@@ -53,37 +80,3 @@ const ListItem = styled.div`
     text-overflow: ellipsis;
   }
 `;
-
-function MixtapeListItem(props: Props) {
-  const [image, setImage] = useState("");
-  const history = useHistory();
-
-  const handleClick = () => {
-    history.push(`/mixtape/${props.mixtapeId}`);
-  };
-
-  useEffect(() => {
-    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
-      setImage(image || "")
-    );
-  }, [props.mixtapeId]);
-
-  // return (
-  //   <ListItem onClick={handleClick} base64image={image}>
-  //     {props.children}{" "}
-  //   </ListItem>
-  // );
-  return (
-    <div>
-      <Tooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
-      <ListItem 
-      className="customClassName" data-pr-tooltip={`${props.mixtape.songs.length} songs`}
-      onClick={handleClick} base64image={image}>
-      {props.children}{" "}
-      </ListItem>
-
-    </div>
-  );
-}
-
-export default MixtapeListItem;
