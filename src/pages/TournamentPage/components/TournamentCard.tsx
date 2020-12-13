@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getImageToBase64 } from "../../services/util";
+import { getImageToBase64 } from "../../../services/util";
 
 function TournamentCard(props: Props) {
   const [image, setImage] = useState("");

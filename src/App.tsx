@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Navbar from "./components/Navbar";
 import LibraryPage from "./pages/LibraryPage/LibraryPage";
-import TournamentPage from "./pages/TournamentBrowserPage/TournamentPage";
+import TournamentPage from "./pages/TournamentPage/TournamentPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetailsPage";
 import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";

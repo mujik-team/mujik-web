@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import DropdownSelect from "../../components/Input/DropdownSelect";
+import DropdownSelect from "../../../components/Input/DropdownSelect";
 import TournamentCard from "./TournamentCard";
 
 function TournamentBrowser(props: Props) {
