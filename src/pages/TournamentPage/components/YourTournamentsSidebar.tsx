@@ -54,11 +54,17 @@ function YourTournamentsSidebar() {
     <Container>
       <div className="title">Your Tournaments</div>
       {FilterByTabs}
-      {yourTournaments.map((t) => (
-        <TournamentCard onClick={() => history.push(`/tournament/${t._id}`)}>
-          {t.Title}
+      {yourTournaments.length !== 0 ? (
+        yourTournaments.map((t) => (
+          <TournamentCard onClick={() => history.push(`/tournament/${t._id}`)}>
+            {t.Title}
+          </TournamentCard>
+        ))
+      ) : (
+        <TournamentCard>
+          No tournaments entered, followed or created.
         </TournamentCard>
-      ))}
+      )}
     </Container>
   );
 }
@@ -71,6 +77,7 @@ const Container = styled.div`
   .title {
     font-size: 30px;
     font-weight: 500;
+    margin-bottom: 10px;
   }
 
   .tab {
