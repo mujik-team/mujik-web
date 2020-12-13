@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import LibraryPage from "./pages/LibraryPage/LibraryPage";
 import TournamentPage from "./pages/TournamentBrowserPage/TournamentPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetails";
+import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetailsPage";
 import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
 import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
 import AppHeader from "./components/AppHeader";

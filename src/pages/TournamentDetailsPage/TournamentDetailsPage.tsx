@@ -74,11 +74,14 @@ function TournamentDetails() {
   const ownedByLoggedIn =
     tournament.CreatedBy === authContext.currentUser.username;
 
+  const userIsFollowing = authContext.currentUser.profile.tournamentsFollowing.includes(
+    tournament._id
+  );
+
   return (
     <div>
       <Container>
         <Image image={tournamentImage} />
-
         <SideModal
           isActive={showEditTournamentModal}
           toggle={toggleShowEditTournamentModal}
@@ -108,7 +111,7 @@ function TournamentDetails() {
 
             <div className="user-actions">
               <Button id="follow-button" onClick={handleFollowTournament}>
-                FOLLOW
+                {userIsFollowing ? "UNFOLLOW" : "FOLLOW"}
               </Button>
 
               {ownedByLoggedIn && (
