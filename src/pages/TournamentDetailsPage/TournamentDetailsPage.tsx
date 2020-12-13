@@ -12,6 +12,7 @@ import SideModal from "../../components/SideModal";
 import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
 import TagInfo from "./TagInfo";
 import AvatarImage from "../../components/AvatarImage";
+import { FollowTournament } from "../../services/tournamentService";
 
 function TournamentDetails() {
   const { tournamentId } = useParams() as any;
@@ -47,18 +48,10 @@ function TournamentDetails() {
 
   const handleFollowTournament = async () => {
     if (authContext.isLoggedIn) {
-      const follow = authContext.currentUser.profile.tournamentsFollowing.includes(
-        tournament._id
-      );
-      if (follow === true) {
-        // await tournamentService.followTournament(tournament._id, authContext.currentUser, false);
-        await authContext.update();
-        toast.success("Unfollowed Tournament!");
-      } else {
-        // await tournamentService.followTournament(tournament._id, authContext.currentUser, true);
-        await authContext.update();
-        toast.success("Followed Tournament!");
-      }
+      try {
+        await FollowTournament(tournament._id, !userIsFollowing);
+        authContext.update();
+      } catch (err) {}
     }
   };
 

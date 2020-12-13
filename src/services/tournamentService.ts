@@ -75,3 +75,14 @@ export async function VoteForMixtape(tournamentId: string, mixtapeId: string) {
     mixtapeId,
   });
 }
+
+export async function FollowTournament(
+  tournamentId: string,
+  toFollow: boolean
+) {
+  const { data } = await api.post(
+    `/tournament/${tournamentId}/follow`,
+    {},
+    { params: { toFollow } }
+  );
+}
