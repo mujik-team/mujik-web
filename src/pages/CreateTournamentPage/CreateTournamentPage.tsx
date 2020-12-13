@@ -9,7 +9,7 @@ import ImageEditor from "../../components/ImageEditor";
 import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
-import { FormState, reducer } from "./reducer";
+import { FormState, reducer, validateForm } from "./reducer";
 import {
   CreateNewTournament,
   UploadTournamentImage,
@@ -32,6 +32,11 @@ function CreateTournamentPage() {
 
   const handleCreateNewTournament = async () => {
     // Add validation here....
+
+    const errors = validateForm(
+      tournamentForm.form,
+      authContext.currentUser.profile
+    );
 
     const username = authContext.currentUser.username;
 

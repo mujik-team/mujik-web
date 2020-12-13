@@ -20,11 +20,14 @@ function YourTournamentsSidebar() {
       const tournamentsFollowed = profile.tournamentsFollowing || [];
       const tournamentsJoined = profile.tournamentsJoined || [];
       const tournamentsCreated = profile.tournamentsCreated || [];
-      const allTournaments = [
+
+      const set = new Set([
         ...tournamentsFollowed,
         ...tournamentsJoined,
         ...tournamentsCreated,
-      ];
+      ]);
+
+      const allTournaments = [...set];
 
       const mapping: any = {
         All: allTournaments,

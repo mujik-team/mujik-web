@@ -51,10 +51,16 @@ const Container = styled.div`
 `;
 
 export const AvailableRestrictions: any = {
-  song_limit: {
-    label: "Song Limit",
+  max_songs: {
+    label: "Max Number of Songs",
     valueLabel: "Num. Songs",
-    value: "song_limit",
+    value: "max_songs",
+    type: "number",
+  },
+  min_songs: {
+    label: "Minimum Number of Songs",
+    valueLabel: "Num. Songs",
+    value: "min_songs",
     type: "number",
   },
   min_lvl: {
@@ -64,16 +70,22 @@ export const AvailableRestrictions: any = {
     type: "dropdown",
     valueOptions: [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   },
-  time_limit: {
-    label: "Time Limit",
+  max_time: {
+    label: "Max Mixtape Duration",
     valueLabel: "Minutes",
-    value: "time_limit",
+    value: "max_time",
+    type: "number",
+  },
+  min_time: {
+    label: "Minimum Mixtape Duration",
+    valueLabel: "Minutes",
+    value: "min_time",
     type: "number",
   },
   allow_duplicates: {
-    label: "Allow Duplicates",
+    label: "No Duplicates",
     valueLabel: "",
-    value: "allow_duplicates",
+    value: "no_duplicates",
     type: "checkbox",
   },
 };

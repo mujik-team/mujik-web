@@ -6,64 +6,6 @@ import { toast } from "react-toastify";
 
 import { Steps } from "primereact/steps";
 
-const Container = styled.div`
-  margin: 30px;
-`;
-
-const Introduction = styled.div`
-  font-family: "Inter";
-  color: var(--text-inactive);
-  margin: 20px 0;
-  font-size: 18px;
-`;
-
-const RegisterButton = styled.div`
-  user-select: none;
-  cursor: pointer;
-  text-align: center;
-  font-size: 30px;
-  font-weight: 500;
-  width: 100%;
-  padding: 30px 0;
-  background-color: var(--card-color);
-  position: absolute;
-  bottom: 0;
-  transition: 0.2s ease-in all;
-
-  &:hover {
-    background-color: var(--main-color);
-    color: black;
-  }
-`;
-
-const FormContainer = styled.div`
-  margin: 50px 0;
-`;
-
-const FormTitle = styled.div`
-  font-size: 25px;
-  color: var(--text-inactive);
-  font-weight: 500;
-  margin-bottom: 15px;
-`;
-
-const CustomFormInput = styled(TextInput)`
-  width: 100%;
-  height: 50px;
-  font-size: 20px;
-  margin-bottom: 20px;
-`;
-const items = [
-  { label: "Welcome" },
-  { label: "User Details" },
-  { label: "Profile" },
-  { label: "Confirmation" },
-];
-
-type Props = {
-  toggle: any;
-};
-
 function RegisterModal(props: Props) {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -73,6 +15,10 @@ function RegisterModal(props: Props) {
   const [confirmationPassword, setConfirmationPassword] = useState("");
 
   const signUp = async () => {
+    if (username.length < 4) {
+      toast.dark("😲 Please check your username.");
+    }
+
     if (password !== confirmationPassword) {
       toast.dark("😯 Passwords do not match.");
       return;
@@ -140,3 +86,61 @@ function RegisterModal(props: Props) {
 }
 
 export default RegisterModal;
+
+const Container = styled.div`
+  margin: 30px;
+`;
+
+const Introduction = styled.div`
+  font-family: "Inter";
+  color: var(--text-inactive);
+  margin: 20px 0;
+  font-size: 18px;
+`;
+
+const RegisterButton = styled.div`
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  width: 100%;
+  padding: 30px 0;
+  background-color: var(--card-color);
+  position: absolute;
+  bottom: 0;
+  transition: 0.2s ease-in all;
+
+  &:hover {
+    background-color: var(--main-color);
+    color: black;
+  }
+`;
+
+const FormContainer = styled.div`
+  margin: 50px 0;
+`;
+
+const FormTitle = styled.div`
+  font-size: 25px;
+  color: var(--text-inactive);
+  font-weight: 500;
+  margin-bottom: 15px;
+`;
+
+const CustomFormInput = styled(TextInput)`
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+const items = [
+  { label: "Welcome" },
+  { label: "User Details" },
+  { label: "Profile" },
+  { label: "Confirmation" },
+];
+
+type Props = {
+  toggle: any;
+};
