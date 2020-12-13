@@ -15,9 +15,11 @@ function YourTournamentsSidebar() {
   useEffect(() => {
     if (authContext.currentUser?.profile) {
       const profile = authContext.currentUser?.profile;
-      const tournamentsFollowed = profile.tournamentsFollowing;
-      const tournamentsJoined = profile.tournamentsJoined;
-      const tournamentsCreated = profile.tournamentsCreated;
+
+      // @TODO TEMPFIX USER MODEL ON API TO PROPERLY SERIALIZE.
+      const tournamentsFollowed = profile.tournamentsFollowing || [];
+      const tournamentsJoined = profile.tournamentsJoined || [];
+      const tournamentsCreated = profile.tournamentsCreated || [];
       const allTournaments = [
         ...tournamentsFollowed,
         ...tournamentsJoined,
