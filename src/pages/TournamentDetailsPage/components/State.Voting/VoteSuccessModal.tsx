@@ -15,7 +15,7 @@ function VoteSuccessModal(props: any) {
         <SubMessage>
           You still have{" "}
           <span style={{ fontWeight: "bold", color: "var(--main-color)" }}>
-            {props.votesLeft()} votes remaining.
+            {props.votesLeft} votes remaining.
           </span>
         </SubMessage>
       </MessageContainer>

@@ -32,17 +32,17 @@ function TournamentDetails() {
       const voteDate = Date.parse(tournament.VoteDate);
       const now = new Date().getTime();
 
-      // if (now < submissionDate)
-      //   return (
-      //     <TournamentSubmission
-      //       tournament={{ ...tournament, tournamentImage }}
-      //       restrictions={tournament.Restrictions}
-      //       rules={tournament.additional_submission_criteria}
-      //     />
-      //   );
-      // else if (now > submissionDate && now < voteDate)
-      return <TournamentVote tournament={tournament} />;
-      // else return <TournamentResults />;
+      if (now < submissionDate)
+        return (
+          <TournamentSubmission
+            tournament={{ ...tournament, tournamentImage }}
+            restrictions={tournament.Restrictions}
+            rules={tournament.additional_submission_criteria}
+          />
+        );
+      else if (now > submissionDate && now < voteDate)
+        return <TournamentVote tournament={tournament} />;
+      else return <TournamentResults />;
     }
   };
 

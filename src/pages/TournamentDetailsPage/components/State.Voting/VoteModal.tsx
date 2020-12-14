@@ -4,15 +4,17 @@ import MixtapeCard from "../../../../components/MixtapeBrowser/components/Mixtap
 
 function VoteModal(props: Props) {
   const cards = props.mixtapes.map((m: any, i: number) => {
-    return <MixtapeCard mixtapeId={m} mixtapeName={""} onClick={() => {}} />;
+    return (
+      <MixtapeCard key={i} mixtapeId={m} mixtapeName={""} onClick={() => {}} />
+    );
   });
 
   return (
     <div>
       <Container>
         <h2>
-          After you confirm your vote, you will have {props.getVotesLeft()}{" "}
-          votes remaining.
+          After you confirm your vote, you will have {props.votesLeft} votes
+          remaining.
         </h2>
 
         <h1>Your Selections</h1>
@@ -61,5 +63,5 @@ const VoteButton = styled.div`
 type Props = {
   submit: () => any;
   mixtapes: string[];
-  getVotesLeft: () => number;
+  votesLeft: number;
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
@@ -11,15 +11,21 @@ import TextInput from "../../../../components/Input/TextInput";
 import { toast } from "react-toastify";
 import * as MixtapeService from "../../../../services/mixtapeService";
 import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
+import { VoteForMixtape } from "../../../../services/tournamentService";
+import { AuthContext } from "../../../../App";
 
 function TournamentVote(props: Props) {
   const history = useHistory();
+  const authContext = useContext(AuthContext);
 
-  const ids = Object.keys(props.tournament.Submissions).map(
-    (key) => props.tournament.Submissions[key].MixtapeId
-  );
-
+  const [votingPhase, setVotingPhase] = useState(false);
+  const [votesLeft, setVotesLeft] = useState(3);
+  const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
+  const [sortBy, setSortBy] = useState("");
   const [submittedMixtapes, setSubmittedMixtapes] = useState([] as any);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
+  const numVotesByUser = useRef(3);
 
   const getSubmissions = async (ids: any) => {
     const mixtapes = await MixtapeService.getSeveralMixtapes(ids);
@@ -27,20 +33,30 @@ function TournamentVote(props: Props) {
   };
 
   useEffect(() => {
+    // Get all submission in the tournament.
+    const ids = Object.keys(props.tournament.Submissions).map(
+      (key) => props.tournament.Submissions[key].MixtapeId
+    );
+
     getSubmissions(ids);
+
+    // Check how many votes the user has left.
+    const username = authContext.currentUser?.username;
+    const userVotes = props.tournament.Voters[username];
+    numVotesByUser.current = userVotes ? 3 - Object.keys(userVotes).length : 3;
+
+    setVotesLeft(numVotesByUser.current);
   }, []);
 
   const toggleShowVoteModal = () => setShowVoteModal(!showVoteModal);
-  const [showVoteModal, setShowVoteModal] = useState(false);
 
   const toggleShowVoteSuccessModal = () =>
     setShowVoteSuccessModal(!showVoteSuccessModal);
 
-  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
-
-  const submitVote = () => {
+  const submitVote = async () => {
+    selectedMixtapes.forEach((id) => VoteForMixtape(props.tournament._id, id));
+    numVotesByUser.current = votesLeft;
     toggleShowVoteModal();
-    setTimeout({}, 200);
     toggleShowVoteSuccessModal();
     setSelectedMixtapes([]);
   };
@@ -61,21 +77,12 @@ function TournamentVote(props: Props) {
     setVotesLeft(votesLeft + 1);
   };
 
-  const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
-  const options = [
-    { label: "Title", value: "name" },
-    { label: "Length", value: "length" },
-    { label: "Date Added", value: "submit" },
-    { label: "Random", value: "random" },
-  ];
-
-  const [sortBy, setSortBy] = useState("");
-
   const voteCards = useMemo(
     () =>
       submittedMixtapes.map((m: any, i: number) => {
         return (
           <MixtapeCard
+            key={i}
             className={selectedMixtapes.includes(m._id) ? "selected" : ""}
             mixtapeId={m._id}
             mixtapeName={m.mixtapeName}
@@ -95,19 +102,11 @@ function TournamentVote(props: Props) {
     [submittedMixtapes, selectedMixtapes]
   );
 
-  const [votingPhase, setVotingPhase] = useState(false);
-  const [votesLeft, setVotesLeft] = useState(3);
-
   const toggleVotingPhase = () => {
     setVotingPhase(!votingPhase);
     setSelectedMixtapes([]);
-    setVotesLeft(3);
+    setVotesLeft(numVotesByUser.current);
   };
-
-  const getVotesLeft = () => {
-    return votesLeft;
-  };
-
   const CreatorVote = (
     <CreatorVoteContainer>
       <div className="message">
@@ -122,13 +121,13 @@ function TournamentVote(props: Props) {
         isActive={showVoteSuccessModal}
         toggle={toggleShowVoteSuccessModal}
       >
-        <VoteSuccessModal votesLeft={getVotesLeft} />
+        <VoteSuccessModal votesLeft={votesLeft} />
       </FullScreenModal>
       <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
         <VoteModal
           submit={submitVote}
           mixtapes={selectedMixtapes}
-          getVotesLeft={getVotesLeft}
+          votesLeft={votesLeft}
         />
       </SideModal>
 
@@ -177,6 +176,13 @@ function TournamentVote(props: Props) {
 }
 
 export default TournamentVote;
+
+const options = [
+  { label: "Title", value: "name" },
+  { label: "Length", value: "length" },
+  { label: "Date Added", value: "submit" },
+  { label: "Random", value: "random" },
+];
 
 type Props = {
   tournament: any;
