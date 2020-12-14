@@ -1,32 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
-  user-select: none;
-  margin: 30px;
-`;
-
-const MessageContainer = styled.div`
-  display: block;
-  float: right;
-  margin-top: 180px;
-  margin-left: 30px;
-`;
-
-const Message = styled.div`
-  font-size: 35px;
-  font-weight: 400;
-`;
-
-const SubMessage = styled.div`
-  font-size: 20px;
-  color: var(--text-inactive);
-`;
-
 function VoteSuccessModal(props: any) {
-
-  console.log(props);
-
   return (
     <Container>
       <img
@@ -49,3 +24,25 @@ function VoteSuccessModal(props: any) {
 }
 
 export default VoteSuccessModal;
+
+const Container = styled.div`
+  user-select: none;
+  margin: 30px;
+`;
+
+const MessageContainer = styled.div`
+  display: block;
+  float: right;
+  margin-top: 180px;
+  margin-left: 30px;
+`;
+
+const Message = styled.div`
+  font-size: 35px;
+  font-weight: 400;
+`;
+
+const SubMessage = styled.div`
+  font-size: 20px;
+  color: var(--text-inactive);
+`;

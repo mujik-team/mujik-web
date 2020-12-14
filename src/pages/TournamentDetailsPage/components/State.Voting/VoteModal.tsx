@@ -1,31 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import mixtapes from "../../../../services/mock/mixtapes";
+import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
 
 function VoteModal(props: Props) {
-
-  console.log(props);
-
   const cards = props.mixtapes.map((m: any, i: number) => {
-    return <MixtapeCard
-      style={{backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`}}
-    />
+    return <MixtapeCard mixtapeId={m} mixtapeName={""} onClick={() => {}} />;
   });
 
   return (
     <div>
       <Container>
-        <h2>After you confirm your vote, you will have {props.getVotesLeft()} votes remaining.</h2>
+        <h2>
+          After you confirm your vote, you will have {props.getVotesLeft()}{" "}
+          votes remaining.
+        </h2>
 
         <h1>Your Selections</h1>
         <hr />
-        <SelectedMixtapesGrid>
-          {/* <MixtapeCard />
-          <MixtapeCard />
-          <MixtapeCard />
-          <MixtapeCard /> */}
-          {cards}
-        </SelectedMixtapesGrid>
+        <SelectedMixtapesGrid>{cards}</SelectedMixtapesGrid>
       </Container>
 
       <VoteButton onClick={() => props.submit()}>Confirm Vote</VoteButton>
@@ -47,18 +39,6 @@ const SelectedMixtapesGrid = styled.div`
   gap: 10px;
 `;
 
-const MixtapeCard = styled.div`
-  background-color: var(--card-color);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s ease-in all;
-
-  &:hover,
-  &.selected {
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
-`;
-
 const VoteButton = styled.div`
   user-select: none;
   cursor: pointer;
@@ -77,8 +57,6 @@ const VoteButton = styled.div`
     color: black;
   }
 `;
-
-const VoteStatusText = styled.div``;
 
 type Props = {
   submit: () => any;

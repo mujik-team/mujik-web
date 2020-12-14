@@ -40,8 +40,7 @@ function UserProfileScreen() {
       <UserContentContainer>
         <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
         <TournamentWins>
-          <span className="title">Your Wins</span>
-          <hr />
+          <span className="title">Tournament Wins</span>
           <TournamentCard />
           <TournamentCard />
           <TournamentCard />

@@ -9,13 +9,16 @@ function MixtapeCard(props: Props) {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push(`/mixtape/${props.mixtapeId}`);
+    if (props.onClick) props.onClick();
+    else history.push(`/mixtape/${props.mixtapeId}`);
   };
 
   useEffect(() => {
-    getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
-      setImage(image || "")
-    );
+    if (props.mixtapeId) {
+      getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
+        setImage(image || "")
+      );
+    }
   }, [props.mixtapeId]);
 
   // return <Card base64image={image} onClick={handleClick} />;
@@ -23,7 +26,7 @@ function MixtapeCard(props: Props) {
     <div>
       <InfoTooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
       <Card
-        className="customClassName"
+        className={`customClassName ${props.className}`}
         data-pr-tooltip={props.mixtapeName}
         base64image={image}
         onClick={handleClick}
@@ -32,11 +35,13 @@ function MixtapeCard(props: Props) {
   );
 }
 
-export default MixtapeCard;
+export default React.memo(MixtapeCard);
 
 type Props = {
   mixtapeId: string;
   mixtapeName: string;
+  onClick?: () => void;
+  className?: string;
 };
 
 type CardProps = {
