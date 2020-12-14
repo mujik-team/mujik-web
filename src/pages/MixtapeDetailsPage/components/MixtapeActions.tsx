@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import * as mixtapeService from "../../../services/mixtapeService";
 import { Dialog } from "primereact/dialog";
 import { Button as PrimeReactButton } from "primereact/button";
+import NewMixtapeModal from "../../LibraryPage/components/NewMixtapeModal";
 
 function MixtapeActions(props: Props) {
   const [menu, setMenu] = useState(null as any);
@@ -67,6 +68,36 @@ function MixtapeActions(props: Props) {
     }
   };
 
+  const forkMixtape = async () => {
+
+    const mixtape = props.mixtape;
+    const username = authContext.currentUser.username;
+
+    try {
+
+      const forkedMixtape = {
+        createdBy: username,
+        followers: 0,
+        ...mixtape
+      }
+
+      delete forkedMixtape['_id'];
+
+      console.log(forkedMixtape);
+
+      forkedMixtape.createdBy = username;
+      forkedMixtape.followers = 0;
+      const newMixtape = await mixtapeService.forkMixtape(authContext.currentUser.username, forkedMixtape);
+      authContext.update();
+      history.push(`/mixtape/${newMixtape._id}`);
+      toast.dark("🎵 Created new mixtape");
+    } catch (err) {
+      toast.error("🤔 Unable to create new mixtape.");
+      return null;
+    }
+
+  }
+
   const items = [
     {
       label: "Share Mixtape",
@@ -93,6 +124,17 @@ function MixtapeActions(props: Props) {
       }
     );
   }
+
+  if (!ownedByUser) {
+    items.push(
+      {
+        label: "Fork",
+        icon: "mdi mdi-pencil",
+        command: () => forkMixtape()
+      }
+    )
+  }
+
 
   return (
     <div>
