@@ -9,7 +9,7 @@ import ImageEditor from "../../components/ImageEditor";
 import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
-import { FormState, reducer } from "./reducer";
+import { FormState, reducer, validateForm } from "./FormService";
 import {
   CreateNewTournament,
   UploadTournamentImage,
@@ -31,7 +31,18 @@ function CreateTournamentPage() {
   };
 
   const handleCreateNewTournament = async () => {
-    // Add validation here....
+    const errors = validateForm(
+      tournamentForm.form,
+      authContext.currentUser.profile
+    );
+
+    if (errors.length > 0) {
+      dispatch({ type: "invalid-form", payload: { errors } });
+      toast.dark("🤔 Please fix form errors.");
+      return;
+    } else {
+      dispatch({ type: "valid-form", payload: {} });
+    }
 
     const username = authContext.currentUser.username;
 
@@ -171,6 +182,20 @@ function CreateTournamentPage() {
           <ImageEditor editorType="tournament_image" />
         </div> */}
 
+        {!tournamentForm.isValid && (
+          <div className="errors-container">
+            <hr />
+            <h2 className="title">Unable to Create Tournament</h2>
+            <div className="description">{ErrorsFoundDescription}</div>
+
+            {tournamentForm.formErrors.map((e) => (
+              <div className="error-card">
+                <div className="error-name">{e.fieldName}</div>
+                <div className="error-description">{e.errorDescription}</div>
+              </div>
+            ))}
+          </div>
+        )}
         <CreateButton onClick={handleCreateNewTournament}>
           Create Tournament
         </CreateButton>
@@ -201,6 +226,8 @@ const TournamentDeadlinesDescription =
 const PickedByDescription =
   "Select who will decide on the winner for this tournament.";
 
+const ErrorsFoundDescription = "Please fix all errors listed below. ";
+
 const Container = styled.div`
   margin: 30px;
   padding-bottom: 200px;
@@ -219,6 +246,38 @@ const Container = styled.div`
 
   & .image-editor {
     margin-bottom: 50px;
+  }
+
+  .errors-container {
+    margin-top: 20px;
+    cursor: default;
+    .title {
+      font-size: 35px;
+      font-weight: 500;
+      margin: 10px 0px;
+    }
+
+    .description {
+      color: var(--text-inactive);
+      font-family: var(--font-secondary);
+    }
+
+    .error-card {
+      cursor: default;
+      font-family: var(--font-secondary);
+      background: var(--card-color);
+      border-radius: 8px;
+
+      padding: 20px;
+      margin: 10px 0;
+      width: 100%;
+
+      .error-name {
+        color: var(--text-inactive);
+        font-weight: 600;
+        font-size: 20px;
+      }
+    }
   }
 `;
 

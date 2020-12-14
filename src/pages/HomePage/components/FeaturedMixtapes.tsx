@@ -23,10 +23,10 @@ function FeaturedMixtapes() {
   return (
     <Container>
       <Carousel
-        autoplayInterval={5000}
+        // autoplayInterval={5000}
         value={tournaments}
         itemTemplate={getTournamentCard}
-        numVisible={3}
+        numVisible={4}
         numScroll={1}
         // header={<Title>Featured</Title>}
       />
@@ -39,18 +39,6 @@ export default FeaturedMixtapes;
 
 const Container = styled.div`
   margin: 30px;
-`;
-
-const FeaturedTournamentsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-`;
-
-const Title = styled.div`
-  font-size: 50px;
-  font-weight: 500;
-  margin-bottom: 20px;
 `;
 
 const MixtapeCard = styled.div`
