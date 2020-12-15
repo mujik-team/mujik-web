@@ -10,11 +10,11 @@ function RewardDetailsModal(props: Props) {
       ></img>
 
       <RewardOptionsGrid>
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
-        <RewardOptionCard />
+        <RewardOptionCard><RewardOption>1 Month</RewardOption><img src="../../../icons/coin.svg" width="18px"></img>500K</RewardOptionCard>
+        <RewardOptionCard><RewardOption>3 Month</RewardOption><img src="../../../icons/coin.svg" width="18px"></img>1.4M</RewardOptionCard>
+        <RewardOptionCard><RewardOption>6 Months</RewardOption><img src="../../../icons/coin.svg" width="18px"></img>2.8M</RewardOptionCard>
+        <RewardOptionCard><RewardOption>12 Months</RewardOption><img src="../../../icons/coin.svg" width="18px"></img>4.5M</RewardOptionCard>
+        <RewardOptionCard><RewardOption>24 Months</RewardOption><img src="../../../icons/coin.svg" width="18px"></img>6.8M</RewardOptionCard>
       </RewardOptionsGrid>
 
       <RedeemButton onClick={() => props.submitRedeem()}>Redeem</RedeemButton>
@@ -39,11 +39,17 @@ const RewardOptionsGrid = styled.div`
   grid-template-columns: repeat(auto-fill, 180px);
   grid-auto-rows: 180px;
   gap: 1rem;
+
 `;
 
 const RewardOptionCard = styled.div`
   background-color: var(--card-color);
   border: 8px;
+  font-size: 30px;
+`;
+
+const RewardOption = styled.div`
+
 `;
 
 const RedeemButton = styled.div`

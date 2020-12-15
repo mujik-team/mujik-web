@@ -18,6 +18,8 @@ function RewardsPage() {
     toggleShowRedeemSuccessModal();
   };
 
+  // const rewards = ["1 Month", "3 Months", "6 Months", "12 Months", "24 Months"]
+
   const RewardCards = Rewards.map((r, i) => (
     <RewardCard
       onClick={() => {

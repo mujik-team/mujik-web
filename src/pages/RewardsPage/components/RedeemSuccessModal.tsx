@@ -20,8 +20,10 @@ function RedeemSuccessModal() {
               color: "var(--main-color)",
             }}
           >
-            1 Month of Spotify
+            a reward. 
           </span>
+          <br />
+          Your Subscription code is xxxx-xxxx
         </Message>
         <SubMessage></SubMessage>
       </MessageContainer>
