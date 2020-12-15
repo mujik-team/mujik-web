@@ -19,7 +19,7 @@ function TournamentSubmission(props: any) {
   );
 
   useEffect(() => {
-    setUserHasEnteredTournament(username in props.tournament.Entrants);
+    setUserHasEnteredTournament(username in props.tournament.Submissions);
   }, [props.tournament]);
 
   const submitMixtape = async (mixtapeId: string) => {

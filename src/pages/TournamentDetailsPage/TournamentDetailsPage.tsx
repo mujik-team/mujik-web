@@ -42,7 +42,7 @@ function TournamentDetails() {
         );
       else if (now > submissionDate && now < voteDate)
         return <TournamentVote tournament={tournament} />;
-      else return <TournamentResults />;
+      else return <TournamentResults tournament={tournament} />;
     }
   };
 

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { AuthContext } from "../../App";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import useUser from "../../hooks/useUser";
-import { getSeveralMixtapes } from "../../services/mixtapeService";
+import { GetSeveralMixtapes } from "../../services/mixtapeService";
 import ProfileDetails from "./components/ProfileDetails";
 
 function UserProfileScreen() {
@@ -20,7 +20,7 @@ function UserProfileScreen() {
 
   useEffect(() => {
     if (user && user.profile.mixtapes.length !== 0) {
-      getSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
+      GetSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
         const mixtapesToShow = userMixtapes.filter(
           (m) => !m.isPrivate && m.createdBy === user.username
         );
@@ -40,8 +40,7 @@ function UserProfileScreen() {
       <UserContentContainer>
         <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
         <TournamentWins>
-          <span className="title">Your Wins</span>
-          <hr />
+          <span className="title">Tournament Wins</span>
           <TournamentCard />
           <TournamentCard />
           <TournamentCard />

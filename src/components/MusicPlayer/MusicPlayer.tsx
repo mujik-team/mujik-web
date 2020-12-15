@@ -43,18 +43,18 @@ function MusicPlayer() {
 
   useEffect(() => {
     // setDuration(progress)
-    const duration = spotifyContext.state.playerState.duration;
+    const duration = spotifyContext.state.playerState?.duration;
     setProgress((currentPercentage / 100) * duration);
     setDuration(currentPercentage, duration);
     // console.log(progress)
   }, [currentPercentage]);
 
-  const isPlaying = !spotifyContext.state.playerState.paused || false;
+  const isPlaying = !spotifyContext.state.playerState?.paused || false;
   const currentTrack =
     spotifyContext.state.playerState.track_window?.current_track || null;
   const image = currentTrack?.album.images[0]?.url || "";
-  const songName = currentTrack?.name || "Please play a song.";
-  const duration = spotifyContext.state.playerState.duration || 0;
+  const songName = currentTrack?.name || "";
+  const duration = spotifyContext.state.playerState?.duration || 0;
   const artist = currentTrack?.artists[0] || "...";
 
   const togglePlay = () => {
@@ -140,7 +140,7 @@ function MusicPlayer() {
           fontSize: "15px",
         }}
       >
-        <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon>
+        {/* <PlaybackIcon className={`mdi mdi-menu`}></PlaybackIcon> */}
         <PlaybackIcon
           onClick={() => setVolume(50)}
           className={`mdi mdi-volume-high`}

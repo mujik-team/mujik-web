@@ -6,6 +6,8 @@ export async function getImageToBase64(url: string) {
       responseType: "arraybuffer",
     });
 
+    if (result.status === 404) throw Error("image not found");
+
     const image =
       "data:image/webp;base64," +
       Buffer.from(result.data, "binary").toString("base64");

@@ -1,6 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 
+function VoteSuccessModal(props: any) {
+  return (
+    <Container>
+      <img
+        style={{ marginTop: "60px" }}
+        height="300"
+        alt="thank_you"
+        src="/images/thank_you.svg"
+      ></img>
+      <MessageContainer>
+        <Message>Thanks for Voting!</Message>
+        <SubMessage>
+          You still have{" "}
+          <span style={{ fontWeight: "bold", color: "var(--main-color)" }}>
+            {props.votesLeft} votes remaining.
+          </span>
+        </SubMessage>
+      </MessageContainer>
+    </Container>
+  );
+}
+
+export default VoteSuccessModal;
+
 const Container = styled.div`
   user-select: none;
   margin: 30px;
@@ -22,30 +46,3 @@ const SubMessage = styled.div`
   font-size: 20px;
   color: var(--text-inactive);
 `;
-
-function VoteSuccessModal(props: any) {
-
-  console.log(props);
-
-  return (
-    <Container>
-      <img
-        style={{ marginTop: "60px" }}
-        height="300"
-        alt="thank_you"
-        src="/images/thank_you.svg"
-      ></img>
-      <MessageContainer>
-        <Message>Thanks for Voting!</Message>
-        <SubMessage>
-          You still have{" "}
-          <span style={{ fontWeight: "bold", color: "var(--main-color)" }}>
-            {props.votesLeft()} votes remaining.
-          </span>
-        </SubMessage>
-      </MessageContainer>
-    </Container>
-  );
-}
-
-export default VoteSuccessModal;

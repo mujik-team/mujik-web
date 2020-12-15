@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import DropdownSelect from "../Input/DropdownSelect";
@@ -9,7 +9,6 @@ import MixtapeListItem from "./components/MixtapeListItem";
 
 function MixtapeBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
-  const [sortByAscending, setSortByAscending] = useState(false);
   const [isCardLayout, setIsCardLayout] = useState(true);
 
   useEffect(() => {
@@ -24,24 +23,27 @@ function MixtapeBrowser(props: Props) {
     localStorage.setItem("layout", !isCardLayout ? "card" : "list");
   };
 
-  const mixtapeItems = () => {
+  const mixtapeGrid = useMemo(() => {
     const mixtapes = props.mixtapes;
 
     if (sortBy && mixtapes) {
       if (sortBy === "random") {
         shuffleArray(mixtapes);
       } else {
-        if (sortByAscending)
-          mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
-        else mixtapes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : 0));
+        mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
       }
     }
 
-    return mixtapes?.map((m, i) => {
+    const mixtapeItems = mixtapes?.map((m, i) => {
       return isCardLayout ? (
         <MixtapeCard key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} />
       ) : (
-        <MixtapeListItem key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} mixtape={m}>
+        <MixtapeListItem
+          key={i}
+          mixtapeId={m._id}
+          mixtapeName={m.mixtapeName}
+          mixtape={m}
+        >
           <div className="mixtape-image" />
           <div className="mixtape-details">
             <h2>{m.mixtapeName}</h2>
@@ -50,15 +52,13 @@ function MixtapeBrowser(props: Props) {
         </MixtapeListItem>
       );
     });
-  };
 
-  const mixtapeLayout = (items?: JSX.Element[]) => {
     return isCardLayout ? (
-      <CardLayout>{items}</CardLayout>
+      <CardLayout>{mixtapeItems}</CardLayout>
     ) : (
-      <ListLayout>{items}</ListLayout>
+      <ListLayout>{mixtapeItems}</ListLayout>
     );
-  };
+  }, [props.mixtapes, sortBy, isCardLayout]);
 
   const changeLayoutButton = (
     <ChangeLayoutButton onClick={() => toggleCardLayout()}>
@@ -87,7 +87,7 @@ function MixtapeBrowser(props: Props) {
         </RightHeader>
       </Header>
       <hr />
-      {mixtapeLayout(mixtapeItems())}
+      {mixtapeGrid}
     </Container>
   );
 }
