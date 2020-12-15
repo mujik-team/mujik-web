@@ -58,6 +58,8 @@ function TournamentSubmission(props: any) {
       </SideModal>
       <div>
         <h1>Mixtape Restrictions</h1>
+
+        {/* Shows all restrictions for this tournament. */}
         {props.tournament.Restrictions.map((r: any, i: any) => {
           const meta = AvailableRestrictions[r.Type];
 
@@ -68,6 +70,14 @@ function TournamentSubmission(props: any) {
             </RestrictionCard>
           );
         })}
+
+        {/* Shown if no restrictions. */}
+        {Object.keys(props.tournament.Restrictions).length == 0 && (
+          <RestrictionCard>
+            <div className="type">No restrictions for this tournament.</div>
+            <div className="value"></div>
+          </RestrictionCard>
+        )}
       </div>
 
       <TournamentStatusContainer>

@@ -17,13 +17,31 @@ function TournamentCard(props: Props) {
     ).then((image) => setImage(image || ""));
   }, [props.tournament._id]);
 
+  const StateTag = () => {
+    if (props.tournament) {
+      const submissionDate = Date.parse(props.tournament.SubmissionDate);
+      const voteDate = Date.parse(props.tournament.VoteDate);
+      const now = new Date().getTime();
+
+      if (now < submissionDate)
+        return <div className="state-tag open">OPEN</div>;
+      else if (now > submissionDate && now < voteDate)
+        return <div className="state-tag vote">VOTE</div>;
+      else return <div className="state-tag ended">ENDED</div>;
+    }
+  };
+
   return (
     <div>
       <Card onClick={handleClick} base64image={image}>
         <span className="title">{props.tournament.Title}</span>
-        <span className="coins">
-          <img src="/icons/coin.svg" width="18px"></img>
-          {props.tournament.Rewards[0].Value}
+
+        <span className="details">
+          <span className="coins">
+            <img src="/icons/coin.svg" width="18px"></img>
+            {props.tournament.Rewards[0].Value}
+          </span>
+          {StateTag()}
         </span>
       </Card>
     </div>
@@ -49,7 +67,25 @@ const Card = styled.div`
   background-position: center;
   background-size: cover;
 
-  filter: grayscale(80%);
+  filter: grayscale(50%);
+
+  .state-tag {
+    padding: 5px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+
+    &.open {
+      background-color: #44b169;
+    }
+
+    &.vote {
+      background-color: #f4bf1a;
+    }
+
+    &.ended {
+      background-color: #ff6464;
+    }
+  }
 
   & > .title {
     font-size: 16px;
@@ -64,12 +100,19 @@ const Card = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
   }
 
-  & > .coins {
+  .details {
     position: absolute;
-    display: flex;
-    font-weight: 600;
     top: 10px;
     right: 10px;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .coins {
+    display: flex;
+    font-weight: 600;
+    margin-right: 10px;
 
     & > img {
       margin-right: 5px;

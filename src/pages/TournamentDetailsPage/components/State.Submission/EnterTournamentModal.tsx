@@ -17,7 +17,6 @@ function EnterTournamentModal(props: Props) {
   const [showAddedMixtapes, setShowAddedMixtapes] = useState(false);
   const [readTermsAndC, setReadTermsAndC] = useState(false);
   const [mixtapeToSubmit, setMixtapeToSubmit] = useState(null as any);
-  const { spotifyService } = useContext(SpotifyContext);
   let restrictionsMet = [] as any;
 
   const checkMixtapeRestrictions = (type: string, value: any): any => {
@@ -117,7 +116,7 @@ function EnterTournamentModal(props: Props) {
     }
 
     if (!readTermsAndC) {
-      toast.dark("Please read tournament rules.");
+      toast.dark("Please accept that you have read the rules.");
       return;
     }
 
@@ -160,12 +159,17 @@ function EnterTournamentModal(props: Props) {
       : "";
 
   const getUserMixtapes = async () => {
-    console.log(authContext.currentUser);
     const userMixtapes = await mixtapeService.GetSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
 
-    setMixtapes([...userMixtapes]);
+    const username = authContext.currentUser.username;
+
+    setMixtapes([
+      ...userMixtapes
+        .filter((m) => m !== null)
+        .filter((m) => m.createdBy === username),
+    ]);
   };
 
   useEffect(() => {

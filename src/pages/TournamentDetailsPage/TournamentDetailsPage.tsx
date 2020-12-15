@@ -136,7 +136,7 @@ function TournamentDetails() {
 export default TournamentDetails;
 
 const Container = styled.div`
-  margin: 0 50px;
+  margin: 30px 50px;
   display: grid;
   grid-template-columns: 450px 1fr;
   grid-auto-rows: 300px;
