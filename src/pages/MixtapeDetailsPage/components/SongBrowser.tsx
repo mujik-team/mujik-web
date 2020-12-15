@@ -48,19 +48,19 @@ function SongBrowser(props: Props) {
 
   if (authContext.currentUser.username === props.mixtape.createdBy) {
     items.push({
-    label: "Move Up",
-    icon: "mdi mdi-arrow-up-bold",
-    command: (e: any) => moveSong(selectedSongIndex, true),
+      label: "Move Up",
+      icon: "mdi mdi-arrow-up-bold",
+      command: (e: any) => moveSong(selectedSongIndex, true),
     });
-    }
-    
-    if (authContext.currentUser.username === props.mixtape.createdBy) {
+  }
+
+  if (authContext.currentUser.username === props.mixtape.createdBy) {
     items.push({
-    label: "Move Down",
-    icon: "mdi mdi-arrow-down-bold",
-    command: (e: any) => moveSong(selectedSongIndex, false),
+      label: "Move Down",
+      icon: "mdi mdi-arrow-down-bold",
+      command: (e: any) => moveSong(selectedSongIndex, false),
     });
-    }
+  }
 
   const removeSong = (songIndex: number) => {
     if (songIndex !== -1) {
@@ -71,7 +71,6 @@ function SongBrowser(props: Props) {
   };
 
   const moveSong = (songIndex: number, up: boolean) => {
-
     if (songIndex !== -1) {
       if (up === true && songIndex > 0) {
         // move song up
@@ -87,7 +86,7 @@ function SongBrowser(props: Props) {
         props.updateMixtape(mixtape);
       }
     }
-  }    
+  };
 
   const convertTime = (sec: number) => {
     const hours = Number(Math.floor(sec / 3600).toFixed(0));
@@ -163,7 +162,22 @@ function SongBrowser(props: Props) {
       </HeaderBar>
       <hr />
       <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
-      {songList.length === 0 ? <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}><EmptyMixtape>You don't have any songs in this mixtape. Use the + icon to add some songs!</EmptyMixtape></div> : songList}
+      {songList.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <EmptyMixtape>
+            You don't have any songs in this mixtape. Use the + icon to add some
+            songs!
+          </EmptyMixtape>
+        </div>
+      ) : (
+        songList
+      )}
       {/* {songList} */}
       {/* {console.log(songs)} */}
     </Container>
@@ -246,6 +260,7 @@ const PopupMenu = styled(ContextMenu)`
 const EmptyMixtape = styled.div`
   text-align: center;
   font-size: 30px;
+  color: var(--text-inactive);
   padding-top: 150px;
   width: 670px;
 `;

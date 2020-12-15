@@ -14,9 +14,6 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../App";
 
 const tabs = ["All", "By Me", "By Others"];
-
-const Container = styled.div``;
-
 function LibraryPage() {
   const history = useHistory();
   const authContext = useContext(AuthContext);
@@ -32,14 +29,17 @@ function LibraryPage() {
       authContext.currentUser.profile.mixtapes
     );
 
-    setMixtapes([...userMixtapes]);
+    setMixtapes([...userMixtapes.filter((m) => m !== null)]);
   };
 
   const filterTag = async (event: any) => {
     const tag = event.target.id;
-    const mixtapes = await mixtapeService.GetSeveralMixtapes(
-      authContext.currentUser.profile.mixtapes
-    );
+    const mixtapes = (
+      await mixtapeService.GetSeveralMixtapes(
+        authContext.currentUser.profile.mixtapes
+      )
+    ).filter((m) => m !== null);
+
     let filteredMixtapes = [];
     switch (tag) {
       case "All":
@@ -137,7 +137,12 @@ function LibraryPage() {
           placeholder="Search Library"
         />
       </div>
-      <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
+      <Button
+        className="new-mixtape-btn"
+        onClick={() => toggleShowNewMixtapeModal()}
+      >
+        NEW
+      </Button>
     </div>
   );
 
@@ -168,3 +173,17 @@ function LibraryPage() {
 }
 
 export default LibraryPage;
+
+const Container = styled.div`
+  .new-mixtape-btn {
+    background-color: var(--main-color);
+    color: black;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.1s linear all;
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+`;

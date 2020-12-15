@@ -39,6 +39,7 @@ function NewMixtapeModal(props: Props) {
           imageSelected={handleImageSelected}
           editorType="mixtape_image"
         />
+        <br />
 
         <InputLabel>Title</InputLabel>
         <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />
