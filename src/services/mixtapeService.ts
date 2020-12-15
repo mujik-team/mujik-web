@@ -12,7 +12,7 @@ export async function createNewMixtape(mixtape: any) {
 }
 
 export async function forkMixtape(username: string, mixtape: any) {
-  const { data } = await api.post('/mixtape/fork', { username, mixtape });
+  const { data } = await api.post("/mixtape/fork", { username, mixtape });
 
   return data.payload.mixtape;
 }
@@ -41,6 +41,11 @@ export async function uploadMixtapeImage(id: string, imageBlob: Blob) {
 export async function GetSeveralMixtapes(ids: string[]): Promise<any[]> {
   const { data } = await api.post(`/mixtape/query/id`, { ids });
   return data.payload.mixtapes || [];
+}
+
+export async function GetFeaturedMixtapes() {
+  const { data } = await api.get("/mixtape/featured");
+  return data.payload.mixtapes;
 }
 
 export async function followMixtape(

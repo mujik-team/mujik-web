@@ -60,6 +60,11 @@ export async function GetMultipleTournaments(ids: string[]) {
   return data.payload.tournaments;
 }
 
+export async function GetFeaturedTournaments() {
+  const { data } = await api.get(`/tournament/featured`);
+  return data.payload.tournaments;
+}
+
 export async function UpdateTournament(id: string, updatedTournament: any) {
   const { data } = await api.put(`/tournament/${id}`, {
     tournament: updatedTournament,

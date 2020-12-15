@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import AvatarImage from "../../../components/AvatarImage";
 import { getImageToBase64 } from "../../../services/util";
 
 function TournamentCard(props: Props) {
@@ -11,20 +12,46 @@ function TournamentCard(props: Props) {
     history.push(`/tournament/${props.tournament._id}`);
   };
 
-  useEffect(() => {
-    getImageToBase64(
-      `/tournament/${props.tournament._id}/cover`
-    ).then((image) => setImage(image || ""));
-  }, [props.tournament._id]);
+  // useEffect(() => {
+  //   getImageToBase64(
+  //     `/tournament/${props.tournament._id}/cover`
+  //   ).then((image) => setImage(image || ""));
+  // }, [props.tournament._id]);
 
+  const StateTag = () => {
+    if (props.tournament) {
+      const submissionDate = Date.parse(props.tournament.SubmissionDate);
+      const voteDate = Date.parse(props.tournament.VoteDate);
+      const now = new Date().getTime();
+
+      if (now < submissionDate)
+        return <div className="state-tag open">OPEN</div>;
+      else if (now > submissionDate && now < voteDate)
+        return <div className="state-tag vote">VOTE</div>;
+      else return <div className="state-tag ended">ENDED</div>;
+    }
+  };
+
+  const base = process.env.REACT_APP_API_URL || "http://localhost:3001";
+  const url = `${base}/tournament/${props.tournament._id}/cover`;
   return (
-    <div>
-      <Card onClick={handleClick} base64image={image}>
+    <div className="tournament-card">
+      <Card onClick={handleClick} base64image={url}>
         <span className="title">{props.tournament.Title}</span>
-        <span className="coins">
-          <img src="/icons/coin.svg" width="18px"></img>
-          {props.tournament.Rewards[0].Value}
+
+        <span className="details">
+          <span className="coins">
+            <img src="/icons/coin.svg" width="18px"></img>
+            {props.tournament.Rewards[0].Value}
+          </span>
+          {StateTag()}
         </span>
+
+        <AvatarImage
+          disableOnClick
+          username={props.tournament.CreatedBy}
+          size={50}
+        />
       </Card>
     </div>
   );
@@ -39,6 +66,7 @@ type CardProps = {
 };
 
 const Card = styled.div`
+  font-family: var(--font-main);
   position: relative;
   background-color: var(--card-color);
   border-radius: 8px;
@@ -49,7 +77,25 @@ const Card = styled.div`
   background-position: center;
   background-size: cover;
 
-  filter: grayscale(80%);
+  filter: grayscale(50%);
+
+  .state-tag {
+    padding: 5px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+
+    &.open {
+      background-color: #44b169;
+    }
+
+    &.vote {
+      background-color: #f4bf1a;
+    }
+
+    &.ended {
+      background-color: #ff6464;
+    }
+  }
 
   & > .title {
     font-size: 16px;
@@ -64,12 +110,26 @@ const Card = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
   }
 
-  & > .coins {
+  .details {
     position: absolute;
-    display: flex;
-    font-weight: 600;
     top: 10px;
     right: 10px;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .avatar-image {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  .coins {
+    display: flex;
+    font-weight: 600;
+    margin-right: 10px;
 
     & > img {
       margin-right: 5px;

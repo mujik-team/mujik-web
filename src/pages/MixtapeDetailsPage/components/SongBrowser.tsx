@@ -20,15 +20,16 @@ function SongBrowser(props: Props) {
         spotifyContext.spotifyService.api
           .getSeveralSongs(props.mixtape.songs)
           .then((songs) => {
-            setSongs(songs);
+            setSongs([...songs]);
           });
       }
     }
   }, [spotifyContext.state.isAuthorized, props.mixtape]);
 
-  const playSong = (uris: string[]) => {
+  const playSong = (index: number) => {
     const device_id = spotifyContext.state.deviceId;
-    spotifyContext.spotifyService.api.playSong(device_id, uris);
+    const toPlay = songs.slice(index).map((s) => s.uri);
+    spotifyContext.spotifyService.api.playSong(device_id, toPlay);
   };
 
   const items = [
@@ -105,7 +106,7 @@ function SongBrowser(props: Props) {
         setSelectedSongIndex(i);
       }}
     >
-      <PlayButton onClick={() => playSong([s.uri])}>
+      <PlayButton onClick={() => playSong(i)}>
         <i className="mdi mdi-play" />
       </PlayButton>
       <span>{s.name}</span>

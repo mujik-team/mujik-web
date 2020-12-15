@@ -16,7 +16,7 @@ function TournamentPage() {
 
   useEffect(() => {
     GetAllActiveTournaments().then((tournaments) =>
-      setTournaments([...tournaments])
+      setTournaments([...tournaments.reverse()])
     );
   }, []);
 
@@ -63,11 +63,17 @@ function TournamentPage() {
           className="pi mdi mdi-magnify"
         ></i>
         <TextInput
+          placeholder="Search for tournaments"
           value={searchTerm}
           onChange={(e: any) => setSearchTerm(e.target.value)}
         />
       </div>
-      <Button onClick={() => history.push("/tournament/new")}>New</Button>
+      <Button
+        className="new-tournament-btn"
+        onClick={() => history.push("/tournament/new")}
+      >
+        New
+      </Button>
     </div>
   );
 
@@ -109,6 +115,18 @@ const Container = styled.div`
     &:hover,
     &.active {
       color: var(--text-primary);
+    }
+  }
+
+  .new-tournament-btn {
+    background-color: var(--main-color);
+    color: black;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.1s linear all;
+    &:hover {
+      transform: scale(1.15);
     }
   }
 `;

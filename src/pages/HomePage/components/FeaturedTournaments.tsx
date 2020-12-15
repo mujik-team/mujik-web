@@ -1,35 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import styles from "./FeaturedTournaments.module.css";
-
-const tabs = ["Popular", "Bounty Size"];
+import styled from "styled-components";
+import { Carousel } from "primereact/carousel";
+import { GetFeaturedTournaments } from "../../../services/tournamentService";
+import TournamentCard from "../../TournamentPage/components/TournamentCard";
 
 function FeaturedTournaments() {
   const history = useHistory();
+  const [tournaments, setTournaments] = useState([] as any[]);
 
-  const tournaments = []
-
-  for (let i = 0; i < 6; i++) {
-    tournaments.push(
-      <div
-        onClick={() => history.push(`/tournament/${i}`)}
-        className={styles.tournamentCard}
-      ></div>
+  useEffect(() => {
+    GetFeaturedTournaments().then((t) =>
+      setTournaments([...t.filter((t: any) => t !== null)])
     );
-  }
+  }, []);
+
+  const getTournamentCard = (tourney: any) => {
+    return <TournamentCard tournament={tourney} />;
+  };
 
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.tabContainer}>
-          {tabs.map((t) => (
-            <span className={styles.tabTitle}>{t}</span>
-          ))}
-        </div>
-        <div className={styles.featuredTournaments}>{tournaments}</div>
-      </div>
-    </div>
+    <Container>
+      <Carousel
+        className="featured"
+        // autoplayInterval={5000}
+        value={tournaments}
+        itemTemplate={getTournamentCard}
+        numVisible={4}
+        numScroll={1}
+        // header={<div className="title">Featured</div>}
+      />
+      {/* <FeaturedTournamentsGrid>{featured}</FeaturedTournamentsGrid> */}
+    </Container>
   );
 }
 
 export default FeaturedTournaments;
+
+const Container = styled.div`
+  margin: 30px;
+
+  .tournament-card {
+    /* width: 200px; */
+  }
+
+  .featured {
+    .p-carousel-item {
+      padding: 0 10px !important;
+    }
+  }
+`;
