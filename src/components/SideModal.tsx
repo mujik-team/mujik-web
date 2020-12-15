@@ -40,6 +40,7 @@ const Modal = styled.div`
   height: 100%;
   transition: 0.3s ease-in-out all;
   box-shadow: -5px 0px 30px 5px #00000060;
+  overflow-y: auto;
 `;
 
 const Container = styled.div`

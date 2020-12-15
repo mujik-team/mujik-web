@@ -54,9 +54,11 @@ function ProfileDetails(props: Props) {
             />
           </SideModal>
 
+          
           <SideModal isActive={showFollowers} toggle={toggleShowFollowers}>
-            <FollowersModal profile={props.user.profile.followers} followers={true}></FollowersModal>    
+              <FollowersModal profile={props.user.profile.followers} followers={true}></FollowersModal>    
           </SideModal>
+          
             
             <SideModal isActive={showFollowing} toggle={toggleShowFollowing}>
               <FollowersModal profile={props.user.profile.following} followers={false}></FollowersModal>
@@ -228,4 +230,8 @@ const UserBio = styled.div`
   font-family: "Inter";
   font-size: 20px;
   color: var(--text-inactive);
+`;
+
+const FollowContainer = styled.div`
+  overflow-y: auto;
 `;
