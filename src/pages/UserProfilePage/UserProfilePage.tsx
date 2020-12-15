@@ -1,15 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../App";
+import AvatarImage from "../../components/AvatarImage";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import useUser from "../../hooks/useUser";
 import { GetSeveralMixtapes } from "../../services/mixtapeService";
+import { WinnerCard } from "../TournamentDetailsPage/components/State.Ended/TournamentResults";
 import ProfileDetails from "./components/ProfileDetails";
 
 function UserProfileScreen() {
   const { username } = useParams() as any;
   const authContext = useContext(AuthContext);
+  const history = useHistory();
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
 
@@ -21,11 +24,51 @@ function UserProfileScreen() {
   useEffect(() => {
     if (user && user.profile.mixtapes.length !== 0) {
       GetSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
-        const mixtapesToShow = userMixtapes.filter(
-          (m) => !m.isPrivate && m.createdBy === user.username
-        );
+        const mixtapesToShow = userMixtapes
+          .filter((m) => m !== null)
+          .filter((m) => !m.isPrivate && m.createdBy === user.username);
         setMixtapes([...mixtapesToShow]);
       });
+    }
+  }, [user]);
+
+  const winnerCards = useMemo(() => {
+    if (user) {
+      const wins = user.profile.tournamentsWon;
+      const numWon = wins.length;
+
+      if (numWon > 0) {
+        // Get most recent 3 wins
+        const cards = Object.keys(wins)
+          .slice(Math.max(numWon - 5, 0))
+          .map((k, i) => {
+            const data = wins[k];
+            return (
+              <WinnerCard
+                strokeColor={cardStrokes[data.Placement - 1]}
+                key={i}
+                onClick={() => history.push(`/tournament/${k}`)}
+              >
+                {/* <AvatarImage username={s.CreatedBy} size={100} /> */}
+                <div className="details">
+                  <div className="tourney-title">{data.Title}</div>
+                  {/* <div className="num-votes">{`Received ${s.NumVotes} Votes`}</div> */}
+                </div>
+
+                <img
+                  src={`/images/medals/medal-${data.Placement}.svg`}
+                  height={80}
+                  alt={`${i} Place`}
+                  className="medal"
+                />
+              </WinnerCard>
+            );
+          });
+
+        return cards;
+      } else {
+        return <div className="none-msg">None... yet!</div>;
+      }
     }
   }, [user]);
 
@@ -41,10 +84,7 @@ function UserProfileScreen() {
         <MixtapeBrowser LeftHeaderContent={Filters} mixtapes={mixtapes} />
         <TournamentWins>
           <span className="title">Tournament Wins</span>
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
+          {winnerCards}
         </TournamentWins>
       </UserContentContainer>
     </Container>
@@ -53,6 +93,8 @@ function UserProfileScreen() {
 
 export default UserProfileScreen;
 
+const cardStrokes = ["#EFB30C", "#7D979E", "#D88B56"];
+
 const Container = styled.div`
   margin: 0 50px;
   padding-bottom: 50px;
@@ -60,7 +102,7 @@ const Container = styled.div`
 
 const UserContentContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 450px;
   margin-top: 40px;
   gap: 50px;
 `;
@@ -69,6 +111,12 @@ const TournamentWins = styled.div`
   & .title {
     font-size: 30px;
     font-weight: 500;
+  }
+
+  .none-msg {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--text-inactive);
   }
 `;
 
@@ -86,14 +134,6 @@ const Filter = styled.span`
   &:hover {
     color: whitesmoke;
   }
-`;
-
-const TournamentCard = styled.div`
-  background-color: var(--card-color);
-  border-radius: 8px;
-  height: 60px;
-  width: 100%;
-  margin-top: 15px;
 `;
 
 const Filters = (
