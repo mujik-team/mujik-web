@@ -200,6 +200,10 @@ const FollowDetails = styled.div`
   border-radius: 8px;
   margin-right: 10px;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   & > .num {
     color: var(--main-color);
     margin-right: 5px;
