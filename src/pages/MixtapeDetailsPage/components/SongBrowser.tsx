@@ -128,7 +128,8 @@ function SongBrowser(props: Props) {
       </HeaderBar>
       <hr />
       <PopupMenu model={items} ref={(el) => setContextMenu(el)} />
-      {songList}
+      {songList.length === 0 ? <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}><EmptyMixtape>You don't have any songs in this mixtape. Use the + icon to add some songs!</EmptyMixtape></div> : songList}
+      {/* {songList} */}
       {/* {console.log(songs)} */}
     </Container>
   );
@@ -205,4 +206,11 @@ const PopupMenu = styled(ContextMenu)`
   &.p-menu {
     padding: 0 0 !important;
   }
+`;
+
+const EmptyMixtape = styled.div`
+  text-align: center;
+  font-size: 30px;
+  padding-top: 150px;
+  width: 670px;
 `;
