@@ -15,6 +15,7 @@ import { VoteForMixtape } from "../../../../services/tournamentService";
 import { AuthContext } from "../../../../App";
 import { sleep } from "../../../../services/util";
 
+
 function TournamentVote(props: Props) {
   const history = useHistory();
   const authContext = useContext(AuthContext);
@@ -158,7 +159,6 @@ function TournamentVote(props: Props) {
           <VotesRemainingText style={{ marginRight: "20px" }}>
             You have {votesLeft} votes remaining.
           </VotesRemainingText>
-
           {votesLeft !== 0 && (
             <VotePhaseButton onClick={() => toggleVotingPhase()}>
               {votingPhase === true ? "Cancel" : "Vote"}
