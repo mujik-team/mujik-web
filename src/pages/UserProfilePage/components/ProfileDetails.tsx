@@ -6,6 +6,7 @@ import { api } from "../../../services/api";
 import { getImageToBase64 } from "../../../services/util";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
+import FollowersModal from "./FollowersModal";
 
 function ProfileDetails(props: Props) {
   const authContext = useContext(AuthContext);
@@ -13,6 +14,14 @@ function ProfileDetails(props: Props) {
 
   const toggleEditProfile = () => {
     setShowEditProfile(!showEditProfile);
+  };
+
+  const toggleShowFollowers = () => {
+    setShowFollowers(!showFollowers);
+  };
+
+  const toggleShowFollowing = () => {
+    setShowFollowing(!showFollowing);
   };
 
   // This effect is called to retrieve the user's profile image.
@@ -27,6 +36,8 @@ function ProfileDetails(props: Props) {
   }, [props.user]);
 
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
 
   return (
     <div>
@@ -41,6 +52,14 @@ function ProfileDetails(props: Props) {
               updateUser={props.updateUser}
               toggle={toggleEditProfile}
             />
+          </SideModal>
+
+          <SideModal isActive={showFollowers} toggle={toggleShowFollowers}>
+            <FollowersModal profile={props.user.profile.followers} followers={true}></FollowersModal>    
+          </SideModal>
+            
+            <SideModal isActive={showFollowing} toggle={toggleShowFollowing}>
+              <FollowersModal profile={props.user.profile.following} followers={false}></FollowersModal>
           </SideModal>
 
           <ProfilePicture image={profilePicture}>
@@ -61,11 +80,11 @@ function ProfileDetails(props: Props) {
                 />
               )}
             </Username>
-            <FollowDetails>
+            <FollowDetails onClick={() => toggleShowFollowers()}>
               <span className="num">{props.user.profile.totalFollowers}</span>
               <span>Followers</span>
             </FollowDetails>
-            <FollowDetails>
+            <FollowDetails onClick={() => toggleShowFollowing()}>
               <span className="num">{props.user.profile.totalFollowing}</span>
               <span>Following</span>
             </FollowDetails>
