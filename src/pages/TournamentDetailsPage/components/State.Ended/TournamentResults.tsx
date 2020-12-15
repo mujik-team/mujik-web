@@ -216,7 +216,7 @@ interface CardProps {
 
 const cardStrokes = ["#EFB30C", "#7D979E", "#D88B56"];
 
-const WinnerCard = styled.div`
+export const WinnerCard = styled.div`
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -241,6 +241,19 @@ const WinnerCard = styled.div`
   .username {
     font-weight: 500;
     font-size: 35px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+
+  .tourney-title {
+    font-weight: 500;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
   }
 
   .num-votes {
