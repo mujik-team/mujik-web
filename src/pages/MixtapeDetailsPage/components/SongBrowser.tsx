@@ -46,6 +46,22 @@ function SongBrowser(props: Props) {
     });
   }
 
+  if (authContext.currentUser.username === props.mixtape.createdBy) {
+    items.push({
+    label: "Move Up",
+    icon: "mdi mdi-arrow-up-bold",
+    command: (e: any) => moveSong(selectedSongIndex, true),
+    });
+    }
+    
+    if (authContext.currentUser.username === props.mixtape.createdBy) {
+    items.push({
+    label: "Move Down",
+    icon: "mdi mdi-arrow-down-bold",
+    command: (e: any) => moveSong(selectedSongIndex, false),
+    });
+    }
+
   const removeSong = (songIndex: number) => {
     if (songIndex !== -1) {
       const mixtape = props.mixtape;
@@ -53,6 +69,25 @@ function SongBrowser(props: Props) {
       props.updateMixtape(mixtape);
     }
   };
+
+  const moveSong = (songIndex: number, up: boolean) => {
+
+    if (songIndex !== -1) {
+      if (up === true && songIndex > 0) {
+        // move song up
+        const mixtape = props.mixtape;
+        const song = mixtape.songs.splice(songIndex, 1)[0];
+        mixtape.songs.splice(songIndex - 1, 0, song);
+        props.updateMixtape(mixtape);
+      } else if (up === false && songIndex < props.mixtape.songs.length) {
+        // move song down
+        const mixtape = props.mixtape;
+        const song = mixtape.songs.splice(songIndex, 1)[0];
+        mixtape.songs.splice(songIndex + 1, 0, song);
+        props.updateMixtape(mixtape);
+      }
+    }
+  }    
 
   const convertTime = (sec: number) => {
     const hours = Number(Math.floor(sec / 3600).toFixed(0));
