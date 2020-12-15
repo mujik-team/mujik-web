@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import AvatarImage from "../../../../components/AvatarImage";
 import TextInput from "../../../../components/Input/TextInput";
 import MixtapeBrowser from "../../../../components/MixtapeBrowser/MixtapeBrowser";
 import { GetSeveralMixtapes } from "../../../../services/mixtapeService";
 
 function TournamentResults(props: Props) {
   const [mixtapes, setMixtapes] = useState([] as any[]);
+  const history = useHistory();
 
   useEffect(() => {
     if (props.tournament) {
@@ -47,14 +50,28 @@ function TournamentResults(props: Props) {
         <MixtapeBrowser LeftHeaderContent={SearchBar} mixtapes={mixtapes} />
       </div>
       <div>
-        <h1>Winners</h1>
-        <hr />
+        <div className="winner-title">Winners</div>
+        <div className="winner-desc">
+          Here are your winners! Click on them to view their winning mixtape!
+        </div>
+        {winners?.map((s, i) => (
+          <WinnerCard
+            key={i}
+            onClick={() => history.push(`/mixtape/${s.MixtapeId}`)}
+          >
+            <AvatarImage username={s.CreatedBy} size={100} />
+            <div className="details">
+              <div className="username">{s.CreatedBy}</div>
+              <div className="num-votes">{`Received ${s.NumVotes} Votes`}</div>
+            </div>
 
-        {winners?.map((s) => (
-          <div>
-            <h2>{s.CreatedBy}</h2>
-            <WinnerCard style={{ width: "100%", height: "80px" }} />
-          </div>
+            <img
+              src={`/images/medals/medal-${i + 1}.svg`}
+              height={80}
+              alt={`${i} Place`}
+              className="medal"
+            />
+          </WinnerCard>
         ))}
       </div>
     </Container>
@@ -71,16 +88,49 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 4fr 3fr;
   gap: 100px;
+
+  .winner-desc {
+    font-family: var(--font-secondary);
+    font-size: 16px;
+    color: var(--text-inactive);
+  }
+
+  .winner-title {
+    font-size: 35px;
+  }
 `;
 
 const WinnerCard = styled.div`
-  background-color: var(--card-color);
+  display: flex;
+  align-items: center;
   border-radius: 8px;
-  cursor: pointer;
   transition: 0.2s ease-in all;
 
-  &:hover,
-  &.selected {
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
+  margin-top: 15px;
+  padding: 20px;
+
+  background-color: var(--card-color);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--card-color-highlight);
+  }
+
+  .details {
+    margin-left: 20px;
+  }
+  .username {
+    font-weight: 500;
+    font-size: 35px;
+  }
+
+  .num-votes {
+    font-family: var(--font-secondary);
+    color: var(--text-inactive);
+    font-weight: 600;
+  }
+
+  .medal {
+    margin-left: auto;
   }
 `;
