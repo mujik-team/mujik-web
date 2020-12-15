@@ -35,7 +35,7 @@ function UserProfileScreen() {
   const winnerCards = useMemo(() => {
     if (user) {
       const wins = user.profile.tournamentsWon;
-      const numWon = wins.length;
+      const numWon = Object.keys(wins).length;
 
       if (numWon > 0) {
         // Get most recent 3 wins

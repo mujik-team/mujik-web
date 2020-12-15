@@ -11,11 +11,11 @@ function TournamentCard(props: Props) {
     history.push(`/tournament/${props.tournament._id}`);
   };
 
-  useEffect(() => {
-    getImageToBase64(
-      `/tournament/${props.tournament._id}/cover`
-    ).then((image) => setImage(image || ""));
-  }, [props.tournament._id]);
+  // useEffect(() => {
+  //   getImageToBase64(
+  //     `/tournament/${props.tournament._id}/cover`
+  //   ).then((image) => setImage(image || ""));
+  // }, [props.tournament._id]);
 
   const StateTag = () => {
     if (props.tournament) {
@@ -31,9 +31,11 @@ function TournamentCard(props: Props) {
     }
   };
 
+  const base = process.env.REACT_APP_API_URL || "http://localhost:3001";
+  const url = `${base}/tournament/${props.tournament._id}/cover`;
   return (
     <div>
-      <Card onClick={handleClick} base64image={image}>
+      <Card onClick={handleClick} base64image={url}>
         <span className="title">{props.tournament.Title}</span>
 
         <span className="details">
