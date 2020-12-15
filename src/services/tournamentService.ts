@@ -92,3 +92,10 @@ export async function FollowTournament(
     { params: { toFollow } }
   );
 }
+
+export async function RedeemRewards(tournamentId: string) {
+  const { data } = await api.post(`/tournament/${tournamentId}/redeem`);
+
+  if (data.payload?.rewards) return data.payload.rewards;
+  else return {};
+}

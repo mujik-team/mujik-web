@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { AuthContext } from "../../../../App";
 import AvatarImage from "../../../../components/AvatarImage";
 import TextInput from "../../../../components/Input/TextInput";
 import MixtapeBrowser from "../../../../components/MixtapeBrowser/MixtapeBrowser";
 import { GetSeveralMixtapes } from "../../../../services/mixtapeService";
+import { RedeemRewards } from "../../../../services/tournamentService";
 
 function TournamentResults(props: Props) {
   const [mixtapes, setMixtapes] = useState([] as any[]);
-  const [showRedeemReward, setShowRedeemReward] = useState(false);
+  const [userHasRedeemed, setUserHasRedeemed] = useState(false);
   const history = useHistory();
   const authContext = useContext(AuthContext);
 
@@ -19,7 +21,7 @@ function TournamentResults(props: Props) {
         (s: any) => s.MixtapeId
       );
       GetSeveralMixtapes([...mixtapeIds]).then((mixtapes) =>
-        setMixtapes([...mixtapes])
+        setMixtapes([...mixtapes.filter((m) => m != null)])
       );
     }
   }, [props.tournament]);
@@ -74,14 +76,54 @@ function TournamentResults(props: Props) {
         const winnerIndex = winners.data.findIndex(
           (w) => w.CreatedBy === username
         );
+
+        // Check if user has redeemed rewards.
+        let hasRedeemed = userSubmission.RewardsClaimed;
+
+        const handleClick = async () => {
+          if (hasRedeemed) toast.dark("🤔 You already redeemed your rewards!");
+          else {
+            const rewards = await RedeemRewards(props.tournament._id);
+            authContext.update();
+            setUserHasRedeemed(true);
+
+            if (rewards.xp) toast.dark(`😎 You just gained ${rewards.xp} XP!`);
+
+            if (rewards.coins)
+              toast.dark(
+                `🤑 Cha-Ching! You just gained ${rewards.coins} coins!`
+              );
+          }
+        };
+
         if (winnerIndex !== -1) {
           return (
             <div className="user-submission-container">
               <div className="title">Your Submission</div>
               <div className="desc">
-                Congratulations! You won! Click below to redeem your rewards!
+                Congratulations 🎉! You won! Click below to redeem your rewards!
               </div>
-              {winners.elements[winnerIndex]}
+              <WinnerCard
+                strokeColor={cardStrokes[winnerIndex]}
+                onClick={handleClick}
+              >
+                <AvatarImage username={username} size={100} />
+                <div className="details">
+                  <div className="username">{username}</div>
+                  {!userHasRedeemed && !hasRedeemed && (
+                    <div className="redeem-rewards-txt">
+                      Click here to redeem your rewards!
+                    </div>
+                  )}
+                </div>
+
+                <img
+                  src={`/images/medals/medal-${winnerIndex + 1}.svg`}
+                  height={80}
+                  alt={`${winnerIndex + 1} Place`}
+                  className="medal"
+                />
+              </WinnerCard>
             </div>
           );
         } else {
@@ -89,14 +131,11 @@ function TournamentResults(props: Props) {
             <div className="user-submission-container">
               <div className="title">Your Submission</div>
               <div className="desc">
-                Thank you for entering this tournament. Click below to redeem
-                your rewards!
+                Thank you for entering this tournament. Unfortunately you did
+                not win 😞, better luck next time! There are always new
+                tournaments popping up!
               </div>
-              <WinnerCard
-                onClick={() =>
-                  history.push(`/mixtape/${userSubmission.MixtapeId}`)
-                }
-              >
+              <WinnerCard onClick={handleClick}>
                 <AvatarImage username={username} size={100} />
                 <div className="details">
                   <div className="username">{username}</div>
@@ -110,7 +149,7 @@ function TournamentResults(props: Props) {
         return null;
       }
     }
-  }, [props.tournament, winners]);
+  }, [props.tournament, winners, userHasRedeemed]);
 
   const SearchBar = (
     <div className="p-input-icon-left">
@@ -135,7 +174,8 @@ function TournamentResults(props: Props) {
         <div>
           <div className="title">Winners</div>
           <div className="desc">
-            Here are your winners! Click on them to view their winning mixtape!
+            Here are your winners ✨! Click on them to view their winning
+            mixtape!
           </div>
           {winners.elements}
         </div>
@@ -207,6 +247,11 @@ const WinnerCard = styled.div`
     font-family: var(--font-secondary);
     color: var(--text-inactive);
     font-weight: 600;
+  }
+
+  .redeem-rewards-txt {
+    color: var(--main-color);
+    font-weight: 500;
   }
 
   .medal {

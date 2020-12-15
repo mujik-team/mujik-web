@@ -8,9 +8,11 @@ function AvatarImage(props: Props) {
   const history = useHistory();
 
   useEffect(() => {
-    getImageToBase64(`/user/${props.username}/avatar`).then((image) =>
-      setImage(image || "/images/avatar_placeholder.svg")
-    );
+    if (props.username) {
+      getImageToBase64(`/user/${props.username}/avatar`).then((image) =>
+        setImage(image || "/images/avatar_placeholder.svg")
+      );
+    }
   }, [props.username]);
 
   return (

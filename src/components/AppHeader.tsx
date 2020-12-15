@@ -1,5 +1,5 @@
 import { ProgressBar } from "primereact/progressbar";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { AuthContext, SpotifyContext } from "../App";
@@ -30,6 +30,32 @@ function AppHeader() {
     history.goForward();
   };
 
+  const AppBar = useMemo(() => {
+    return (
+      <UserDetailsContainer>
+        <div className="card">
+          <span style={{ margin: "0 8px" }}>
+            LEVEL {Math.trunc(level / 5000) + 1}
+          </span>
+          <span style={{ width: "250px" }}>
+            <ProgressBar
+              style={{ backgroundColor: "#282c34", height: "7px" }}
+              showValue={false}
+              value={((level % 5000) / 5000) * 100}
+              color="#ffff64"
+            />
+          </span>
+          <span style={{ margin: "0 10px" }}>
+            <img src="/icons/coin.svg" width="18px"></img>
+          </span>
+          <UserCoinsText>{coins}</UserCoinsText>
+        </div>
+
+        <AvatarImage size={50} username={username} />
+      </UserDetailsContainer>
+    );
+  }, [authContext.currentUser?.profile]);
+
   const UserDetailsCard = (
     <div>
       <div>
@@ -54,29 +80,11 @@ function AppHeader() {
             Authorize Spotify
           </Button>
         ) : null}
-        <UserDetailsContainer>
-          <span style={{ margin: "0 8px" }}>LEVEL {level}</span>
-          <span style={{ width: "250px" }}>
-            <ProgressBar
-              style={{ backgroundColor: "#282c34", height: "7px" }}
-              showValue={false}
-              value={50}
-              color="#ffff64"
-            />
-          </span>
-          <span style={{ margin: "0 10px" }}>
-            <img src="/icons/coin.svg" width="18px"></img>
-          </span>
-          <UserCoinsText>{coins}</UserCoinsText>
-        </UserDetailsContainer>
-        <span className="p-overlay-badge" style={{ marginTop: "0px" }}>
-          <AvatarImage size={50} username={username} />
-          {/* <span className="p-badge">3</span> */}
-        </span>
+        {AppBar}
       </div>
     </div>
   );
-  return <div style={{}}>{UserDetailsCard}</div>;
+  return UserDetailsCard;
 }
 
 export default AppHeader;
@@ -84,21 +92,25 @@ export default AppHeader;
 const UserCoinsText = styled.span``;
 
 const UserDetailsContainer = styled.div`
-  cursor: pointer;
-  border-radius: 8px;
-  background-color: var(--card-color);
-  transition: 0.2s ease-in all;
-  height: 35px;
-  width: fit-content;
   display: flex;
-  align-self: flex-end;
   align-items: center;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--main-color);
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 20px;
+  .card {
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: var(--card-color);
+    transition: 0.2s ease-in all;
+    height: 35px;
+    width: fit-content;
+    display: flex;
+    align-self: flex-end;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--main-color);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 20px;
+  }
 `;
 
 const Arrow = styled.div`

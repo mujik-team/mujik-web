@@ -46,7 +46,7 @@ function ProfileDetails(props: Props) {
           <ProfilePicture image={profilePicture}>
             <LevelBadge>
               <span style={{ paddingTop: "20px" }}>
-                {props.user.profile.level}
+                {Math.trunc(props.user.profile.level / 5000) + 1}
               </span>
             </LevelBadge>
           </ProfilePicture>

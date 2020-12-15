@@ -13,6 +13,7 @@ import * as MixtapeService from "../../../../services/mixtapeService";
 import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
 import { VoteForMixtape } from "../../../../services/tournamentService";
 import { AuthContext } from "../../../../App";
+import { sleep } from "../../../../services/util";
 
 function TournamentVote(props: Props) {
   const history = useHistory();
@@ -29,7 +30,7 @@ function TournamentVote(props: Props) {
 
   const getSubmissions = async (ids: any) => {
     const mixtapes = await MixtapeService.GetSeveralMixtapes(ids);
-    setSubmittedMixtapes(mixtapes);
+    setSubmittedMixtapes(mixtapes.filter((m) => m !== null));
   };
 
   useEffect(() => {
@@ -54,7 +55,11 @@ function TournamentVote(props: Props) {
     setShowVoteSuccessModal(!showVoteSuccessModal);
 
   const submitVote = async () => {
-    selectedMixtapes.forEach((id) => VoteForMixtape(props.tournament._id, id));
+    for (const i in selectedMixtapes) {
+      await VoteForMixtape(props.tournament._id, selectedMixtapes[i]);
+      await sleep(200);
+    }
+    // selectedMixtapes.forEach((id) => VoteForMixtape(props.tournament._id, id));
     numVotesByUser.current = votesLeft;
     toggleShowVoteModal();
     toggleShowVoteSuccessModal();
@@ -115,7 +120,7 @@ function TournamentVote(props: Props) {
     </CreatorVoteContainer>
   );
 
-  const CommunityVote = (
+  const VoteSelector = (
     <div>
       <FullScreenModal
         isActive={showVoteSuccessModal}
@@ -153,9 +158,12 @@ function TournamentVote(props: Props) {
           <VotesRemainingText style={{ marginRight: "20px" }}>
             You have {votesLeft} votes remaining.
           </VotesRemainingText>
-          <VotePhaseButton onClick={() => toggleVotingPhase()}>
-            {votingPhase === true ? "Cancel" : "Vote"}
-          </VotePhaseButton>
+
+          {votesLeft !== 0 && (
+            <VotePhaseButton onClick={() => toggleVotingPhase()}>
+              {votingPhase === true ? "Cancel" : "Vote"}
+            </VotePhaseButton>
+          )}
           {selectedMixtapes.length > 0 ? (
             <VoteButton onClick={() => toggleShowVoteModal()}>
               Confirm Vote
@@ -172,7 +180,15 @@ function TournamentVote(props: Props) {
     </div>
   );
 
-  return <Container>{CommunityVote}</Container>;
+  const toShow = () => {
+    if (props.tournament.WinnerBy === "creator") {
+      if (authContext.currentUser.username === props.tournament.CreatedBy)
+        return VoteSelector;
+      else return CreatorVote;
+    } else return VoteSelector;
+  };
+
+  return <Container>{toShow()}</Container>;
 }
 
 export default TournamentVote;
