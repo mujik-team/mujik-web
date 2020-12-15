@@ -9,7 +9,6 @@ import MixtapeListItem from "./components/MixtapeListItem";
 
 function MixtapeBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
-  const [sortByAscending, setSortByAscending] = useState(false);
   const [isCardLayout, setIsCardLayout] = useState(true);
 
   useEffect(() => {
@@ -31,9 +30,7 @@ function MixtapeBrowser(props: Props) {
       if (sortBy === "random") {
         shuffleArray(mixtapes);
       } else {
-        if (sortByAscending)
-          mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
-        else mixtapes.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : 0));
+        mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
       }
     }
 

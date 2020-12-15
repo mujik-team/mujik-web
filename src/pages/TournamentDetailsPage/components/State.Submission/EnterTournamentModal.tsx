@@ -161,7 +161,7 @@ function EnterTournamentModal(props: Props) {
 
   const getUserMixtapes = async () => {
     console.log(authContext.currentUser);
-    const userMixtapes = await mixtapeService.getSeveralMixtapes(
+    const userMixtapes = await mixtapeService.GetSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
 

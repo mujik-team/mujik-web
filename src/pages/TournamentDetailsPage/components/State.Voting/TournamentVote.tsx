@@ -28,7 +28,7 @@ function TournamentVote(props: Props) {
   const numVotesByUser = useRef(3);
 
   const getSubmissions = async (ids: any) => {
-    const mixtapes = await MixtapeService.getSeveralMixtapes(ids);
+    const mixtapes = await MixtapeService.GetSeveralMixtapes(ids);
     setSubmittedMixtapes(mixtapes);
   };
 
