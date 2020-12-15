@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
@@ -10,38 +10,59 @@ import DropdownSelect from "../../../../components/Input/DropdownSelect";
 import TextInput from "../../../../components/Input/TextInput";
 import { toast } from "react-toastify";
 import * as MixtapeService from "../../../../services/mixtapeService";
+import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
+import { VoteForMixtape } from "../../../../services/tournamentService";
+import { AuthContext } from "../../../../App";
+import { sleep } from "../../../../services/util";
 
 function TournamentVote(props: Props) {
   const history = useHistory();
+  const authContext = useContext(AuthContext);
 
-  const ids = Object.keys(props.tournament.Submissions).map(
-    (key) => props.tournament.Submissions[key].MixtapeId
-  );
-
+  const [votingPhase, setVotingPhase] = useState(false);
+  const [votesLeft, setVotesLeft] = useState(3);
+  const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
+  const [sortBy, setSortBy] = useState("");
   const [submittedMixtapes, setSubmittedMixtapes] = useState([] as any);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
+  const numVotesByUser = useRef(3);
 
   const getSubmissions = async (ids: any) => {
-    const mixtapes = await MixtapeService.getSeveralMixtapes(ids);
-    setSubmittedMixtapes(mixtapes);
+    const mixtapes = await MixtapeService.GetSeveralMixtapes(ids);
+    setSubmittedMixtapes(mixtapes.filter((m) => m !== null));
   };
 
   useEffect(() => {
+    // Get all submission in the tournament.
+    const ids = Object.keys(props.tournament.Submissions).map(
+      (key) => props.tournament.Submissions[key].MixtapeId
+    );
+
     getSubmissions(ids);
+
+    // Check how many votes the user has left.
+    const username = authContext.currentUser?.username;
+    const userVotes = props.tournament.Voters[username];
+    numVotesByUser.current = userVotes ? 3 - Object.keys(userVotes).length : 3;
+
+    setVotesLeft(numVotesByUser.current);
   }, []);
 
   const toggleShowVoteModal = () => setShowVoteModal(!showVoteModal);
-  const [showVoteModal, setShowVoteModal] = useState(false);
 
   const toggleShowVoteSuccessModal = () =>
     setShowVoteSuccessModal(!showVoteSuccessModal);
 
-  const [showVoteSuccessModal, setShowVoteSuccessModal] = useState(false);
-
-  const submitVote = () => {
+  const submitVote = async () => {
+    for (const i in selectedMixtapes) {
+      await VoteForMixtape(props.tournament._id, selectedMixtapes[i]);
+      await sleep(200);
+    }
+    // selectedMixtapes.forEach((id) => VoteForMixtape(props.tournament._id, id));
+    numVotesByUser.current = votesLeft;
     toggleShowVoteModal();
-    setTimeout({}, 200);
     toggleShowVoteSuccessModal();
-    // setVotesLeft(votesLeft - selectedMixtapes.length <= 0 ? 0 : votesLeft - selectedMixtapes.length )
     setSelectedMixtapes([]);
   };
 
@@ -61,59 +82,36 @@ function TournamentVote(props: Props) {
     setVotesLeft(votesLeft + 1);
   };
 
-  const [selectedMixtapes, setSelectedMixtapes] = useState([] as string[]);
-  const options = [
-    { label: "Title", value: "name" },
-    { label: "Length", value: "length" },
-    { label: "Date Added", value: "submit" },
-    { label: "Random", value: "random" },
-  ];
+  const voteCards = useMemo(
+    () =>
+      submittedMixtapes.map((m: any, i: number) => {
+        return (
+          <MixtapeCard
+            key={i}
+            className={selectedMixtapes.includes(m._id) ? "selected" : ""}
+            mixtapeId={m._id}
+            mixtapeName={m.mixtapeName}
+            onClick={() => {
+              if (votingPhase) {
+                if (!selectedMixtapes.includes(m._id)) {
+                  addMixtape(m._id);
+                } else {
+                  removeMixtape(m._id);
+                }
+              } else history.push(`/mixtape/${m._id}`);
+            }}
+          />
+        );
+      }),
 
-  const [sortBy, setSortBy] = useState("");
-
-  const showCards = submittedMixtapes.map((m: any, i: number) => {
-    return (
-      <MixtapeCard
-        style={{
-          backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
-        }}
-        className=""
-        onClick={() => {
-          history.push(`/mixtape/${m._id}`);
-        }}
-      />
-    );
-  });
-
-  const voteCards = submittedMixtapes.map((m: any, i: number) => {
-    return (
-      <MixtapeCard
-        style={{
-          backgroundImage: `url(/images/mixtapes/${m.image || "default.webp"})`,
-        }}
-        className={selectedMixtapes.includes(`m-${i}`) ? "selected" : ""}
-        onClick={() => {
-          if (!selectedMixtapes.includes(`m-${i}`)) {
-            addMixtape(`m-${i}`);
-          } else {
-            removeMixtape(`m-${i}`);
-          }
-        }}
-      />
-    );
-  });
-
-  const [votingPhase, setVotingPhase] = useState(false);
-  const [votesLeft, setVotesLeft] = useState(3);
+    [submittedMixtapes, selectedMixtapes]
+  );
 
   const toggleVotingPhase = () => {
     setVotingPhase(!votingPhase);
+    setSelectedMixtapes([]);
+    setVotesLeft(numVotesByUser.current);
   };
-
-  const getVotesLeft = () => {
-    return votesLeft;
-  };
-
   const CreatorVote = (
     <CreatorVoteContainer>
       <div className="message">
@@ -122,19 +120,19 @@ function TournamentVote(props: Props) {
     </CreatorVoteContainer>
   );
 
-  const CommunityVote = (
+  const VoteSelector = (
     <div>
       <FullScreenModal
         isActive={showVoteSuccessModal}
         toggle={toggleShowVoteSuccessModal}
       >
-        <VoteSuccessModal votesLeft={getVotesLeft} />
+        <VoteSuccessModal votesLeft={votesLeft} />
       </FullScreenModal>
       <SideModal isActive={showVoteModal} toggle={toggleShowVoteModal}>
         <VoteModal
           submit={submitVote}
           mixtapes={selectedMixtapes}
-          getVotesLeft={getVotesLeft}
+          votesLeft={votesLeft}
         />
       </SideModal>
 
@@ -159,10 +157,13 @@ function TournamentVote(props: Props) {
         <FloatRightContainer>
           <VotesRemainingText style={{ marginRight: "20px" }}>
             You have {votesLeft} votes remaining.
-            <VotePhaseButton onClick={() => toggleVotingPhase()}>
-              {votingPhase === true ? "Show" : "Vote"}
-            </VotePhaseButton>
           </VotesRemainingText>
+
+          {votesLeft !== 0 && (
+            <VotePhaseButton onClick={() => toggleVotingPhase()}>
+              {votingPhase === true ? "Cancel" : "Vote"}
+            </VotePhaseButton>
+          )}
           {selectedMixtapes.length > 0 ? (
             <VoteButton onClick={() => toggleShowVoteModal()}>
               Confirm Vote
@@ -175,20 +176,29 @@ function TournamentVote(props: Props) {
 
       <hr />
 
-      <MixtapeGridContainer>
-        {votingPhase === true ? voteCards : showCards}
-      </MixtapeGridContainer>
+      <MixtapeGridContainer>{voteCards}</MixtapeGridContainer>
     </div>
   );
 
-  return (
-    <Container>
-      {props.tournament.WinnerBy === "creator" ? CreatorVote : CommunityVote}
-    </Container>
-  );
+  const toShow = () => {
+    if (props.tournament.WinnerBy === "creator") {
+      if (authContext.currentUser.username === props.tournament.CreatedBy)
+        return VoteSelector;
+      else return CreatorVote;
+    } else return VoteSelector;
+  };
+
+  return <Container>{toShow()}</Container>;
 }
 
 export default TournamentVote;
+
+const options = [
+  { label: "Title", value: "name" },
+  { label: "Length", value: "length" },
+  { label: "Date Added", value: "submit" },
+  { label: "Random", value: "random" },
+];
 
 type Props = {
   tournament: any;
@@ -204,25 +214,14 @@ const MixtapeGridContainer = styled.div`
   grid-auto-rows: 200px;
 `;
 
-const MixtapeCard = styled.div`
-  background-color: var(--card-color);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s ease-in all;
-
-  &:hover,
-  &.selected {
-    box-shadow: inset 0px 0px 0px 2px var(--main-color);
-  }
-`;
-
 const FloatRightContainer = styled.div`
   text-align: right;
 `;
 
 const VoteButton = styled(Button)`
+  z-index: 2;
   font-size: 30px;
-  padding: 0 20px;
+  padding: 20px 20px;
   color: black;
   background-color: var(--main-color);
   box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.25);

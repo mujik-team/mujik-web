@@ -23,7 +23,6 @@ function EnterTournamentModal(props: Props) {
   const checkMixtapeRestrictions = (type: string, value: any): any => {
     switch (type) {
       case "song_limit": {
-        // console.log("CHecked song limit")
         const fulfilled = mixtapeToSubmit
           ? mixtapeToSubmit.songs.length < value
           : 999 < value;
@@ -46,6 +45,10 @@ function EnterTournamentModal(props: Props) {
         restrictionsMet.push(fulfilled);
         // setLvlRestriction(fulfilled)
         return RestrictionObject;
+      }
+      case "min_time": {
+        restrictionsMet.push(true);
+        return { fulfilled: true, name: "Minimum Mixtape Duration" };
       }
       case "time_limit": {
         // const fulfilled =
@@ -158,7 +161,7 @@ function EnterTournamentModal(props: Props) {
 
   const getUserMixtapes = async () => {
     console.log(authContext.currentUser);
-    const userMixtapes = await mixtapeService.getSeveralMixtapes(
+    const userMixtapes = await mixtapeService.GetSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
 

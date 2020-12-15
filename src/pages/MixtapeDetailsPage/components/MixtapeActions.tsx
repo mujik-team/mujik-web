@@ -55,7 +55,7 @@ function MixtapeActions(props: Props) {
           false
         );
         await authContext.update();
-        toast.success("Unfollowed Mixtape!");
+        toast.dark("👋 Unfollowed Mixtape!");
       } else {
         await mixtapeService.followMixtape(
           props.mixtape._id,
@@ -63,31 +63,30 @@ function MixtapeActions(props: Props) {
           true
         );
         await authContext.update();
-        toast.success("Followed Mixtape!");
+        toast.dark("🤟 Followed Mixtape!");
       }
     }
   };
 
   const forkMixtape = async () => {
-
     const mixtape = props.mixtape;
     const username = authContext.currentUser.username;
 
     try {
-
       const forkedMixtape = {
         createdBy: username,
         followers: 0,
-        ...mixtape
-      }
+        ...mixtape,
+      };
 
-      delete forkedMixtape['_id'];
-
-      console.log(forkedMixtape);
+      delete forkedMixtape["_id"];
 
       forkedMixtape.createdBy = username;
       forkedMixtape.followers = 0;
-      const newMixtape = await mixtapeService.forkMixtape(authContext.currentUser.username, forkedMixtape);
+      const newMixtape = await mixtapeService.forkMixtape(
+        authContext.currentUser.username,
+        forkedMixtape
+      );
       authContext.update();
       history.push(`/mixtape/${newMixtape._id}`);
       toast.dark("🎵 Created new mixtape");
@@ -95,8 +94,7 @@ function MixtapeActions(props: Props) {
       toast.error("🤔 Unable to create new mixtape.");
       return null;
     }
-
-  }
+  };
 
   const items = [
     {
@@ -126,15 +124,12 @@ function MixtapeActions(props: Props) {
   }
 
   if (!ownedByUser) {
-    items.push(
-      {
-        label: "Fork",
-        icon: "mdi mdi-pencil",
-        command: () => forkMixtape()
-      }
-    )
+    items.push({
+      label: "Fork",
+      icon: "mdi mdi-directions-fork",
+      command: () => forkMixtape(),
+    });
   }
-
 
   return (
     <div>

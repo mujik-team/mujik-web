@@ -21,7 +21,7 @@ function useAuth() {
 
   const update = async () => {
     const user = await getUser(localStorage.getItem("username")!);
-    setAuthState({ ...authState, currentUser: user, isLoggedIn: true });
+    setAuthState({ ...authState, currentUser: { ...user }, isLoggedIn: true });
   };
 
   const logout = async () => {

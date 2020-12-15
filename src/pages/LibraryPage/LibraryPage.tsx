@@ -28,7 +28,7 @@ function LibraryPage() {
   const [currentTab, setCurrentTab] = useState("All");
 
   const getUserMixtapes = async () => {
-    const userMixtapes = await mixtapeService.getSeveralMixtapes(
+    const userMixtapes = await mixtapeService.GetSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
 
@@ -37,7 +37,7 @@ function LibraryPage() {
 
   const filterTag = async (event: any) => {
     const tag = event.target.id;
-    const mixtapes = await mixtapeService.getSeveralMixtapes(
+    const mixtapes = await mixtapeService.GetSeveralMixtapes(
       authContext.currentUser.profile.mixtapes
     );
     let filteredMixtapes = [];

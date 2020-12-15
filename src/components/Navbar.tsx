@@ -23,8 +23,9 @@ function Navbar() {
         <span className={`mdi mdi-home`}></span>
         Home
       </NavItem>
-      {routes.map((r) => (
+      {routes.map((r, i) => (
         <NavItem
+          key={i}
           className={`${location.pathname.includes(r.route) ? "active" : ""}`}
           onClick={() => history.push(r.route)}
         >
