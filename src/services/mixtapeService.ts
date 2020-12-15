@@ -11,6 +11,12 @@ export async function createNewMixtape(mixtape: any) {
   return data.payload.mixtape;
 }
 
+export async function forkMixtape(username: string, mixtape: any) {
+  const { data } = await api.post('/mixtape/fork', { username, mixtape });
+
+  return data.payload.mixtape;
+}
+
 export async function deleteMixtape(id: string) {
   const { data } = await api.delete(`/mixtape/${id}`);
   return data.payload;
