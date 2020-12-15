@@ -45,7 +45,7 @@ function MixtapeDetails(props: Props) {
     <span>Loading</span>
   ) : (
     <Container>
-      <SideModal width={500} toggle={toggleModal} isActive={showModal}>
+      <SideModal width={600} toggle={toggleModal} isActive={showModal}>
         {modals[modalToShow]}
       </SideModal>
       <Title>{mixtape.mixtapeName}</Title>
@@ -94,16 +94,6 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const CreatedByAvatar = styled.div`
-  display: inline-block;
-  border-radius: 25px;
-  height: 50px;
-  width: 50px;
-  background-image: url("/images/max.webp");
-  background-position: center;
-  background-size: cover;
-`;
-
 const Username = styled.div`
   display: inline-block;
   margin: 0 10px;
@@ -146,9 +136,8 @@ const Description = styled.div`
 `;
 
 const TagsContainer = styled.div`
-  position: sticky;
-  right: 325px;
-  top: 175px;
+  margin-top: 15px;
+  font-family: var(--font-secondary);
 `;
 
 const TagTitle = styled.div`
@@ -163,7 +152,6 @@ const Tag = styled.div`
   display: inline-block;
   background-color: var(--card-color);
   border-radius: 4px;
-  font-family: "Fira Sans";
   padding: 5px;
   margin-right: 10px;
 `;

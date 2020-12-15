@@ -54,14 +54,18 @@ function ProfileDetails(props: Props) {
             />
           </SideModal>
 
-          
           <SideModal isActive={showFollowers} toggle={toggleShowFollowers}>
-              <FollowersModal profile={props.user.profile.followers} followers={true}></FollowersModal>    
+            <FollowersModal
+              profile={props.user.profile.followers}
+              followers={true}
+            ></FollowersModal>
           </SideModal>
-          
-            
-            <SideModal isActive={showFollowing} toggle={toggleShowFollowing}>
-              <FollowersModal profile={props.user.profile.following} followers={false}></FollowersModal>
+
+          <SideModal isActive={showFollowing} toggle={toggleShowFollowing}>
+            <FollowersModal
+              profile={props.user.profile.following}
+              followers={false}
+            ></FollowersModal>
           </SideModal>
 
           <ProfilePicture image={profilePicture}>
@@ -104,17 +108,21 @@ function ProfileDetails(props: Props) {
           <TagsContainer>
             <div>
               <TagTitle>Favorite Artists</TagTitle>
-              {props.user.profile.favArtist.length > 0 ? props.user.profile.favArtist?.map((a: any) => (
-                <Tag>{a}</Tag>
-              )) : <Tag>No Favorite Artist</Tag>}
+              {props.user.profile.favArtist.length > 0 ? (
+                props.user.profile.favArtist?.map((a: any) => <Tag>{a}</Tag>)
+              ) : (
+                <Tag>No Favorite Artist</Tag>
+              )}
             </div>
             <br />
 
             <div>
               <TagTitle>Favorite Genres</TagTitle>
-              {props.user.profile.favGenre.length > 0 ? props.user.profile.favGenre?.map((a: any) => (
-                <Tag>{a}</Tag>
-              )) : <Tag>No Favorite Genres</Tag>}
+              {props.user.profile.favGenre.length > 0 ? (
+                props.user.profile.favGenre?.map((a: any) => <Tag>{a}</Tag>)
+              ) : (
+                <Tag>No Favorite Genres</Tag>
+              )}
             </div>
           </TagsContainer>
         </Container>
@@ -134,7 +142,7 @@ type Props = {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 300px 400px 1fr;
+  grid-template-columns: 300px 500px 1fr;
   grid-template-rows: 300px;
   gap: 30px;
 `;

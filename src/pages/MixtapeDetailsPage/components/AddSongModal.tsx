@@ -57,13 +57,29 @@ function AddSongModal(props: Props) {
 
   const searchResults = songs.map((s, i) => (
     <SearchResultItem key={i} onClick={() => addSongToSelected(s)}>
-      <span className="name">{s.name}</span>
+      <img
+        src={s.album.images[0]?.url}
+        height="80"
+        alt=""
+        className="song-cover"
+      />
+      <div>
+        <div className="name">{s.name}</div>
+        <div className="album-name">{s.album.name}</div>
+      </div>
+
       <span className="artist">{s.artists[0].name}</span>
     </SearchResultItem>
   ));
 
   const songsSelectedList = songsSelected.map((s, i) => (
     <SearchResultItem key={i} onClick={() => removeSongFromSelect(s, i)}>
+      <img
+        src={s.album.images[0]?.url}
+        height="80"
+        alt=""
+        className="song-cover"
+      />
       <span className="name">{s.name}</span>
       <span className="artist">{s.artists[0].name}</span>
     </SearchResultItem>
@@ -130,13 +146,15 @@ const Container = styled.div`
 `;
 
 const SearchResultItem = styled.div`
+  display: flex;
+  align-items: center;
   font-family: "Inter";
   user-select: none;
   cursor: pointer;
   background-color: var(--card-color);
   border-radius: 6px;
   margin-top: 2px;
-  padding: 15px 10px;
+  padding: 20px;
   margin: 10px 0;
   transition: 0.2s linear all;
 
@@ -144,8 +162,12 @@ const SearchResultItem = styled.div`
     box-shadow: inset 0px 0px 0px 2px var(--main-color);
   }
 
-  & > span.name {
-    display: inline-block;
+  & > .song-cover {
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+
+  .name {
     width: 200px;
     line-height: 20px;
     overflow: hidden;
@@ -154,8 +176,16 @@ const SearchResultItem = styled.div`
     margin-right: 10px;
   }
 
+  .album-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+    color: var(--text-inactive);
+  }
+
   & > span.artist {
-    float: right;
+    margin-left: auto;
     color: var(--text-inactive);
   }
 `;
