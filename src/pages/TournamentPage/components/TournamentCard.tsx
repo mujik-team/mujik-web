@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import AvatarImage from "../../../components/AvatarImage";
 import { getImageToBase64 } from "../../../services/util";
 
 function TournamentCard(props: Props) {
@@ -34,7 +35,7 @@ function TournamentCard(props: Props) {
   const base = process.env.REACT_APP_API_URL || "http://localhost:3001";
   const url = `${base}/tournament/${props.tournament._id}/cover`;
   return (
-    <div>
+    <div className="tournament-card">
       <Card onClick={handleClick} base64image={url}>
         <span className="title">{props.tournament.Title}</span>
 
@@ -45,6 +46,12 @@ function TournamentCard(props: Props) {
           </span>
           {StateTag()}
         </span>
+
+        <AvatarImage
+          disableOnClick
+          username={props.tournament.CreatedBy}
+          size={50}
+        />
       </Card>
     </div>
   );
@@ -59,6 +66,7 @@ type CardProps = {
 };
 
 const Card = styled.div`
+  font-family: var(--font-main);
   position: relative;
   background-color: var(--card-color);
   border-radius: 8px;
@@ -109,6 +117,13 @@ const Card = styled.div`
 
     display: flex;
     align-items: center;
+  }
+
+  .avatar-image {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.5);
   }
 
   .coins {

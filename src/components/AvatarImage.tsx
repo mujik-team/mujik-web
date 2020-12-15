@@ -15,9 +15,14 @@ function AvatarImage(props: Props) {
     }
   }, [props.username]);
 
+  const handleOnClick = () => {
+    if (!props.disableOnClick) history.push(`/user/${props.username}`);
+  };
+
   return (
     <Image
-      onClick={() => history.push(`/user/${props.username}`)}
+      className="avatar-image"
+      onClick={handleOnClick}
       size={props.size}
       base64image={image}
     />
@@ -29,6 +34,7 @@ export default AvatarImage;
 type Props = {
   username: string;
   size: number;
+  disableOnClick?: boolean;
 };
 
 type ImageProps = {

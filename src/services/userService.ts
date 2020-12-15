@@ -38,3 +38,8 @@ export async function getUser(username: string) {
 
   return data.payload.user;
 }
+
+export async function GetFeaturedUsers() {
+  const { data } = await api.get("/user/featured");
+  return data.payload.users;
+}
