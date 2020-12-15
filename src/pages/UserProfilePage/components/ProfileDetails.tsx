@@ -83,17 +83,17 @@ function ProfileDetails(props: Props) {
           <TagsContainer>
             <div>
               <TagTitle>Favorite Artists</TagTitle>
-              {props.user.profile.favArtist?.map((a: any) => (
+              {props.user.profile.favArtist.length > 0 ? props.user.profile.favArtist?.map((a: any) => (
                 <Tag>{a}</Tag>
-              ))}
+              )) : <Tag>No Favorite Artist</Tag>}
             </div>
             <br />
 
             <div>
               <TagTitle>Favorite Genres</TagTitle>
-              {props.user.profile.favGenre?.map((a: any) => (
+              {props.user.profile.favGenre.length > 0 ? props.user.profile.favGenre?.map((a: any) => (
                 <Tag>{a}</Tag>
-              ))}
+              )) : <Tag>No Favorite Genres</Tag>}
             </div>
           </TagsContainer>
         </Container>

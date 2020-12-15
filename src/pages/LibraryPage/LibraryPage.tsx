@@ -134,6 +134,7 @@ function LibraryPage() {
         <TextInput
           value={searchTerm}
           onChange={(e: any) => setSearchTerm(e.target.value)}
+          placeholder="Search Library"
         />
       </div>
       <Button onClick={() => toggleShowNewMixtapeModal()}>New</Button>
