@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../App";
 import AvatarImage from "../../components/AvatarImage";
+import Loader from "../../components/Loader";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import useUser from "../../hooks/useUser";
 import { GetSeveralMixtapes } from "../../services/mixtapeService";
@@ -72,23 +73,40 @@ function UserProfileScreen() {
     }
   }, [user]);
 
-  return (
-    <Container>
-      <ProfileDetails
-        user={user as any}
-        update={update}
-        updateUser={updateUser}
-        isLoading={isLoading}
-      />
-      <UserContentContainer>
-        <MixtapeBrowser mixtapes={mixtapes} />
-        <TournamentWins>
-          <span className="title">Tournament Wins</span>
-          {winnerCards}
-        </TournamentWins>
-      </UserContentContainer>
-    </Container>
-  );
+  const ProfilePageComponent = () => {
+    if (user !== null) {
+      return (
+        <Container>
+          <ProfileDetails
+            user={user as any}
+            update={update}
+            updateUser={updateUser}
+            isLoading={isLoading}
+          />
+          <UserContentContainer>
+            <MixtapeBrowser mixtapes={mixtapes} />
+            <TournamentWins>
+              <span className="title">Tournament Wins</span>
+              {winnerCards}
+            </TournamentWins>
+          </UserContentContainer>
+        </Container>
+      );
+    } else {
+      return (
+        <NotFound>
+          <div className="msg">User not found.</div>
+          <div className="sub-msg">
+            Looks like the user with that ID doesn't exist. Maybe check the
+            username?
+          </div>
+          <img height="400" src="/images/void.svg" alt="not found image" />
+        </NotFound>
+      );
+    }
+  };
+
+  return isLoading ? <Loader /> : ProfilePageComponent();
 }
 
 export default UserProfileScreen;
@@ -143,3 +161,29 @@ const Filters = (
     <Filter>All</Filter>
   </div>
 );
+
+const NotFound = styled.div`
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .msg {
+    margin-top: 100px;
+    font-weight: 500;
+    font-size: 4rem;
+    color: var(--text-inactive);
+  }
+
+  .sub-msg {
+    font-family: var(--font-secondary);
+    margin-top: 20px;
+    font-weight: 500;
+    color: var(--text-inactive);
+  }
+
+  img {
+    margin-top: 60px;
+  }
+`;

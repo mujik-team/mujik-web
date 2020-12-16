@@ -44,7 +44,6 @@ function MixtapeDetailsPage() {
   };
 
   const MixtapeDetailsComponent = () => {
-    console.log(mixtape);
     if (mixtape !== null && mixtape._id) {
       return (
         <div>

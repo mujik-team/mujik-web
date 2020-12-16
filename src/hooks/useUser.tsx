@@ -6,8 +6,10 @@ function useUser(username: string) {
   const [isLoading, setIsLoading] = useState(true);
 
   const getUser = async () => {
-    const { data } = await api.get(`/user/${username}`);
-    setUser(data.payload.user);
+    try {
+      const { data } = await api.get(`/user/${username}`);
+      setUser(data.payload.user);
+    } catch (err) {}
     setIsLoading(false);
   };
 
