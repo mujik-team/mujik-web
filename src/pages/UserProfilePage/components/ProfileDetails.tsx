@@ -188,7 +188,8 @@ const ProfilePicture = styled.div`
   border-radius: 999px;
   background-position: 30% 20%;
   background-color: var(--card-color);
-  background-image: ${(props: ProfilePictureProps) => `url(${props.image})`};
+  background-image: ${(props: ProfilePictureProps) =>
+    `url(${props.image || "/images/avatar_placeholder.svg"})`};
   background-size: cover;
 `;
 

@@ -3,13 +3,16 @@ import * as mixtapeService from "../services/mixtapeService";
 import { getImageToBase64 } from "../services/util";
 
 function useMixtape(id: string) {
-  const [mixtape, setMixtape] = useState({} as any);
+  const [mixtape, setMixtape] = useState(null as any);
   const [isLoading, setIsLoading] = useState(true);
   const [mixtapeCoverImage, setMixtapeCoverImage] = useState("");
 
   const getMixtape = async () => {
-    const mixtape = await mixtapeService.getMixtape(id);
-    setMixtape(mixtape);
+    try {
+      const doc = await mixtapeService.getMixtape(id);
+      setMixtape(doc);
+    } catch (err) {}
+
     setIsLoading(false);
   };
 
@@ -21,7 +24,7 @@ function useMixtape(id: string) {
 
   // This effect retrieves the mixtape's cover image.
   useEffect(() => {
-    if (mixtape._id) {
+    if (mixtape?._id) {
       getImageToBase64(`/mixtape/${mixtape._id}/cover`).then((image) =>
         setMixtapeCoverImage(image || "")
       );
@@ -35,6 +38,7 @@ function useMixtape(id: string) {
 
   return {
     mixtape: { ...mixtape, mixtapeCoverImage },
+    // mixtape,
     getMixtape,
     updateMixtape,
     setMixtape,

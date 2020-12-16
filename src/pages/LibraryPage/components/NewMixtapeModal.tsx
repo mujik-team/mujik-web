@@ -17,8 +17,8 @@ function NewMixtapeModal(props: Props) {
 
   const createNewMixtape = async () => {
     const mixtape = {
-      mixtapeName: title,
-      description,
+      mixtapeName: title || "Untitled Mixtape",
+      description: description || "No description added.",
       tags,
       isPrivate,
       createdBy: authContext.currentUser.username,

@@ -13,7 +13,7 @@ function MixtapeListItem(props: Props) {
 
   useEffect(() => {
     getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
-      setImage(image || "")
+      setImage(image || "/images/mixtapes/default.svg")
     );
   }, [props.mixtapeId]);
 

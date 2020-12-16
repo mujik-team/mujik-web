@@ -16,7 +16,7 @@ function MixtapeCard(props: Props) {
   useEffect(() => {
     if (props.mixtapeId) {
       getImageToBase64(`/mixtape/${props.mixtapeId}/cover`).then((image) =>
-        setImage(image || "")
+        setImage(image || "/images/mixtapes/default.svg")
       );
     }
   }, [props.mixtapeId]);
@@ -27,7 +27,7 @@ function MixtapeCard(props: Props) {
       <InfoTooltip target=".customClassName" mouseTrack mouseTrackLeft={10} />
       <Card
         className={`customClassName ${props.className}`}
-        data-pr-tooltip={props.mixtapeName}
+        data-pr-tooltip={props.mixtapeName || "Untitled Mixtape"}
         base64image={image}
         onClick={handleClick}
       />
@@ -70,7 +70,11 @@ const Card = styled.div`
 `;
 
 const InfoTooltip = styled(Tooltip)`
+  box-shadow: none !important;
+
+  background: var(--card-color);
   & > .p-tooltip-text {
+    box-shadow: none !important;
     background: var(--card-color);
   }
 `;

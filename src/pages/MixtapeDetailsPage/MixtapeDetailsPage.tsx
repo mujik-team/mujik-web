@@ -5,6 +5,7 @@ import useMixtape from "../../hooks/useMixtape";
 import MixtapeDetails from "./components/MixtapeDetails";
 import SongBrowser from "./components/SongBrowser";
 import { AuthContext, SpotifyContext } from "../../App";
+import Loader from "../../components/Loader";
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
@@ -17,7 +18,7 @@ function MixtapeDetailsPage() {
   const [asc, setAsc] = useState(true);
 
   useEffect(() => {
-    if (mixtape.songs) {
+    if (mixtape?.songs) {
       if (spotifyContext.state.isAuthorized && mixtape.songs.length !== 0) {
         spotifyContext.spotifyService.api
           .getSeveralSongs(mixtape.songs)
@@ -26,13 +27,13 @@ function MixtapeDetailsPage() {
           });
       }
     }
-  }, [spotifyContext.state.isAuthorized, mixtape.songs]);
+  }, [spotifyContext.state.isAuthorized, mixtape?.songs]);
 
-  useEffect(() => {
-    const newsongs = sortSongsBy(sortBy, songs);
-    // mixtape?.songs = newsongs
-    setMixtape({ ...mixtape, songs: newsongs });
-  }, [sortBy, asc]);
+  // useEffect(() => {
+  //   const newsongs = sortSongsBy(sortBy, songs);
+  //   // mixtape?.songs = newsongs
+  //   setMixtape({ ...mixtape, songs: newsongs });
+  // }, [sortBy, asc]);
 
   const getNewSongsArr = (songsToSort: any) => {
     const newOrder = Array();
@@ -42,91 +43,40 @@ function MixtapeDetailsPage() {
     return newOrder;
   };
 
-  const sortSongsBy = (option: any, songs: any) => {
-    switch (option) {
-      case "title": {
-        const songsToSort = songs;
-        asc
-          ? songsToSort.sort((a: any, b: any) =>
-              a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-            )
-          : songsToSort.sort((a: any, b: any) =>
-              a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1
-            );
-        return getNewSongsArr(songsToSort);
-      }
-      case "artist": {
-        const songsToSort = songs;
-        asc
-          ? songsToSort.sort((a: any, b: any) =>
-              a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase()
-                ? 1
-                : -1
-            )
-          : songsToSort.sort((a: any, b: any) =>
-              a.artists[0].name.toLowerCase() < b.artists[0].name.toLowerCase()
-                ? 1
-                : -1
-            );
-        return getNewSongsArr(songsToSort);
-      }
-      case "album": {
-        const songsToSort = songs;
-        asc
-          ? songsToSort.sort((a: any, b: any) =>
-              a.album.name.toLowerCase() > b.album.name.toLowerCase() ? 1 : -1
-            )
-          : songsToSort.sort((a: any, b: any) =>
-              a.album.name.toLowerCase() < b.album.name.toLowerCase() ? 1 : -1
-            );
-        return getNewSongsArr(songsToSort);
-      }
-      case "releaseDate": {
-        const songsToSort = songs;
-        asc
-          ? songsToSort.sort((a: any, b: any) =>
-              a.album.release_date > b.album.release_date ? 1 : -1
-            )
-          : songsToSort.sort((a: any, b: any) =>
-              a.album.release_date < b.album.release_date ? 1 : -1
-            );
-        return getNewSongsArr(songsToSort);
-      }
-      case "duration": {
-        const songsToSort = songs;
-        asc
-          ? songsToSort.sort((a: any, b: any) =>
-              a.duration_ms > b.duration_ms ? 1 : -1
-            )
-          : songsToSort.sort((a: any, b: any) =>
-              a.duration_ms < b.duration_ms ? 1 : -1
-            );
-        return getNewSongsArr(songsToSort);
-      }
+  const MixtapeDetailsComponent = () => {
+    console.log(mixtape);
+    if (mixtape !== null && mixtape._id) {
+      return (
+        <div>
+          <Container>
+            <DetailsContainer>
+              <MixtapeCoverImage image={mixtape.mixtapeCoverImage} />
+              <MixtapeDetails
+                isLoading={isLoading}
+                mixtape={mixtape}
+                updateMixtape={updateMixtape as any}
+              />
+            </DetailsContainer>
+
+            <SongBrowser mixtape={mixtape} updateMixtape={updateMixtape} />
+          </Container>
+        </div>
+      );
+    } else {
+      return (
+        <NotFound>
+          <div className="msg">Mixtape not found.</div>
+          <div className="sub-msg">
+            Looks like the mixtape with that ID doesn't exist. Maybe it was
+            deleted by it's creator?
+          </div>
+          <img height="400" src="/images/box_empty.svg" alt="not found image" />
+        </NotFound>
+      );
     }
   };
 
-  return (
-    <Container>
-      <DetailsContainer>
-        <MixtapeCoverImage image={mixtape.mixtapeCoverImage} />
-        <MixtapeDetails
-          isLoading={isLoading}
-          mixtape={mixtape}
-          updateMixtape={updateMixtape as any}
-        />
-      </DetailsContainer>
-      {!isLoading && (
-        <SongBrowser
-          mixtape={mixtape}
-          setSortBy={setSortBy}
-          asc={asc}
-          setAsc={setAsc}
-          updateMixtape={updateMixtape}
-        />
-      )}
-    </Container>
-  );
+  return isLoading ? <Loader /> : MixtapeDetailsComponent();
 }
 
 export default MixtapeDetailsPage;
@@ -155,4 +105,30 @@ const MixtapeCoverImage = styled.div`
   border-radius: 8px;
   background-image: ${(props: CoverImageProps) => `url(${props.image})` || ""};
   background-color: var(--card-color);
+`;
+
+const NotFound = styled.div`
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .msg {
+    margin-top: 100px;
+    font-weight: 500;
+    font-size: 4rem;
+    color: var(--text-inactive);
+  }
+
+  .sub-msg {
+    font-family: var(--font-secondary);
+    margin-top: 20px;
+    font-weight: 500;
+    color: var(--text-inactive);
+  }
+
+  img {
+    margin-top: 60px;
+  }
 `;

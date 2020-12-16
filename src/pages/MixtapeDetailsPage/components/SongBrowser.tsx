@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
@@ -7,9 +7,10 @@ import { AuthContext, SpotifyContext } from "../../../App";
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
   const [songs, setSongs] = useState([] as any[]);
+  const [sortBy, setSortBy] = useState("");
+  const [isAsc, setIsAsc] = useState(false);
   const spotifyContext = useContext(SpotifyContext);
   const authContext = useContext(AuthContext);
-  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
 
   useEffect(() => {
     if (props.mixtape.songs) {
@@ -25,6 +26,43 @@ function SongBrowser(props: Props) {
       }
     }
   }, [spotifyContext.state.isAuthorized, props.mixtape]);
+
+  const sortedSongs = useMemo(() => {
+    let sortFunction = (() => {
+      const l = isAsc ? 1 : -1;
+      const r = isAsc ? -1 : 1;
+
+      switch (sortBy) {
+        case "artist":
+          return (a: any, b: any) =>
+            a.artists[0].name.toLowerCase() > b.artists[0].name.toLowerCase()
+              ? l
+              : r;
+
+        case "title":
+          return (a: any, b: any) =>
+            a.name.toLowerCase() > b.name.toLowerCase() ? l : r;
+
+        case "album":
+          return (a: any, b: any) =>
+            a.album.name.toLowerCase() > b.album.name.toLowerCase() ? l : r;
+
+        case "releaseDate":
+          return (a: any, b: any) =>
+            a.album.release_date > b.album.release_date ? l : r;
+
+        case "duration":
+          return (a: any, b: any) => (a.duration_ms > b.duration_ms ? l : r);
+
+        default:
+          return (a: any, b: any) => 0;
+      }
+    })();
+
+    songs.sort((a, b) => sortFunction(a, b));
+
+    return songs;
+  }, [sortBy, isAsc, songs]);
 
   const playSong = (index: number) => {
     const device_id = spotifyContext.state.deviceId;
@@ -43,7 +81,7 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Remove Song",
       icon: "mdi mdi-minus",
-      command: (e: any) => removeSong(selectedSongIndex),
+      command: (e: any) => removeSong(e.originalEvent.songIndex),
     });
   }
 
@@ -51,7 +89,7 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Move Up",
       icon: "mdi mdi-arrow-up-bold",
-      command: (e: any) => moveSong(selectedSongIndex, true),
+      command: (e: any) => moveSong(e.originalEvent.songIndex, true),
     });
   }
 
@@ -59,7 +97,7 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Move Down",
       icon: "mdi mdi-arrow-down-bold",
-      command: (e: any) => moveSong(selectedSongIndex, false),
+      command: (e: any) => moveSong(e.originalEvent.songIndex, false),
     });
   }
 
@@ -89,21 +127,11 @@ function SongBrowser(props: Props) {
     }
   };
 
-  const convertTime = (sec: number) => {
-    const hours = Number(Math.floor(sec / 3600).toFixed(0));
-    const minutes = Number(Math.floor((sec % 3600) / 60).toFixed(0));
-    const seconds = (sec - hours * 3600 - minutes * 60).toFixed(0);
-
-    return [`${hours}h`, `${minutes}m`, `${seconds}s`]
-      .filter((item) => item[0] !== "0")
-      .join(" ");
-  };
-
-  const songList = songs?.map((s, i) => (
+  const songList = sortedSongs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
+        e.songIndex = i;
         contextMenu.show(e);
-        setSelectedSongIndex(i);
       }}
     >
       <PlayButton onClick={() => playSong(i)}>
@@ -121,27 +149,26 @@ function SongBrowser(props: Props) {
     <Container>
       <HeaderBar>
         <span />
-        {/* { toggleAsc ? '▲' : '▼' } */}
         <span
           onClick={() => {
-            props.setSortBy("title");
-            props.setAsc(!props.asc);
+            setSortBy("title");
+            setIsAsc(!isAsc);
           }}
         >
           Title
         </span>
         <span
           onClick={() => {
-            props.setSortBy("artist");
-            props.setAsc(!props.asc);
+            setSortBy("artist");
+            setIsAsc(!isAsc);
           }}
         >
           Artist
         </span>
         <span
           onClick={() => {
-            props.setSortBy("album");
-            props.setAsc(!props.asc);
+            setSortBy("album");
+            setIsAsc(!isAsc);
           }}
         >
           Album
@@ -149,15 +176,15 @@ function SongBrowser(props: Props) {
         <i
           className="mdi mdi-calendar center"
           onClick={() => {
-            props.setSortBy("releaseDate");
-            props.setAsc(!props.asc);
+            setSortBy("releaseDate");
+            setIsAsc(!isAsc);
           }}
         />
         <i
           className="mdi mdi-clock-outline center"
           onClick={() => {
-            props.setSortBy("duration");
-            props.setAsc(!props.asc);
+            setSortBy("duration");
+            setIsAsc(!isAsc);
           }}
         />
       </HeaderBar>
@@ -179,8 +206,6 @@ function SongBrowser(props: Props) {
       ) : (
         songList
       )}
-      {/* {songList} */}
-      {/* {console.log(songs)} */}
     </Container>
   );
 }
@@ -190,9 +215,6 @@ export default SongBrowser;
 type Props = {
   mixtape: any;
   updateMixtape: (newMixtape: any) => void;
-  setSortBy: (option: any) => void;
-  asc: any;
-  setAsc: (value: any) => void;
 };
 
 const Container = styled.div``;
@@ -265,3 +287,13 @@ const EmptyMixtape = styled.div`
   padding-top: 150px;
   width: 670px;
 `;
+
+const convertTime = (sec: number) => {
+  const hours = Number(Math.floor(sec / 3600).toFixed(0));
+  const minutes = Number(Math.floor((sec % 3600) / 60).toFixed(0));
+  const seconds = (sec - hours * 3600 - minutes * 60).toFixed(0);
+
+  return [`${hours}h`, `${minutes}m`, `${seconds}s`]
+    .filter((item) => item[0] !== "0")
+    .join(" ");
+};

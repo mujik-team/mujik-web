@@ -6,10 +6,14 @@ import CardLayout from "./components/CardLayout";
 import ListLayout from "./components/ListLayout";
 import MixtapeCard from "./components/MixtapeCard";
 import MixtapeListItem from "./components/MixtapeListItem";
+import { Paginator } from "primereact/paginator";
 
 function MixtapeBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
   const [isCardLayout, setIsCardLayout] = useState(true);
+  const [page, setPage] = useState(0);
+
+  const numToShow = isCardLayout ? 24 : 10;
 
   useEffect(() => {
     if (localStorage.getItem("layout")) {
@@ -34,7 +38,9 @@ function MixtapeBrowser(props: Props) {
       }
     }
 
-    const mixtapeItems = mixtapes?.map((m, i) => {
+    const mixtapesToShow = mixtapes?.slice(page, page + numToShow);
+
+    const mixtapeItems = mixtapesToShow?.map((m, i) => {
       return isCardLayout ? (
         <MixtapeCard key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} />
       ) : (
@@ -46,8 +52,8 @@ function MixtapeBrowser(props: Props) {
         >
           <div className="mixtape-image" />
           <div className="mixtape-details">
-            <h2>{m.mixtapeName}</h2>
-            <div>{m.description}</div>
+            <h2>{m.mixtapeName || "Untitled Mixtape"}</h2>
+            <div>{m.description || "This mixtape has no description."}</div>
           </div>
         </MixtapeListItem>
       );
@@ -58,7 +64,7 @@ function MixtapeBrowser(props: Props) {
     ) : (
       <ListLayout>{mixtapeItems}</ListLayout>
     );
-  }, [props.mixtapes, sortBy, isCardLayout]);
+  }, [props.mixtapes, sortBy, isCardLayout, page]);
 
   const changeLayoutButton = (
     <ChangeLayoutButton onClick={() => toggleCardLayout()}>
@@ -75,19 +81,25 @@ function MixtapeBrowser(props: Props) {
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
-            <DropdownSelect
+            {/* <DropdownSelect
               id="sort-dropdown"
               value={sortBy}
               onChange={(e: any) => setSortBy(e.value)}
               options={sortDropdownOptions}
             />
-            <label htmlFor="sort-dropdown">Sort By</label>
+            <label htmlFor="sort-dropdown">Sort By</label> */}
           </div>
           {changeLayoutButton}
         </RightHeader>
       </Header>
       <hr />
       {mixtapeGrid}
+      <StyledPaginator
+        first={page}
+        onPageChange={(e) => setPage(e.first)}
+        rows={numToShow}
+        totalRecords={props.mixtapes?.length || 0}
+      />
     </Container>
   );
 }
@@ -109,6 +121,12 @@ type Props = {
 };
 
 const Container = styled.div``;
+
+const StyledPaginator = styled(Paginator)`
+  margin-top: 30px;
+  background: var(--card-color);
+  border: none !important;
+`;
 
 const Header = styled.div`
   padding-bottom: 50px;

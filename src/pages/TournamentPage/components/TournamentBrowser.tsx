@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DropdownSelect from "../../../components/Input/DropdownSelect";
 import TournamentCard from "./TournamentCard";
+import { Paginator } from "primereact/paginator";
 
 function TournamentBrowser(props: Props) {
   const history = useHistory();
@@ -52,7 +53,7 @@ function TournamentBrowser(props: Props) {
       <Header>
         <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
         <RightHeader>
-          <div
+          {/* <div
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
@@ -63,11 +64,13 @@ function TournamentBrowser(props: Props) {
               options={sortDropdownOptions}
             />
             <label htmlFor="sort-dropdown">Sort By</label>
-          </div>
+          </div> */}
         </RightHeader>
       </Header>
       <hr />
       {Grid}
+
+      {/* <StyledPaginator /> */}
     </Container>
   );
 }
