@@ -70,19 +70,19 @@ export const AvailableRestrictions: any = {
     type: "dropdown",
     valueOptions: [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   },
-  max_time: {
-    label: "Max Mixtape Duration",
-    valueLabel: "Minutes",
-    value: "max_time",
-    type: "number",
-  },
-  min_time: {
-    label: "Minimum Mixtape Duration",
-    valueLabel: "Minutes",
-    value: "min_time",
-    type: "number",
-  },
-  allow_duplicates: {
+  // max_time: {
+  //   label: "Max Mixtape Duration",
+  //   valueLabel: "Minutes",
+  //   value: "max_time",
+  //   type: "number",
+  // },
+  // min_time: {
+  //   label: "Minimum Mixtape Duration",
+  //   valueLabel: "Minutes",
+  //   value: "min_time",
+  //   type: "number",
+  // },
+  no_duplicates: {
     label: "No Duplicates",
     valueLabel: "",
     value: "no_duplicates",

@@ -21,11 +21,24 @@ function EnterTournamentModal(props: Props) {
 
   const checkMixtapeRestrictions = (type: string, value: any): any => {
     switch (type) {
-      case "song_limit": {
+      case "max_songs": {
         const fulfilled = mixtapeToSubmit
           ? mixtapeToSubmit.songs.length < value
           : 999 < value;
-        const name = "Number of Songs";
+        const name = "Max Songs";
+        const RestrictionObject = {
+          fulfilled: fulfilled,
+          name: name,
+        };
+        restrictionsMet.push(fulfilled);
+        // setSongLimitRestriction(songLimitRestriction)
+        return RestrictionObject;
+      }
+      case "min_songs": {
+        const fulfilled = mixtapeToSubmit
+          ? mixtapeToSubmit.songs.length > value
+          : 999 > value;
+        const name = "Min. Songs";
         const RestrictionObject = {
           fulfilled: fulfilled,
           name: name,
@@ -35,7 +48,7 @@ function EnterTournamentModal(props: Props) {
         return RestrictionObject;
       }
       case "min_lvl": {
-        const fulfilled = authContext.currentUser.profile.level >= value;
+        const fulfilled = authContext.currentUser.profile.level / 5000 >= value;
         const name = "Minumum Level Requirement";
         const RestrictionObject = {
           fulfilled: fulfilled,
@@ -59,7 +72,7 @@ function EnterTournamentModal(props: Props) {
         return RestrictionObject;
       }
 
-      case "allow_duplicates": {
+      case "no_duplicates": {
         const songSet = new Set<string>();
         const name = "No Duplicates";
         const fulfilled: boolean = mixtapeToSubmit
