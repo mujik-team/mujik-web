@@ -108,7 +108,7 @@ function ResetCredentialsModal(props: Props) {
             fontWeight: "bold",
           }}
         >
-          Dev Mode: adabracadabra
+          Dev Mode: abracadabra
         </span>
       </Container>
       <SubmitResetCredentials onClick={submitReset}>
