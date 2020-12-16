@@ -39,17 +39,7 @@ function SubmitSuccessModal() {
       ></img>
       <MessageContainer>
         <Message>You successfully made your submission!</Message>
-        <SubMessage>
-          Voting will begin in
-          <span
-            style={{
-              marginLeft: "6px",
-              color: "var(--main-color)",
-            }}
-          >
-            12D 13HR 45M 30S.
-          </span>
-        </SubMessage>
+        <SubMessage></SubMessage>
       </MessageContainer>
     </Container>
   );

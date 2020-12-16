@@ -13,7 +13,7 @@ function useTournament(id: string) {
   }, [id]);
 
   useEffect(() => {
-    if (tournament._id)
+    if (tournament?._id)
       getImageToBase64(`/tournament/${id}/cover`).then((image) =>
         setTournamentImage(image || "")
       );
