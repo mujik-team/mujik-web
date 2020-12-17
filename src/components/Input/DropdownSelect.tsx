@@ -6,8 +6,8 @@ const DropdownSelect = styled(Dropdown)`
   background: var(--card-color);
   border: none;
   border-radius: 8px;
-  /* width: 120px; */
-  text-align: center;
+  padding: 5px 10px;
+  /* text-align: center; */
 
   &.p-focus.p-dropdown {
     border: none;
@@ -26,7 +26,7 @@ const DropdownSelect = styled(Dropdown)`
   & .p-component,
   & .p-dropdown-label {
     font-family: "Inter";
-    font-size: 16px;
+    /* font-size: 16px; */
   }
 
   & .p-dropdown-label {

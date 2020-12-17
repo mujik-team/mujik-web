@@ -82,10 +82,10 @@ export const AvailableRestrictions: any = {
   //   value: "min_time",
   //   type: "number",
   // },
-  no_duplicates: {
-    label: "No Duplicates",
-    valueLabel: "",
-    value: "no_duplicates",
-    type: "checkbox",
-  },
+  // no_duplicates: {
+  //   label: "No Duplicates",
+  //   valueLabel: "",
+  //   value: "no_duplicates",
+  //   type: "checkbox",
+  // },
 };

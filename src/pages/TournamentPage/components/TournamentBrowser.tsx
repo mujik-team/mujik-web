@@ -4,6 +4,7 @@ import styled from "styled-components";
 import DropdownSelect from "../../../components/Input/DropdownSelect";
 import TournamentCard from "./TournamentCard";
 import { Paginator } from "primereact/paginator";
+import { Dropdown } from "primereact/dropdown";
 
 function TournamentBrowser(props: Props) {
   const history = useHistory();
@@ -16,20 +17,20 @@ function TournamentBrowser(props: Props) {
 
     switch (sortBy) {
       case "Title":
-        comparator = (a, b) => (a.Title < b.Title ? 0 : 1);
+        comparator = (a, b) => (a.Title < b.Title ? -1 : 1);
         break;
 
       case "Reward":
         comparator = (a, b) =>
-          a.Rewards[0].Value > b.Rewards[0].Value ? 0 : 1;
+          a.Rewards[0].Value > b.Rewards[0].Value ? -1 : 1;
         break;
 
       case "Deadline":
-        comparator = (a, b) => (a.SubmissionDate < b.SubmissionDate ? 1 : 0);
+        comparator = (a, b) => (a.SubmissionDate < b.SubmissionDate ? 1 : -1);
         break;
 
       default:
-        comparator = (a, b) => (Math.random() < 0.5 ? 0 : 1);
+        comparator = (a, b) => (Math.random() < 0.5 ? -1 : 1);
         break;
     }
 
@@ -53,7 +54,7 @@ function TournamentBrowser(props: Props) {
       <Header>
         <LeftHeader>{props.LeftHeaderContent}</LeftHeader>
         <RightHeader>
-          {/* <div
+          <div
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
@@ -64,7 +65,7 @@ function TournamentBrowser(props: Props) {
               options={sortDropdownOptions}
             />
             <label htmlFor="sort-dropdown">Sort By</label>
-          </div> */}
+          </div>
         </RightHeader>
       </Header>
       <hr />

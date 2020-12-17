@@ -1,7 +1,8 @@
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Button from "../Button";
-import DropdownSelect from "../Input/DropdownSelect";
+// import { Dropdown } from "primereact/dropdown";
+import DropdownSelect from "../../components/Input/DropdownSelect";
 import CardLayout from "./components/CardLayout";
 import ListLayout from "./components/ListLayout";
 import MixtapeCard from "./components/MixtapeCard";
@@ -34,7 +35,7 @@ function MixtapeBrowser(props: Props) {
       if (sortBy === "random") {
         shuffleArray(mixtapes);
       } else {
-        mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : 0));
+        mixtapes.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1));
       }
     }
 
@@ -81,13 +82,13 @@ function MixtapeBrowser(props: Props) {
             style={{ display: "inline-block", marginRight: "10px" }}
             className="p-float-label"
           >
-            {/* <DropdownSelect
+            <DropdownSelect
               id="sort-dropdown"
               value={sortBy}
               onChange={(e: any) => setSortBy(e.value)}
               options={sortDropdownOptions}
             />
-            <label htmlFor="sort-dropdown">Sort By</label> */}
+            <label htmlFor="sort-dropdown">Sort By</label>
           </div>
           {changeLayoutButton}
         </RightHeader>

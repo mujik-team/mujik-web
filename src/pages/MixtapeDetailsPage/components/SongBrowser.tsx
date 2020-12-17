@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
 import { AuthContext, SpotifyContext } from "../../../App";
+import { toast } from "react-toastify";
 
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
@@ -11,6 +12,7 @@ function SongBrowser(props: Props) {
   const [isAsc, setIsAsc] = useState(false);
   const spotifyContext = useContext(SpotifyContext);
   const authContext = useContext(AuthContext);
+  const [selectedSong, setSelectedSong] = useState(-1);
 
   useEffect(() => {
     if (props.mixtape.songs) {
@@ -20,7 +22,13 @@ function SongBrowser(props: Props) {
       ) {
         spotifyContext.spotifyService.api
           .getSeveralSongs(props.mixtape.songs)
-          .then((songs) => {
+          .then((s) => {
+            const songs = s.map((s: any, i: number) => {
+              return {
+                ...s,
+                origIndex: i,
+              };
+            });
             setSongs([...songs]);
           });
       }
@@ -55,7 +63,7 @@ function SongBrowser(props: Props) {
           return (a: any, b: any) => (a.duration_ms > b.duration_ms ? l : r);
 
         default:
-          return (a: any, b: any) => 0;
+          return (a: any, b: any) => a.origIndex - b.origIndex;
       }
     })();
 
@@ -81,7 +89,7 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Remove Song",
       icon: "mdi mdi-minus",
-      command: (e: any) => removeSong(e.originalEvent.songIndex),
+      command: (e: any) => removeSong(selectedSong),
     });
   }
 
@@ -89,7 +97,7 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Move Up",
       icon: "mdi mdi-arrow-up-bold",
-      command: (e: any) => moveSong(e.originalEvent.songIndex, true),
+      command: (e: any) => moveSong(selectedSong, true),
     });
   }
 
@@ -97,11 +105,16 @@ function SongBrowser(props: Props) {
     items.push({
       label: "Move Down",
       icon: "mdi mdi-arrow-down-bold",
-      command: (e: any) => moveSong(e.originalEvent.songIndex, false),
+      command: (e: any) => moveSong(selectedSong, false),
     });
   }
 
   const removeSong = (songIndex: number) => {
+    if (sortBy) {
+      toast.dark("🤚 Can't delete a song while not sorted by original order.");
+      return;
+    }
+
     if (songIndex !== -1) {
       const mixtape = props.mixtape;
       mixtape.songs.splice(songIndex, 1);
@@ -110,6 +123,11 @@ function SongBrowser(props: Props) {
   };
 
   const moveSong = (songIndex: number, up: boolean) => {
+    if (sortBy) {
+      toast.dark("🤚 Can't move a song while not sorted by original order.");
+      return;
+    }
+
     if (songIndex !== -1) {
       if (up === true && songIndex > 0) {
         // move song up
@@ -130,11 +148,12 @@ function SongBrowser(props: Props) {
   const songList = sortedSongs?.map((s, i) => (
     <SongListItem
       onContextMenu={(e: any) => {
-        e.songIndex = i;
+        setSelectedSong(i);
         contextMenu.show(e);
       }}
     >
       <PlayButton onClick={() => playSong(i)}>
+        <span>{s.origIndex + 1}</span>
         <i className="mdi mdi-play" />
       </PlayButton>
       <span>{s.name}</span>
@@ -148,7 +167,12 @@ function SongBrowser(props: Props) {
   return (
     <Container>
       <HeaderBar>
-        <span />
+        <i
+          className="mdi mdi-pound"
+          onClick={() => {
+            setSortBy("");
+          }}
+        />
         <span
           onClick={() => {
             setSortBy("title");
