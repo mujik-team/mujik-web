@@ -136,6 +136,7 @@ type Props = {
 
 const Container = styled.div`
   margin: 30px;
+  padding-bottom: 150px;
 
   & > .description {
     margin-top: 10px;
