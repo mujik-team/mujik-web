@@ -21,3 +21,12 @@ export async function getImageToBase64(url: string) {
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export const MapToObject = (m: any) =>
+  [...m].reduce((o, v) => {
+    o[v[0]] = v[1];
+    return o;
+  }, {});
+
+export const ObjectToMap = (o: any) =>
+  new Map(Object.entries(o)) as Map<string, any>;
