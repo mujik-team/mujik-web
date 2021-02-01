@@ -39,14 +39,13 @@ function App() {
 
   const app = (
     <AppContainer>
-      <Navbar />
+      {/* <AppHeader /> */}
+      <Switch>
+        <Route path="/" exact component={LandingPage} />
+        <Route path="/login" component={LoginPage} />
 
-      <RouterContainer>
-        {/* <AppHeader /> */}
-        <Switch>
-          <Route path="/" exact component={LandingPage} />
-          <Route path="/login" component={LoginPage} />
-
+        <RouterContainer>
+          <Navbar />
           <ProtectedRoute path="/home" exact component={HomePage} />
           <ProtectedRoute path="/library" component={LibraryPage} />
           <ProtectedRoute path="/tournament" exact component={TournamentPage} />
@@ -71,8 +70,8 @@ function App() {
             path="/spotify/authorize"
             component={SpotifyLoginPage}
           />
-        </Switch>
-      </RouterContainer>
+        </RouterContainer>
+      </Switch>
 
       <MusicPlayerContainer>
         <MusicPlayer />

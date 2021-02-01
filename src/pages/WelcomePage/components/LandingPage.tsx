@@ -2,8 +2,11 @@ import React from "react";
 import Button from "../../../components/Button";
 import styles from "./LandingPage.module.css";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
-function LandingPage(props: any) {
+function LandingPage() {
+  const history = useHistory();
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>mujik</div>
@@ -11,7 +14,7 @@ function LandingPage(props: any) {
         Welcome to mujik, a place to find a mixtape for any <b>moment</b>,{" "}
         <b>feeling</b> or <b>vibe</b>.
       </div>
-      <LoginButton onClick={() => props.setLogin(true)}>
+      <LoginButton onClick={() => history.push("/login")}>
         <span className={styles.loginSpan}>Login</span>
       </LoginButton>
       <SplashImage src="/images/daftpunk.png"></SplashImage>

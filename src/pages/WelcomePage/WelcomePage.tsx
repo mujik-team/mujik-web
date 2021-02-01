@@ -3,15 +3,9 @@ import LoginPage from "../LoginPage/LoginPage";
 import LandingPage from "./components/LandingPage";
 
 function WelcomePage() {
-
   const [showLogin, setLogin] = useState(false);
 
-  return (
-
-    <div>
-        {showLogin ? <LoginPage /> : <LandingPage setLogin={setLogin} />}
-    </div>
-  );
+  return <div>{showLogin ? <LoginPage /> : <LandingPage />}</div>;
 }
 
 export default WelcomePage;
