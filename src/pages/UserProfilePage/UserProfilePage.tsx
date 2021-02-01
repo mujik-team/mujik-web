@@ -19,7 +19,7 @@ function UserProfileScreen() {
 
   const update = () => {
     getUser();
-    authContext.update();
+    // authContext.update();
   };
 
   useEffect(() => {

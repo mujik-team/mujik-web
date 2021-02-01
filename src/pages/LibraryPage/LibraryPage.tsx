@@ -16,7 +16,8 @@ import { AuthContext } from "../../App";
 const tabs = ["All", "By Me", "By Others"];
 function LibraryPage() {
   const history = useHistory();
-  const authContext = useContext(AuthContext);
+  const { user, state } = useContext(AuthContext);
+  const { isAuthenticated, isAuthenticating } = state;
   const [sortBy, setSortBy] = useState("");
 
   const [mixtapes, setMixtapes] = useState([] as any[]);
@@ -25,19 +26,18 @@ function LibraryPage() {
   const [currentTab, setCurrentTab] = useState("All");
 
   const getUserMixtapes = async () => {
-    const userMixtapes = await mixtapeService.GetSeveralMixtapes(
-      authContext.currentUser.profile.mixtapes
-    );
+    const mixtapeIds = Array.from(user.profile.mixtapes.keys());
+    const userMixtapes = await mixtapeService.GetSeveralMixtapes(mixtapeIds);
 
     setMixtapes([...userMixtapes.filter((m) => m !== null)]);
   };
 
   const filterTag = async (event: any) => {
     const tag = event.target.id;
+    const mixtapeIDs = Array.from(user.profile.mixtapes.keys());
+
     const mixtapes = (
-      await mixtapeService.GetSeveralMixtapes(
-        authContext.currentUser.profile.mixtapes
-      )
+      await mixtapeService.GetSeveralMixtapes(mixtapeIDs)
     ).filter((m) => m !== null);
 
     let filteredMixtapes = [];
@@ -48,14 +48,14 @@ function LibraryPage() {
         break;
       case "By Me":
         filteredMixtapes = mixtapes.filter(
-          (mixtape) => mixtape.createdBy === authContext.currentUser.username
+          (mixtape) => mixtape.createdBy === user.username
         );
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Me");
         break;
       case "By Others":
         filteredMixtapes = mixtapes.filter(
-          (mixtape) => mixtape.createdBy !== authContext.currentUser.username
+          (mixtape) => mixtape.createdBy !== user.username
         );
         setMixtapes([...filteredMixtapes]);
         setCurrentTab("By Others");
@@ -70,7 +70,9 @@ function LibraryPage() {
       // Upload mixtape image if it exists.
       if (imageBlob)
         await mixtapeService.uploadMixtapeImage(newMixtape._id, imageBlob);
-      authContext.update();
+
+      // TODO Update User
+      // authContext.update();
       history.push(`/mixtape/${newMixtape._id}`);
       toast.dark("🎵 Created new mixtape");
     } catch (err) {
@@ -84,13 +86,10 @@ function LibraryPage() {
     setShowNewMixtapeModal(!showNewMixtapeModal);
 
   useEffect(() => {
-    if (
-      authContext.isLoggedIn &&
-      authContext.currentUser.profile.mixtapes.length !== 0
-    ) {
+    if (user.profile.mixtapes.size !== 0) {
       getUserMixtapes();
     }
-  }, [authContext.isLoggedIn, authContext.currentUser]);
+  }, [user.profile.mixtapes]);
 
   const headerBrowser = (
     <div style={{ marginBottom: "30px" }}>

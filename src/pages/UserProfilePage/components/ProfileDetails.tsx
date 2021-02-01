@@ -9,7 +9,7 @@ import FollowButton from "./FollowButton";
 import FollowersModal from "./FollowersModal";
 
 function ProfileDetails(props: Props) {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [profilePicture, setProfilePicture] = useState("");
 
   const toggleEditProfile = () => {
@@ -79,7 +79,7 @@ function ProfileDetails(props: Props) {
           <DetailsContainer>
             <Username>
               {props.user.username}
-              {props.user.username === authContext.currentUser.username && (
+              {props.user.username === user.username && (
                 <EditProfileButton
                   onClick={() => toggleEditProfile()}
                   className="mdi mdi-pencil"

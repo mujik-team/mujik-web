@@ -5,13 +5,11 @@ import Button from "../../../components/Button";
 import { api } from "../../../services/api";
 
 function FollowButton(props: Props) {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  const isFollowing = authContext.currentUser.profile.following.includes(
-    props.username
-  );
+  const isFollowing = user.profile.following.has(props.username);
 
-  const isCurrentUser = authContext.currentUser.username === props.username;
+  const isCurrentUser = user.username === props.username;
 
   const followUser = async () => {
     await api.post("/user/follow", {

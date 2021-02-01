@@ -8,16 +8,13 @@ import AvatarImage from "./AvatarImage";
 
 function AppHeader() {
   const history = useHistory();
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const spotifyContext = useContext(SpotifyContext);
-  const [username, setUsername] = useState(authContext.currentUser.username);
 
-  useEffect(() => {
-    setUsername(authContext.currentUser?.username);
-  }, [authContext]);
+  const username = user.username;
+  const coins = user.profile.coins;
+  const level = user.profile.level;
 
-  const coins = authContext.currentUser?.profile.coins;
-  const level = authContext.currentUser?.profile.level;
   const goBack = () => {
     if (history.length !== 0) {
       history.goBack();
@@ -54,7 +51,7 @@ function AppHeader() {
         <AvatarImage size={50} username={username} />
       </UserDetailsContainer>
     );
-  }, [authContext.currentUser?.profile]);
+  }, []);
 
   const UserDetailsCard = (
     <div>

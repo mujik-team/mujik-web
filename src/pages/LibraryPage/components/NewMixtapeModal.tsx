@@ -12,7 +12,7 @@ function NewMixtapeModal(props: Props) {
   const [isPrivate, setIsPrivate] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [mixtapeImage, setMixtapeImage] = useState("");
 
   const createNewMixtape = async () => {
@@ -21,7 +21,7 @@ function NewMixtapeModal(props: Props) {
       description: description || "No description added.",
       tags,
       isPrivate,
-      createdBy: authContext.currentUser.username,
+      createdBy: user.username,
     };
 
     await props.newMixtape(mixtape, mixtapeImage);

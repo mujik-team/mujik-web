@@ -9,7 +9,7 @@ import RegisterModal from "./components/RegisterModal";
 import ResetCredentialsModal from "./components/ResetCredentialsModal";
 
 function LoginPage() {
-  const authContext = useContext(AuthContext);
+  const { actions } = useContext(AuthContext);
 
   const toggleRegisterModal = () => {
     setModalToShow(0);
@@ -73,7 +73,7 @@ function LoginPage() {
       <div style={{ marginLeft: "50px" }}>
         <LoginButton
           onClick={async () => {
-            await authContext.login(username, password);
+            await actions.login(username, password);
           }}
         >
           Login

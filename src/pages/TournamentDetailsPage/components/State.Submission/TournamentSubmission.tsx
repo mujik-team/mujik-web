@@ -10,7 +10,7 @@ import { SubmitMixtapeToTournament } from "../../../../services/tournamentServic
 import { toast } from "react-toastify";
 
 function TournamentSubmission(props: any) {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [showEntryModal, setShowEntryModal] = useState(false);
   const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);
@@ -40,7 +40,7 @@ function TournamentSubmission(props: any) {
   const toggleSubmitSuccessModal = () =>
     setShowSubmitSuccessModal(!showSubmitSuccessModal);
 
-  const username = authContext.currentUser.username;
+  const { username } = user;
   return (
     <Container>
       <FullScreenModal

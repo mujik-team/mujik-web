@@ -19,7 +19,7 @@ import { useHistory } from "react-router-dom";
 
 function CreateTournamentPage() {
   const [tournamentForm, dispatch] = useReducer(reducer, FormState);
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const history = useHistory();
 
   const handleFieldUpdate = (key: string, value: any) => {
@@ -31,10 +31,7 @@ function CreateTournamentPage() {
   };
 
   const handleCreateNewTournament = async () => {
-    const errors = validateForm(
-      tournamentForm.form,
-      authContext.currentUser.profile
-    );
+    const errors = validateForm(tournamentForm.form, user.profile);
 
     if (errors.length > 0) {
       dispatch({ type: "invalid-form", payload: { errors } });
@@ -44,7 +41,7 @@ function CreateTournamentPage() {
       dispatch({ type: "valid-form", payload: {} });
     }
 
-    const username = authContext.currentUser.username;
+    const username = user.username;
 
     // Create tournament.
     const tournament = await CreateNewTournament({
@@ -126,10 +123,7 @@ function CreateTournamentPage() {
           }
           onClick={() => handleFieldUpdate("winnerBy", "creator")}
         >
-          <AvatarImage
-            username={authContext.currentUser?.username}
-            size={125}
-          />
+          <AvatarImage username={user.username} size={125} />
           <div className="name">You</div>
         </WinnerCard>
         <br />

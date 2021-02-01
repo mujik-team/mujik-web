@@ -10,7 +10,7 @@ import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
 
 function EnterTournamentModal(props: Props) {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [searchTerm, setSearchTerm] = useState("");
   const [mixtapesSelected, setMixtapesSelected] = useState([] as any[]);
@@ -48,7 +48,7 @@ function EnterTournamentModal(props: Props) {
         return RestrictionObject;
       }
       case "min_lvl": {
-        const fulfilled = authContext.currentUser.profile.level / 5000 >= value;
+        const fulfilled = user.profile.level / 5000 >= value;
         const name = "Minumum Level Requirement";
         const RestrictionObject = {
           fulfilled: fulfilled,
@@ -172,11 +172,10 @@ function EnterTournamentModal(props: Props) {
       : "";
 
   const getUserMixtapes = async () => {
-    const userMixtapes = await mixtapeService.GetSeveralMixtapes(
-      authContext.currentUser.profile.mixtapes
-    );
+    const mixtapeIDs = Array.from(user.profile.mixtapes.keys());
+    const userMixtapes = await mixtapeService.GetSeveralMixtapes(mixtapeIDs);
 
-    const username = authContext.currentUser.username;
+    const { username } = user;
 
     setMixtapes([
       ...userMixtapes
@@ -186,13 +185,10 @@ function EnterTournamentModal(props: Props) {
   };
 
   useEffect(() => {
-    if (
-      authContext.isLoggedIn &&
-      authContext.currentUser.profile.mixtapes.length !== 0
-    ) {
+    if (user.profile.mixtapes.size !== 0) {
       getUserMixtapes();
     }
-  }, [authContext.isLoggedIn, authContext.currentUser]);
+  }, [user]);
 
   const filteredMixtapeResults = useMemo(() => {
     return mixtapes.filter((m) =>

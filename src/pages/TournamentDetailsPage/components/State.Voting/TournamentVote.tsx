@@ -15,10 +15,9 @@ import { VoteForMixtape } from "../../../../services/tournamentService";
 import { AuthContext } from "../../../../App";
 import { sleep } from "../../../../services/util";
 
-
 function TournamentVote(props: Props) {
   const history = useHistory();
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [votingPhase, setVotingPhase] = useState(false);
   const [votesLeft, setVotesLeft] = useState(3);
@@ -43,7 +42,7 @@ function TournamentVote(props: Props) {
     getSubmissions(ids);
 
     // Check how many votes the user has left.
-    const username = authContext.currentUser?.username;
+    const { username } = user;
     const userVotes = props.tournament.Voters[username];
     numVotesByUser.current = userVotes ? 3 - Object.keys(userVotes).length : 3;
 
@@ -182,8 +181,7 @@ function TournamentVote(props: Props) {
 
   const toShow = () => {
     if (props.tournament.WinnerBy === "creator") {
-      if (authContext.currentUser.username === props.tournament.CreatedBy)
-        return VoteSelector;
+      if (user.username === props.tournament.CreatedBy) return VoteSelector;
       else return CreatorVote;
     } else return VoteSelector;
   };

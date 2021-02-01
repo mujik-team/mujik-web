@@ -6,41 +6,39 @@ import { GetMultipleTournaments } from "../../../services/tournamentService";
 import { getImageToBase64 } from "../../../services/util";
 
 function YourTournamentsSidebar() {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [yourTournaments, setYourTournaments] = useState([] as any[]);
   const [filterBy, setFilterBy] = useState("All");
 
   const history = useHistory();
 
   useEffect(() => {
-    if (authContext.currentUser?.profile) {
-      const profile = authContext.currentUser?.profile;
+    const profile = user.profile;
 
-      // @TODO TEMPFIX USER MODEL ON API TO PROPERLY SERIALIZE.
-      const tournamentsFollowed = profile.tournamentsFollowing || [];
-      const tournamentsJoined = profile.tournamentsJoined || [];
-      const tournamentsCreated = profile.tournamentsCreated || [];
+    // @TODO TEMPFIX USER MODEL ON API TO PROPERLY SERIALIZE.
+    // const tournamentsFollowed = profile.tournamentsFollowing || [];
+    // const tournamentsJoined = profile.tournamentsJoined || [];
+    // const tournamentsCreated = profile.tournamentsCreated || [];
 
-      const set = new Set([
-        ...tournamentsFollowed,
-        ...tournamentsJoined,
-        ...tournamentsCreated,
-      ]);
+    // const set = new Set([
+    //   ...tournamentsFollowed,
+    //   ...tournamentsJoined,
+    //   ...tournamentsCreated,
+    // ]);
 
-      const allTournaments = [...set];
+    // const allTournaments = [...set];
 
-      const mapping: any = {
-        All: allTournaments,
-        Entered: tournamentsJoined,
-        Following: tournamentsFollowed,
-        Created: tournamentsCreated,
-      };
+    // const mapping: any = {
+    //   All: allTournaments,
+    //   Entered: tournamentsJoined,
+    //   Following: tournamentsFollowed,
+    //   Created: tournamentsCreated,
+    // };
 
-      GetMultipleTournaments(mapping[filterBy]).then((tournaments) =>
-        setYourTournaments([...tournaments])
-      );
-    }
-  }, [authContext.currentUser?.profile, filterBy]);
+    // GetMultipleTournaments(mapping[filterBy]).then((tournaments) =>
+    //   setYourTournaments([...tournaments])
+    // );
+  }, [user.profile, filterBy]);
 
   const FilterByTabs = (
     <div>

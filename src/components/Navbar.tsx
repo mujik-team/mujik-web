@@ -8,7 +8,7 @@ import Button from "./Button";
 function Navbar() {
   const history = useHistory();
   const location = useLocation();
-  const authContext = useContext(AuthContext);
+  const { actions } = useContext(AuthContext);
   const spotifyContext = useContext(SpotifyContext);
   return (
     <Container>
@@ -35,7 +35,7 @@ function Navbar() {
       ))}
       <Button
         onClick={() => {
-          authContext.logout();
+          actions.logout();
           spotifyContext.logout();
           history.push("/");
         }}

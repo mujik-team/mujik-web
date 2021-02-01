@@ -13,7 +13,7 @@ function TournamentResults(props: Props) {
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [userHasRedeemed, setUserHasRedeemed] = useState(false);
   const history = useHistory();
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (props.tournament) {
@@ -68,7 +68,7 @@ function TournamentResults(props: Props) {
 
   const yourSubmission = useMemo(() => {
     if (props.tournament) {
-      const { username } = authContext.currentUser;
+      const { username } = user;
       const userSubmission = props.tournament.Submissions[username];
       // User has entered tournament.
       if (userSubmission) {
@@ -84,7 +84,10 @@ function TournamentResults(props: Props) {
           if (hasRedeemed) toast.dark("🤔 You already redeemed your rewards!");
           else {
             const rewards = await RedeemRewards(props.tournament._id);
-            authContext.update();
+
+            // TODO Update User
+            // authContext.update();
+
             setUserHasRedeemed(true);
 
             if (rewards.xp) toast.dark(`😎 You just gained ${rewards.xp} XP!`);

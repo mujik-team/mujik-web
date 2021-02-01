@@ -5,7 +5,6 @@ import HomePage from "./pages/HomePage/HomePage";
 import Navbar from "./components/Navbar";
 import LibraryPage from "./pages/LibraryPage/LibraryPage";
 import TournamentPage from "./pages/TournamentPage/TournamentPage";
-import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import TournamentDetails from "./pages/TournamentDetailsPage/TournamentDetailsPage";
 import MixtapeDetailsPage from "./pages/MixtapeDetailsPage/MixtapeDetailsPage";
 import UserProfileScreen from "./pages/UserProfilePage/UserProfilePage";
@@ -13,24 +12,29 @@ import AppHeader from "./components/AppHeader";
 import RewardsPage from "./pages/RewardsPage/RewardsPage";
 import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 import { ToastContainer, Slide } from "react-toastify";
-import useAuth, { AuthState } from "./hooks/useAuth";
 import SpotifyLoginPage from "./pages/SpotifyLoginPage/SpotifyLoginPage";
 
 import useSpotify from "./hooks/useSpotify";
 import styled from "styled-components";
 
 import CreateTournamentPage from "./pages/CreateTournamentPage/CreateTournamentPage";
+import useAuth from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LandingPage from "./pages/WelcomePage/components/LandingPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
+type AuthState = ReturnType<typeof useAuth>;
 export const AuthContext: React.Context<AuthState> = React.createContext(
-  {} as AuthState
+  {} as any
 );
 
-export const SpotifyContext: React.Context<
-  ReturnType<typeof useSpotify>
-> = React.createContext({} as any);
+type SpotifyState = ReturnType<typeof useSpotify>;
+export const SpotifyContext: React.Context<SpotifyState> = React.createContext(
+  {} as any
+);
 
 function App() {
-  const [authState] = useAuth();
+  const authContext = useAuth();
   const spotify = useSpotify();
 
   const app = (
@@ -38,20 +42,35 @@ function App() {
       <Navbar />
 
       <RouterContainer>
-        <AppHeader />
+        {/* <AppHeader /> */}
         <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/library" component={LibraryPage} />
-          <Route path="/tournament" exact component={TournamentPage} />
-          <Route path="/mixtape/:mixtapeId" component={MixtapeDetailsPage} />
-          <Route path="/tournament/new" component={CreateTournamentPage} />
-          <Route
+          <Route path="/" exact component={LandingPage} />
+          <Route path="/login" component={LoginPage} />
+
+          <ProtectedRoute path="/home" exact component={HomePage} />
+          <ProtectedRoute path="/library" component={LibraryPage} />
+          <ProtectedRoute path="/tournament" exact component={TournamentPage} />
+          <ProtectedRoute
+            path="/mixtape/:mixtapeId"
+            component={MixtapeDetailsPage}
+          />
+          <ProtectedRoute
+            path="/tournament/new"
+            component={CreateTournamentPage}
+          />
+          <ProtectedRoute
             path="/tournament/:tournamentId"
             component={TournamentDetails}
           />
-          <Route path="/rewards" component={RewardsPage}></Route>
-          <Route path="/user/:username" component={UserProfileScreen} />
-          <Route path="/spotify/authorize" component={SpotifyLoginPage} />
+          <ProtectedRoute path="/rewards" component={RewardsPage} />
+          <ProtectedRoute
+            path="/user/:username"
+            component={UserProfileScreen}
+          />
+          <ProtectedRoute
+            path="/spotify/authorize"
+            component={SpotifyLoginPage}
+          />
         </Switch>
       </RouterContainer>
 
@@ -63,9 +82,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={authState as AuthState}>
+      <AuthContext.Provider value={authContext}>
         <SpotifyContext.Provider value={spotify}>
-          {(authState as AuthState).isLoggedIn ? app : <WelcomePage />}
+          {app}
           <ToastContainer
             position={"bottom-right"}
             autoClose={2000}

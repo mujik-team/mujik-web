@@ -11,7 +11,7 @@ function SongBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
   const [isAsc, setIsAsc] = useState(false);
   const spotifyContext = useContext(SpotifyContext);
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [selectedSong, setSelectedSong] = useState(-1);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function SongBrowser(props: Props) {
     // },
   ] as any[];
 
-  if (authContext.currentUser.username === props.mixtape.createdBy) {
+  if (user.username === props.mixtape.createdBy) {
     items.push({
       label: "Remove Song",
       icon: "mdi mdi-minus",
@@ -93,7 +93,7 @@ function SongBrowser(props: Props) {
     });
   }
 
-  if (authContext.currentUser.username === props.mixtape.createdBy) {
+  if (user.username === props.mixtape.createdBy) {
     items.push({
       label: "Move Up",
       icon: "mdi mdi-arrow-up-bold",
@@ -101,7 +101,7 @@ function SongBrowser(props: Props) {
     });
   }
 
-  if (authContext.currentUser.username === props.mixtape.createdBy) {
+  if (user.username === props.mixtape.createdBy) {
     items.push({
       label: "Move Down",
       icon: "mdi mdi-arrow-down-bold",

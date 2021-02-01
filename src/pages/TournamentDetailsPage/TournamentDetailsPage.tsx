@@ -24,7 +24,7 @@ function TournamentDetails() {
     updateTournament,
   } = useTournament(tournamentId);
   const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const history = useHistory();
 
   const bottomComponent = () => {
@@ -50,20 +50,18 @@ function TournamentDetails() {
   const TournamentComponent = () => {
     if (tournament) {
       const rewardAmount = tournament.Rewards ? tournament.Rewards[0].Value : 0;
-      const ownedByLoggedIn =
-        tournament.CreatedBy === authContext.currentUser.username;
+      const ownedByLoggedIn = tournament.CreatedBy === user.username;
 
-      const userIsFollowing = authContext.currentUser.profile.tournamentsFollowing.includes(
-        tournament._id
-      );
+      // const userIsFollowing = user.profile.tournamentsFollowing.has(
+      //   tournament._id
+      // );
 
       const handleFollowTournament = async () => {
-        if (authContext.isLoggedIn) {
-          try {
-            await FollowTournament(tournament._id, !userIsFollowing);
-            authContext.update();
-          } catch (err) {}
-        }
+        try {
+          // await FollowTournament(tournament._id, !userIsFollowing);
+          // TODO User Update
+          // authContext.update();
+        } catch (err) {}
       };
 
       return (
@@ -99,7 +97,7 @@ function TournamentDetails() {
 
                 <div className="user-actions">
                   <Button id="follow-button" onClick={handleFollowTournament}>
-                    {userIsFollowing ? "UNFOLLOW" : "FOLLOW"}
+                    {true ? "UNFOLLOW" : "FOLLOW"}
                   </Button>
 
                   {ownedByLoggedIn && (
