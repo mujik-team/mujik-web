@@ -7,9 +7,16 @@ import TextInput from "../../components/Input/TextInput";
 import SideModal from "../../components/SideModal";
 import RegisterModal from "./components/RegisterModal";
 import ResetCredentialsModal from "./components/ResetCredentialsModal";
+import { useHistory } from "react-router-dom";
 
 function LoginPage() {
   const { actions } = useContext(AuthContext);
+  const history = useHistory();
+
+  const handleLogin = async () => {
+    await actions.login(username, password);
+    history.push("/home");
+  };
 
   const toggleRegisterModal = () => {
     setModalToShow(0);
@@ -71,13 +78,7 @@ function LoginPage() {
         .
       </div>
       <div style={{ marginLeft: "50px" }}>
-        <LoginButton
-          onClick={async () => {
-            await actions.login(username, password);
-          }}
-        >
-          Login
-        </LoginButton>
+        <LoginButton onClick={handleLogin}>Login</LoginButton>
         <LoginButton onClick={() => toggleRegisterModal()}>
           Register
         </LoginButton>
