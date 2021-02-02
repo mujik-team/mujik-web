@@ -40,12 +40,13 @@ function App() {
   const app = (
     <AppContainer>
       {/* <AppHeader /> */}
+
+      <Navbar />
       <Switch>
         <Route path="/" exact component={LandingPage} />
         <Route path="/login" component={LoginPage} />
 
         <RouterContainer>
-          <Navbar />
           <ProtectedRoute path="/home" exact component={HomePage} />
           <ProtectedRoute path="/library" component={LibraryPage} />
           <ProtectedRoute path="/tournament" exact component={TournamentPage} />
@@ -83,7 +84,7 @@ function App() {
     <BrowserRouter>
       <AuthContext.Provider value={authContext}>
         <SpotifyContext.Provider value={spotify}>
-          {app}
+          {authContext.state.isAuthenticating ? null : app}
           <ToastContainer
             position={"bottom-right"}
             autoClose={2000}
