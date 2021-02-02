@@ -22,8 +22,8 @@ export function ParseUserFromJSON(json: any): User {
   // Maps need to converted.
   user.profile.mixtapes = ObjectToMap(user.profile.mixtapes);
   user.profile.mixtapesFollowing = ObjectToMap(user.profile.mixtapesFollowing);
-  user.profile.followers = ObjectToMap(json.followers);
-  user.profile.following = ObjectToMap(json.following);
+  user.profile.followers = ObjectToMap(json.profile.followers);
+  user.profile.following = ObjectToMap(json.profile.following);
 
   return user;
 }
