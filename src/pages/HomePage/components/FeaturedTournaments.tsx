@@ -10,9 +10,9 @@ function FeaturedTournaments() {
   const [tournaments, setTournaments] = useState([] as any[]);
 
   useEffect(() => {
-    GetFeaturedTournaments().then((t) =>
-      setTournaments([...t.filter((t: any) => t !== null)])
-    );
+    // GetFeaturedTournaments().then((t) =>
+    //   setTournaments([...t.filter((t: any) => t !== null)])
+    // );
   }, []);
 
   const getTournamentCard = (tourney: any) => {

@@ -12,12 +12,12 @@ function TournamentPage() {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = useState("");
   const [tournaments, setTournaments] = useState([] as any[]);
-  const [filter, setFilter] = useState("Open")
+  const [filter, setFilter] = useState("Open");
 
   useEffect(() => {
-    GetAllActiveTournaments().then((tournaments) =>
-      setTournaments([...tournaments.reverse()])
-    );
+    // GetAllActiveTournaments().then((tournaments) =>
+    //   setTournaments([...tournaments.reverse()])
+    // );
   }, []);
 
   const getTournamentState = (t: any) => {
@@ -25,32 +25,34 @@ function TournamentPage() {
     const voteDate = Date.parse(t.VoteDate);
     const now = new Date().getTime();
     if (now < submissionDate) {
-      return "Open"
+      return "Open";
     } else if (now > submissionDate && now < voteDate) {
-      return "Vote"
+      return "Vote";
     } else {
-      return "Ended"
+      return "Ended";
     }
   };
 
   const filteredTournaments = useMemo(
     () =>
-      tournaments.filter((t) =>
-        t.Title.toLowerCase().includes(searchTerm.toLowerCase())
-      ).filter((t) => getTournamentState(t) === filter),
+      tournaments
+        .filter((t) => t.Title.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter((t) => getTournamentState(t) === filter),
     [tournaments, searchTerm, filter]
   );
-
-
 
   const headerBrowser = (
     <div style={{ marginBottom: "30px" }}>
       <span className={styles.title}>Tournaments</span>
       <span style={{ marginLeft: "30px" }}>
-        {tabs.map((t) => (  
-          <span className={`tab-title  ${filter === t && "active"}`} onClick={() => setFilter(t)}>{t}</span>
-          )
-        )}
+        {tabs.map((t) => (
+          <span
+            className={`tab-title  ${filter === t && "active"}`}
+            onClick={() => setFilter(t)}
+          >
+            {t}
+          </span>
+        ))}
       </span>
     </div>
   );

@@ -11,12 +11,12 @@ function HomePage() {
   const [featuredUsers, setFeaturedUsers] = useState([] as any[]);
 
   useEffect(() => {
-    GetFeaturedMixtapes().then((m) =>
-      setFeaturedMixtapes([...m.filter((m: any) => m !== null)])
-    );
-    GetFeaturedUsers().then((u) =>
-      setFeaturedUsers([...u.filter((u: any) => u !== null)])
-    );
+    // GetFeaturedMixtapes().then((m) =>
+    //   setFeaturedMixtapes([...m.filter((m: any) => m !== null)])
+    // );
+    // GetFeaturedUsers().then((u) =>
+    //   setFeaturedUsers([...u.filter((u: any) => u !== null)])
+    // );
   }, []);
 
   const mixtapeCards = useMemo(() => {
