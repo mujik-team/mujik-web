@@ -9,9 +9,7 @@ import VoteSuccessModal from "./VoteSuccessModal";
 import DropdownSelect from "../../../../components/Input/DropdownSelect";
 import TextInput from "../../../../components/Input/TextInput";
 import { toast } from "react-toastify";
-import * as MixtapeService from "../../../../services/mixtapeService";
 import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
-import { VoteForMixtape } from "../../../../services/tournamentService";
 import { AuthContext } from "../../../../App";
 import { sleep } from "../../../../services/util";
 

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import ImageEditor from "../../../components/ImageEditor";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
-import { UploadTournamentImage } from "../../../services/tournamentService";
 
 function EditTournamentDetailsModal(props: Props) {
   const { Title, Description, _id, tournamentImage } = props.tournament;

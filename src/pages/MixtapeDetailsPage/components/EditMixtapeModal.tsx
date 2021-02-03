@@ -6,7 +6,6 @@ import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import ImageEditor from "../../../components/ImageEditor";
 import { toast } from "react-toastify";
-import { uploadMixtapeImage } from "../../../services/mixtapeService";
 
 function EditMixtapeModal(props: Props) {
   const mixtape = props.mixtape;

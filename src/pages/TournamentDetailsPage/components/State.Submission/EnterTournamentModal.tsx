@@ -3,7 +3,6 @@ import styled from "styled-components";
 import TextInput from "../../../../components/Input/TextInput";
 import styles from "./EnterTournamentModal.module.css";
 import { AuthContext } from "../../../../App";
-import * as mixtapeService from "../../../../services/mixtapeService";
 import Button from "../../../../components/Button";
 import { Checkbox } from "primereact/checkbox";
 import { SpotifyContext } from "../../../../App";

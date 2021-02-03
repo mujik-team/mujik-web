@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { AuthContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
-import * as mixtapeService from "../../../services/mixtapeService";
 import { Dialog } from "primereact/dialog";
 import { Button as PrimeReactButton } from "primereact/button";
 import NewMixtapeModal from "../../LibraryPage/components/NewMixtapeModal";

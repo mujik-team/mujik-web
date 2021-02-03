@@ -6,7 +6,6 @@ import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
 import { AvailableRestrictions } from "../../../CreateTournamentPage/components/RestrictionSelector";
 import { AuthContext } from "../../../../App";
-import { SubmitMixtapeToTournament } from "../../../../services/tournamentService";
 import { toast } from "react-toastify";
 
 function TournamentSubmission(props: any) {

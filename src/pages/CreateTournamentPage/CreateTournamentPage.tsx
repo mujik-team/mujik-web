@@ -10,10 +10,6 @@ import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import RestrictionSelector from "./components/RestrictionSelector";
 import { FormState, reducer, validateForm } from "./FormService";
-import {
-  CreateNewTournament,
-  UploadTournamentImage,
-} from "../../services/tournamentService";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 

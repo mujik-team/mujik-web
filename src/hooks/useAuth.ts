@@ -58,7 +58,7 @@ function useAuth() {
 
   const updateUser = async (u: User) => {
     const updatedUser = { ...user, ...u };
-    setUser(updatedUser);
+    setUser({ ...updatedUser });
     await api.user.UpdateUser(user.username, updatedUser);
   };
 

@@ -9,7 +9,6 @@ import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 // import mixtapes from "../../services/mock/mixtapes";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import * as mixtapeService from "../../services/mixtapeService";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../App";
 import api from "../../services/api/apiService";

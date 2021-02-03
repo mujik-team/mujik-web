@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import * as TournamentService from "../services/tournamentService";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../App";
+import { Tournament } from "../model/Tournament";
 import { getImageToBase64 } from "../services/util";
 
 function useTournament(id: string) {
-  const [tournament, setTournament] = useState({} as any);
+  const { api } = useContext(AuthContext);
+  const [tournament, setTournament] = useState({} as Tournament);
   const [isLoading, setIsLoading] = useState(true);
 
   const [tournamentImage, setTournamentImage] = useState("" as any);
@@ -13,22 +15,21 @@ function useTournament(id: string) {
   }, [id]);
 
   useEffect(() => {
-    if (tournament?._id)
-      getImageToBase64(`/tournament/${id}/cover`).then((image) =>
-        setTournamentImage(image || "")
-      );
+    getImageToBase64(`/tournament/${id}/cover`).then((image) =>
+      setTournamentImage(image || "")
+    );
   }, [tournament]);
 
   const getTournament = async () => {
-    const tournament = await TournamentService.GetTournament(id);
-    setTournament(tournament);
+    setIsLoading(true);
+    setTournament(await api.tournament.GetTournament(id));
     setIsLoading(false);
   };
 
   const updateTournament = async (updatedTournament: any) => {
     delete updatedTournament.tournamentImage;
     setTournament({ ...tournament, ...updatedTournament });
-    await TournamentService.UpdateTournament(id, updatedTournament);
+    await api.tournament.UpdateTournament(updatedTournament);
   };
 
   return {

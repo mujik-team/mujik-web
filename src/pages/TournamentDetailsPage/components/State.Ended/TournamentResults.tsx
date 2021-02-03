@@ -6,8 +6,6 @@ import { AuthContext } from "../../../../App";
 import AvatarImage from "../../../../components/AvatarImage";
 import TextInput from "../../../../components/Input/TextInput";
 import MixtapeBrowser from "../../../../components/MixtapeBrowser/MixtapeBrowser";
-import { GetSeveralMixtapes } from "../../../../services/mixtapeService";
-import { RedeemRewards } from "../../../../services/tournamentService";
 
 function TournamentResults(props: Props) {
   const [mixtapes, setMixtapes] = useState([] as any[]);
@@ -20,9 +18,9 @@ function TournamentResults(props: Props) {
       const mixtapeIds = Object.values(props.tournament.Submissions).map(
         (s: any) => s.MixtapeId
       );
-      GetSeveralMixtapes([...mixtapeIds]).then((mixtapes) =>
-        setMixtapes([...mixtapes.filter((m) => m != null)])
-      );
+      // GetSeveralMixtapes([...mixtapeIds]).then((mixtapes) =>
+      //   setMixtapes([...mixtapes.filter((m) => m != null)])
+      // );
     }
   }, [props.tournament]);
 
