@@ -8,11 +8,11 @@ function useAuth() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [user, setUser] = useState({} as User);
 
-  // Check if user is logged in.
   useEffect(() => {
     isLoggedIn();
   }, []);
 
+  // Check if user is logged in.
   const isLoggedIn = async () => {
     setIsAuthenticating(true);
 
@@ -30,6 +30,7 @@ function useAuth() {
     setIsAuthenticating(false);
   };
 
+  // Login User.
   const login = async (u: string, p: string) => {
     try {
       setIsAuthenticating(true);
@@ -48,16 +49,29 @@ function useAuth() {
     setIsAuthenticating(false);
   };
 
+  // End User session.
   const logout = () => {
     localStorage.removeItem("token");
     delete apiInstance.defaults.headers["Authorization"];
     setIsAuthenticated(false);
   };
 
+  const updateUser = async (u: User) => {
+    const updatedUser = { ...user, ...u };
+    setUser(updatedUser);
+    await api.user.UpdateUser(user.username, updatedUser);
+  };
+
+  const refreshUser = async () => {
+    const refreshedUser = await api.user.GetUser(user.username);
+    setUser(refreshedUser);
+  };
+
   return {
     state: { isAuthenticated, isAuthenticating },
-    actions: { login, logout },
+    actions: { login, logout, updateUser, refreshUser },
     user,
+    api,
   };
 }
 
