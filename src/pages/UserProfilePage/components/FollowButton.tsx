@@ -2,21 +2,19 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import Button from "../../../components/Button";
-import { api } from "../../../services/api";
+
+import api from "../../../services/api/apiService";
 
 function FollowButton(props: Props) {
-  const { user } = useContext(AuthContext);
+  const { user, actions } = useContext(AuthContext);
 
   const isFollowing = user.profile.following.has(props.username);
 
   const isCurrentUser = user.username === props.username;
 
   const followUser = async () => {
-    await api.post("/user/follow", {
-      username: props.username,
-      follow: !isFollowing,
-    });
-    props.update();
+    await api.user.FollowUser(props.username, !isFollowing);
+    await actions.refreshUser();
   };
 
   return isCurrentUser ? null : (
@@ -35,5 +33,4 @@ const FButton = styled(Button)`
 
 type Props = {
   username: string;
-  update: any;
 };

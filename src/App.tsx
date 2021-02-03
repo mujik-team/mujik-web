@@ -39,14 +39,13 @@ function App() {
 
   const app = (
     <AppContainer>
-      {/* <AppHeader /> */}
-
       <Navbar />
       <Switch>
         <Route path="/" exact component={LandingPage} />
         <Route path="/login" component={LoginPage} />
 
         <RouterContainer>
+          <AppHeader />
           <ProtectedRoute path="/home" exact component={HomePage} />
           <ProtectedRoute path="/library" component={LibraryPage} />
           <ProtectedRoute path="/tournament" exact component={TournamentPage} />

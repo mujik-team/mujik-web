@@ -1,35 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { AuthContext } from "../../../App";
 import ImageEditor from "../../../components/ImageEditor";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
-import { api } from "../../../services/api";
 
 function EditProfileDetailsModal(props: Props) {
-  const [userProfile, setUserProfile] = useState(props.user.profile);
-  const [userAvatar, setUserAvatar] = useState(null);
+  const { user, actions, api } = useContext(AuthContext);
+
+  const [userProfile, setUserProfile] = useState(user.profile);
+  const [userAvatar, setUserAvatar] = useState(null as any);
 
   const saveChanges = async () => {
-    const updatedUser = props.user;
+    const updatedUser = user;
     updatedUser.profile = userProfile;
 
     // If the user has changed the avatar update it.
     if (userAvatar) {
-      const formData = new FormData();
-      formData.append("avatar", userAvatar!);
-      await api.post("/upload/avatar", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await api.user.UploadUserProfilePicture(userAvatar);
       toast.dark("✨ Updated user profile image.");
       // Clear current image.
       setUserAvatar(null);
     }
 
-    await props.updateUser(updatedUser);
+    await actions.updateUser(updatedUser);
     props.toggle();
   };
 
@@ -46,7 +42,7 @@ function EditProfileDetailsModal(props: Props) {
           editorType="avatar"
           imageUrl={props.profilePicture}
         />
-        <Username>{props.user.username}</Username>
+        <Username>{user.username}</Username>
 
         <FormContainer>
           <FormTitle>About Me</FormTitle>
@@ -59,20 +55,20 @@ function EditProfileDetailsModal(props: Props) {
           />
 
           <FormTitle>Favorite Artists</FormTitle>
-          <TagInput
+          {/* <TagInput
             value={userProfile.favArtist}
             onChange={(e: any) =>
               setUserProfile({ ...userProfile, favArtist: e.value })
             }
-          />
+          /> */}
 
           <FormTitle>Favorite Genres</FormTitle>
-          <TagInput
+          {/* <TagInput
             value={userProfile.favGenre}
             onChange={(e: any) =>
               setUserProfile({ ...userProfile, favGenre: e.value })
             }
-          />
+          /> */}
         </FormContainer>
       </Container>
       <SaveChangesButton onClick={() => saveChanges()}>
@@ -86,9 +82,7 @@ export default EditProfileDetailsModal;
 
 type Props = {
   profilePicture: string;
-  user: any;
-  updateUser: (updatedUser: any) => Promise<void>;
-  toggle: any;
+  toggle: () => void;
 };
 
 const Container = styled.div`

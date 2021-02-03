@@ -17,8 +17,8 @@ function Navbar() {
       <br />
       <br />
       <NavItem
-        onClick={() => history.push("/")}
-        className={`${location.pathname === "/" ? "active" : ""}`}
+        onClick={() => history.push("/home")}
+        className={`${location.pathname === "/home" ? "active" : ""}`}
       >
         <span className={`mdi mdi-home`}></span>
         Home

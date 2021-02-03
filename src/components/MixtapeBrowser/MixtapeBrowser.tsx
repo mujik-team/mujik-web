@@ -43,17 +43,17 @@ function MixtapeBrowser(props: Props) {
 
     const mixtapeItems = mixtapesToShow?.map((m, i) => {
       return isCardLayout ? (
-        <MixtapeCard key={i} mixtapeId={m._id} mixtapeName={m.mixtapeName} />
+        <MixtapeCard key={i} mixtapeId={m.id} mixtapeName={m.title} />
       ) : (
         <MixtapeListItem
           key={i}
-          mixtapeId={m._id}
-          mixtapeName={m.mixtapeName}
+          mixtapeId={m.id}
+          mixtapeName={m.title}
           mixtape={m}
         >
           <div className="mixtape-image" />
           <div className="mixtape-details">
-            <h2>{m.mixtapeName || "Untitled Mixtape"}</h2>
+            <h2>{m.title || "Untitled Mixtape"}</h2>
             <div>{m.description || "This mixtape has no description."}</div>
           </div>
         </MixtapeListItem>

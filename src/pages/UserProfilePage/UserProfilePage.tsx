@@ -6,88 +6,77 @@ import AvatarImage from "../../components/AvatarImage";
 import Loader from "../../components/Loader";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import useUser from "../../hooks/useUser";
+import { User } from "../../model/User";
 import { GetSeveralMixtapes } from "../../services/mixtapeService";
 import { WinnerCard } from "../TournamentDetailsPage/components/State.Ended/TournamentResults";
 import ProfileDetails from "./components/ProfileDetails";
 
 function UserProfileScreen() {
   const { username } = useParams() as any;
-  const authContext = useContext(AuthContext);
-  const history = useHistory();
   const [mixtapes, setMixtapes] = useState([] as any[]);
-  const [user, getUser, setUser, updateUser, isLoading] = useUser(username);
-
-  const update = () => {
-    getUser();
-    // authContext.update();
-  };
+  const { user, isLoading } = useUser(username);
 
   useEffect(() => {
-    if (user && user.profile.mixtapes.length !== 0) {
-      GetSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
-        const mixtapesToShow = userMixtapes
-          .filter((m) => m !== null)
-          .filter((m) => !m.isPrivate && m.createdBy === user.username);
-        setMixtapes([...mixtapesToShow]);
-      });
-    }
+    // if (user && user.profile.mixtapes.size !== 0) {
+    // GetSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
+    //   const mixtapesToShow = userMixtapes
+    //     .filter((m) => m !== null)
+    //     .filter((m) => !m.isPrivate && m.createdBy === user.username);
+    //   setMixtapes([...mixtapesToShow]);
+    // });
+    // }
   }, [user]);
 
-  const winnerCards = useMemo(() => {
-    if (user) {
-      const wins = user.profile.tournamentsWon;
-      const numWon = Object.keys(wins).length;
+  // const winnerCards = useMemo(() => {
+  //   if (user) {
+  //     const wins = user.profile.tournamentsWon;
+  //     const numWon = Object.keys(wins).length;
 
-      if (numWon > 0) {
-        // Get most recent 3 wins
-        const cards = Object.keys(wins)
-          .slice(Math.max(numWon - 5, 0))
-          .map((k, i) => {
-            const data = wins[k];
-            return (
-              <WinnerCard
-                strokeColor={cardStrokes[data.Placement - 1]}
-                key={i}
-                onClick={() => history.push(`/tournament/${k}`)}
-              >
-                {/* <AvatarImage username={s.CreatedBy} size={100} /> */}
-                <div className="details">
-                  <div className="tourney-title">{data.Title}</div>
-                  {/* <div className="num-votes">{`Received ${s.NumVotes} Votes`}</div> */}
-                </div>
+  //     if (numWon > 0) {
+  //       // Get most recent 3 wins
+  //       const cards = Object.keys(wins)
+  //         .slice(Math.max(numWon - 5, 0))
+  //         .map((k, i) => {
+  //           const data = wins[k];
+  //           return (
+  //             <WinnerCard
+  //               strokeColor={cardStrokes[data.Placement - 1]}
+  //               key={i}
+  //               onClick={() => history.push(`/tournament/${k}`)}
+  //             >
+  //               {/* <AvatarImage username={s.CreatedBy} size={100} /> */}
+  //               <div className="details">
+  //                 <div className="tourney-title">{data.Title}</div>
+  //                 {/* <div className="num-votes">{`Received ${s.NumVotes} Votes`}</div> */}
+  //               </div>
 
-                <img
-                  src={`/images/medals/medal-${data.Placement}.svg`}
-                  height={80}
-                  alt={`${i} Place`}
-                  className="medal"
-                />
-              </WinnerCard>
-            );
-          });
+  //               <img
+  //                 src={`/images/medals/medal-${data.Placement}.svg`}
+  //                 height={80}
+  //                 alt={`${i} Place`}
+  //                 className="medal"
+  //               />
+  //             </WinnerCard>
+  //           );
+  //         });
 
-        return cards;
-      } else {
-        return <div className="none-msg">None... yet!</div>;
-      }
-    }
-  }, [user]);
+  //       return cards;
+  //     } else {
+  //       return <div className="none-msg">None... yet!</div>;
+  //     }
+  //   }
+  // }, [user]);
 
   const ProfilePageComponent = () => {
     if (user !== null) {
       return (
         <Container>
-          <ProfileDetails
-            user={user as any}
-            update={update}
-            updateUser={updateUser}
-            isLoading={isLoading}
-          />
+          <ProfileDetails user={user as User} isLoading={isLoading} />
           <UserContentContainer>
             <MixtapeBrowser mixtapes={mixtapes} />
             <TournamentWins>
               <span className="title">Tournament Wins</span>
-              {winnerCards}
+              {/* {winnerCards} */}
             </TournamentWins>
           </UserContentContainer>
         </Container>

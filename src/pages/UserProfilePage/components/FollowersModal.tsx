@@ -2,32 +2,26 @@ import React from "react";
 import styled from "styled-components";
 import AvatarImage from "../../../components/AvatarImage";
 
-
 function FollowersModal(props: any) {
-
   console.log(props.profile);
-  console.log(props.followers)
+  console.log(props.followers);
 
-  const follow = props.profile.map((user: any) => (
-    <Follower>
-      <div style={{paddingTop: "12px"}}><AvatarImage username={user} size={50}/></div>
-      <Username>{user}</Username>
-    </Follower>
-  ));
+  // const follow = props.profile.map((user: any) => (
+  //   <Follower>
+  //     <div style={{paddingTop: "12px"}}><AvatarImage username={user} size={50}/></div>
+  //     <Username>{user}</Username>
+  //   </Follower>
+  // ));
 
   return (
     <div>
-      <Heading>
-      {props.followers ? "Followers" : "Following"}
-      </Heading>
-      {follow}
+      <Heading>{props.followers ? "Followers" : "Following"}</Heading>
+      {/* {follow} */}
     </div>
-  )
-
+  );
 }
 
 export default FollowersModal;
-
 
 const Heading = styled.div`
   margin: auto;

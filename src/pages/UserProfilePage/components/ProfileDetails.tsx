@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import SideModal from "../../../components/SideModal";
-import { api } from "../../../services/api";
+import { User } from "../../../model/User";
 import { getImageToBase64 } from "../../../services/util";
 import EditUserProfileDetailsModal from "./EditProfileDetailsModal";
 import FollowButton from "./FollowButton";
@@ -41,15 +41,13 @@ function ProfileDetails(props: Props) {
 
   return (
     <div>
-      {props.isLoading || !props.user ? (
+      {props.isLoading ? (
         "Loading"
       ) : (
         <Container>
           <SideModal isActive={showEditProfile} toggle={toggleEditProfile}>
             <EditUserProfileDetailsModal
               profilePicture={profilePicture}
-              user={props.user}
-              updateUser={props.updateUser}
               toggle={toggleEditProfile}
             />
           </SideModal>
@@ -87,17 +85,14 @@ function ProfileDetails(props: Props) {
               )}
             </Username>
             <FollowDetails onClick={() => toggleShowFollowers()}>
-              <span className="num">{props.user.profile.totalFollowers}</span>
+              <span className="num">{props.user.profile.followers.size}</span>
               <span>Followers</span>
             </FollowDetails>
             <FollowDetails onClick={() => toggleShowFollowing()}>
-              <span className="num">{props.user.profile.totalFollowing}</span>
+              <span className="num">{props.user.profile.following.size}</span>
               <span>Following</span>
             </FollowDetails>
-            <FollowButton
-              username={props.user.username}
-              update={props.update}
-            />
+            <FollowButton username={props.user.username} />
             <UserBio>
               {props.user.profile.bio
                 ? props.user.profile.bio
@@ -105,7 +100,7 @@ function ProfileDetails(props: Props) {
             </UserBio>
           </DetailsContainer>
 
-          <TagsContainer>
+          {/* <TagsContainer>
             <div>
               <TagTitle>Favorite Artists</TagTitle>
               {props.user.profile.favArtist.length > 0 ? (
@@ -124,7 +119,7 @@ function ProfileDetails(props: Props) {
                 <Tag>No Favorite Genres</Tag>
               )}
             </div>
-          </TagsContainer>
+          </TagsContainer> */}
         </Container>
       )}
     </div>
@@ -134,10 +129,8 @@ function ProfileDetails(props: Props) {
 export default ProfileDetails;
 
 type Props = {
-  user: any;
+  user: User;
   isLoading: boolean;
-  update: () => any;
-  updateUser: (updatedUser: any) => Promise<any>;
 };
 
 const Container = styled.div`

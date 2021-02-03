@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as mixtapeService from "../services/mixtapeService";
+import api from "../services/api/apiService";
 import { getImageToBase64 } from "../services/util";
 
 function useMixtape(id: string) {
@@ -9,8 +9,9 @@ function useMixtape(id: string) {
 
   const getMixtape = async () => {
     try {
-      const doc = await mixtapeService.getMixtape(id);
-      setMixtape(doc);
+      const mixtape = await api.mixtape.GetMixtape(id);
+
+      setMixtape(mixtape);
     } catch (err) {}
 
     setIsLoading(false);
@@ -19,13 +20,13 @@ function useMixtape(id: string) {
   const updateMixtape = async (updatedMixtape: any) => {
     delete updatedMixtape.mixtapeCoverImage;
     setMixtape({ ...mixtape, ...updatedMixtape });
-    await mixtapeService.updateMixtape(id, updatedMixtape);
+    await api.mixtape.UpdateMixtape(updatedMixtape);
   };
 
   // This effect retrieves the mixtape's cover image.
   useEffect(() => {
     if (mixtape?._id) {
-      getImageToBase64(`/mixtape/${mixtape._id}/cover`).then((image) =>
+      getImageToBase64(`/mixtape/${mixtape.id}/cover`).then((image) =>
         setMixtapeCoverImage(image || "")
       );
     }

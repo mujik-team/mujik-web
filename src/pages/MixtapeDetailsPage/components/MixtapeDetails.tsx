@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import AvatarImage from "../../../components/AvatarImage";
 import SideModal from "../../../components/SideModal";
+import { Mixtape } from "../../../model/Mixtape";
 import AddSongModal from "./AddSongModal";
 import EditMixtapeModal from "./EditMixtapeModal";
 import MixtapeActions from "./MixtapeActions";
@@ -11,7 +12,7 @@ function MixtapeDetails(props: Props) {
   const [showModal, setShowModal] = useState(false);
   const [modalToShow, setModalToShow] = useState(0);
   const history = useHistory();
-  const mixtape = props.mixtape;
+  const mixtape = props.mixtape as Mixtape;
 
   const toggleAddSongsModal = () => {
     setModalToShow(0);
@@ -48,18 +49,16 @@ function MixtapeDetails(props: Props) {
       <SideModal width={600} toggle={toggleModal} isActive={showModal}>
         {modals[modalToShow]}
       </SideModal>
-      <Title>{mixtape.mixtapeName}</Title>
+      <Title>{mixtape.title}</Title>
       <div style={{ height: "50px" }}>
         {/* <CreatedByAvatar /> */}
         <AvatarImage username={mixtape.createdBy} size={50} />
         <Username onClick={() => history.push(`/user/${mixtape.createdBy}`)}>
           {mixtape.createdBy}
         </Username>
-        <Pill>{mixtape.songs.length} Songs</Pill>
+        {/* <Pill>{mixtape.songs.length} Songs</Pill> */}
         {/* <Pill>7hr 23min</Pill> */}
-        <Pill>
-          <span>{mixtape.followers}</span>Followers
-        </Pill>
+        <Pill>{/* <span>{mixtape.}</span>Followers */}</Pill>
       </div>
       <Description>{mixtape.description}</Description>
       <MixtapeActions
@@ -67,14 +66,14 @@ function MixtapeDetails(props: Props) {
         showAddSongModal={toggleAddSongsModal}
         mixtape={mixtape}
       />
-      <TagsContainer>
+      {/* <TagsContainer>
         <div>
           <TagTitle>{props.mixtape.tags.length ? "Tags" : ""}</TagTitle>
           {props.mixtape.tags?.map((a: string) => (
             <Tag>{a}</Tag>
           ))}
         </div>
-      </TagsContainer>
+      </TagsContainer> */}
     </Container>
   );
 }

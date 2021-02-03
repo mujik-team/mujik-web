@@ -9,9 +9,7 @@ import Loader from "../../components/Loader";
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
-  const { mixtape, updateMixtape, isLoading, setMixtape } = useMixtape(
-    mixtapeId
-  );
+  const { mixtape, updateMixtape, isLoading } = useMixtape(mixtapeId);
   const [sortBy, setSortBy] = useState("");
   const spotifyContext = useContext(SpotifyContext);
   const [songs, setSongs] = useState([] as any[]);
@@ -44,7 +42,7 @@ function MixtapeDetailsPage() {
   };
 
   const MixtapeDetailsComponent = () => {
-    if (mixtape !== null && mixtape._id) {
+    if (mixtape !== null) {
       return (
         <div>
           <Container>
