@@ -6,6 +6,7 @@ import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import { AuthContext } from "../../../App";
 import ImageEditor from "../../../components/ImageEditor";
+import { Mixtape } from "../../../model/Mixtape";
 
 function NewMixtapeModal(props: Props) {
   const [tags, setTags] = useState([] as any[]);
@@ -16,11 +17,14 @@ function NewMixtapeModal(props: Props) {
   const [mixtapeImage, setMixtapeImage] = useState("");
 
   const createNewMixtape = async () => {
-    const mixtape = {
-      mixtapeName: title || "Untitled Mixtape",
+    const mixtape: Mixtape = {
+      id: "",
+      title: title || "Untitled Mixtape",
       description: description || "No description added.",
-      tags,
+      lastUpdated: new Date(),
+      // tags,
       isPrivate,
+      songs: [],
       createdBy: user.username,
     };
 
@@ -126,14 +130,4 @@ const CreateMixtapeButton = styled.div`
     background-color: var(--main-color);
     color: black;
   }
-`;
-
-const MixtapeCoverImage = styled.div`
-  background-color: var(--card-color);
-  margin: auto;
-  width: 250px;
-  height: 250px;
-  border-radius: 8px;
-  margin-bottom: 50px;
-  /* box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.212); */
 `;

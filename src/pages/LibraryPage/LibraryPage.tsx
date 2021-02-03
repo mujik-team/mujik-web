@@ -12,12 +12,13 @@ import Button from "../../components/Button";
 import * as mixtapeService from "../../services/mixtapeService";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../App";
+import api from "../../services/api/apiService";
+import { Mixtape } from "../../model/Mixtape";
 
 const tabs = ["All", "By Me", "By Others"];
 function LibraryPage() {
   const history = useHistory();
   const { user, state } = useContext(AuthContext);
-  const { isAuthenticated, isAuthenticating } = state;
   const [sortBy, setSortBy] = useState("");
 
   const [mixtapes, setMixtapes] = useState([] as any[]);
@@ -26,10 +27,8 @@ function LibraryPage() {
   const [currentTab, setCurrentTab] = useState("All");
 
   const getUserMixtapes = async () => {
-    const mixtapeIds = Array.from(user.profile.mixtapes.keys());
-    const userMixtapes = await mixtapeService.GetSeveralMixtapes(mixtapeIds);
-
-    setMixtapes([...userMixtapes.filter((m) => m !== null)]);
+    const userMixtapes = await api.mixtape.GetUserMixtapes(user.username);
+    setMixtapes([...userMixtapes]);
   };
 
   const filterTag = async (event: any) => {
@@ -63,17 +62,16 @@ function LibraryPage() {
     }
   };
 
-  const createNewMixtape = async (mixtape: any, imageBlob?: any) => {
+  const createNewMixtape = async (mixtape: Mixtape, imageBlob?: any) => {
     try {
-      const newMixtape = await mixtapeService.createNewMixtape(mixtape);
+      const newMixtape = await api.mixtape.CreateMixtape(mixtape);
 
       // Upload mixtape image if it exists.
-      if (imageBlob)
-        await mixtapeService.uploadMixtapeImage(newMixtape._id, imageBlob);
+      if (imageBlob) {
+        await api.mixtape.UploadMixtapeImage(newMixtape.id, imageBlob);
+      }
 
-      // TODO Update User
-      // authContext.update();
-      history.push(`/mixtape/${newMixtape._id}`);
+      history.push(`/mixtape/${newMixtape.id}`);
       toast.dark("🎵 Created new mixtape");
     } catch (err) {
       toast.error("🤔 Unable to create new mixtape.");
@@ -162,7 +160,7 @@ function LibraryPage() {
           <MixtapeBrowser
             LeftHeaderContent={LeftHeader}
             mixtapes={mixtapes.filter((m) =>
-              m.mixtapeName.toLowerCase().includes(searchTerm.toLowerCase())
+              m.title.toLowerCase().includes(searchTerm.toLowerCase())
             )}
           />
         </div>
