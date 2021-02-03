@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../services/api";
+import { User } from "../model/User";
+import api from "../services/api/apiService";
 
 function useUser(username: string) {
-  const [user, setUser] = useState(null as any);
+  const [user, setUser] = useState({} as User);
   const [isLoading, setIsLoading] = useState(true);
 
   const getUser = async () => {
+    setIsLoading(true);
     try {
-      const { data } = await api.get(`/user/${username}`);
-      setUser(data.payload.user);
+      const user = await api.user.GetUser(username);
+      setUser(user);
     } catch (err) {}
-    setIsLoading(false);
-  };
-
-  const updateUser = async (updatedUser: any) => {
-    const { data } = await api.put(`/user/${username}`, { user: updatedUser });
-    setUser(data.payload.user);
     setIsLoading(false);
   };
 
   // Retrieve user.
   useEffect(() => {
     getUser();
-    setIsLoading(true);
   }, [username]);
 
-  return [user, getUser, setUser, updateUser, isLoading];
+  return {
+    user,
+    isLoading,
+  };
 }
 
 export default useUser;
