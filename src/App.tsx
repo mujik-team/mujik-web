@@ -39,43 +39,49 @@ function App() {
 
   const app = (
     <AppContainer>
-      <Navbar />
       <Switch>
         <Route path="/" exact component={LandingPage} />
         <Route path="/login" component={LoginPage} />
 
         <RouterContainer>
-          <AppHeader />
-          <ProtectedRoute path="/home" exact component={HomePage} />
-          <ProtectedRoute path="/library" component={LibraryPage} />
-          <ProtectedRoute path="/tournament" exact component={TournamentPage} />
-          <ProtectedRoute
-            path="/mixtape/:mixtapeId"
-            component={MixtapeDetailsPage}
-          />
-          <ProtectedRoute
-            path="/tournament/new"
-            component={CreateTournamentPage}
-          />
-          <ProtectedRoute
-            path="/tournament/:tournamentId"
-            component={TournamentDetails}
-          />
-          <ProtectedRoute path="/rewards" component={RewardsPage} />
-          <ProtectedRoute
-            path="/user/:username"
-            component={UserProfileScreen}
-          />
-          <ProtectedRoute
-            path="/spotify/authorize"
-            component={SpotifyLoginPage}
-          />
+          <Navbar />
+          <div>
+            <AppHeader />
+            <ProtectedRoute path="/home" exact component={HomePage} />
+            <ProtectedRoute path="/library" component={LibraryPage} />
+            <ProtectedRoute
+              path="/tournament"
+              exact
+              component={TournamentPage}
+            />
+            <ProtectedRoute
+              path="/mixtape/:mixtapeId"
+              component={MixtapeDetailsPage}
+            />
+            <ProtectedRoute
+              path="/tournament/new"
+              component={CreateTournamentPage}
+            />
+            <ProtectedRoute
+              path="/tournament/:tournamentId"
+              component={TournamentDetails}
+            />
+            <ProtectedRoute path="/rewards" component={RewardsPage} />
+            <ProtectedRoute
+              path="/user/:username"
+              component={UserProfileScreen}
+            />
+            <ProtectedRoute
+              path="/spotify/authorize"
+              component={SpotifyLoginPage}
+            />
+          </div>
+
+          <MusicPlayerContainer>
+            <MusicPlayer />
+          </MusicPlayerContainer>
         </RouterContainer>
       </Switch>
-
-      <MusicPlayerContainer>
-        <MusicPlayer />
-      </MusicPlayerContainer>
     </AppContainer>
   );
 
@@ -97,13 +103,12 @@ function App() {
 
 export default App;
 
-const AppContainer = styled.div`
+const AppContainer = styled.div``;
+
+const RouterContainer = styled.div`
   display: grid;
   grid-template-columns: 250px 1fr;
   grid-template-rows: calc(100vh - 120px) 120px;
-`;
-
-const RouterContainer = styled.div`
   overflow-y: scroll;
 `;
 
