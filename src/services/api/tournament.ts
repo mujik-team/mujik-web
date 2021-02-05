@@ -24,3 +24,13 @@ export async function DeleteTournament(id: string) {
 }
 
 export async function RedeemRewards(username: string, tournamentId: string) {}
+
+export async function UploadTournamentImage(id: string, image: Blob) {
+  const formData = new FormData();
+  formData.append("file", image);
+  await api.post(`/tournament/${id}/image`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
