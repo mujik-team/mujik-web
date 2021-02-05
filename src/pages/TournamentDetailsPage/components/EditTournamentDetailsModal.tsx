@@ -35,10 +35,6 @@ function EditTournamentDetailsModal(props: Props) {
     setTournamentCoverImage(imageBlob);
   };
 
-  const imageUrl =
-    process.env.REACT_APP_API_URL ||
-    "http://localhost:3001" + `/tournament/${_id}/cover`;
-
   return (
     <div>
       <Container>

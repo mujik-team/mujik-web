@@ -92,7 +92,7 @@ function ProfileDetails(props: Props) {
               <span className="num">{props.user.profile.following.size}</span>
               <span>Following</span>
             </FollowDetails>
-            <FollowButton username={props.user.username} />
+            {/* <FollowButton username={props.user.username} /> */}
             <UserBio>
               {props.user.profile.bio
                 ? props.user.profile.bio

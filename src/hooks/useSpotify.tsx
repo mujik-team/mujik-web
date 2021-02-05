@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef } from "react";
 import spotifyService from "../services/spotifyService/spotifyService";
 
-function useSpotifyNew() {
+function useSpotify() {
   const player = useRef(null as Player | null);
   const [state, action] = useReducer(reducer, InitialState);
 
@@ -18,7 +18,6 @@ function useSpotifyNew() {
 
       // Initialize spotify api with new access token.
       spotifyService.api.init(accessToken);
-
       // User is now authorized to make API calls.
       action({ type: "userAuthorized", payload: { accessToken } });
 
@@ -94,7 +93,7 @@ function useSpotifyNew() {
   };
 }
 
-export default useSpotifyNew;
+export default useSpotify;
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {

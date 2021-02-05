@@ -5,7 +5,7 @@ export interface Tournament {
   description: string;
 
   winnerBy: string;
-  rewards: Map<string, Reward>;
+  rewards: Map<RewardType, Reward>;
   NumWinners: number;
 
   VoteDate: Date;
