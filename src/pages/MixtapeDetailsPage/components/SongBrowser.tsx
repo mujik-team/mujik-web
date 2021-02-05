@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
-import { AuthContext, SpotifyContext } from "../../../App";
+import { MujikContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
 import { Mixtape } from "../../../model/Mixtape";
 
@@ -12,7 +12,7 @@ function SongBrowser(props: Props) {
   const [sortBy, setSortBy] = useState("");
   const [isAsc, setIsAsc] = useState(false);
   const spotifyContext = useContext(SpotifyContext);
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const [selectedSong, setSelectedSong] = useState(-1);
 
   useEffect(() => {
@@ -21,17 +21,17 @@ function SongBrowser(props: Props) {
         spotifyContext.state.isAuthorized &&
         props.mixtape.songs.length !== 0
       ) {
-        // spotifyContext.spotifyService.api
-        //   .getSeveralSongs(props.mixtape.songs)
-        //   .then((s) => {
-        //     const songs = s.map((s: any, i: number) => {
-        //       return {
-        //         ...s,
-        //         origIndex: i,
-        //       };
-        //     });
-        //     setSongs([...songs]);
-        //   });
+        spotifyContext.spotifyService.api
+          .getSeveralSongs(props.mixtape.songs)
+          .then((s) => {
+            const songs = s.map((s: any, i: number) => {
+              return {
+                ...s,
+                origIndex: i,
+              };
+            });
+            setSongs([...songs]);
+          });
       }
     }
   }, [spotifyContext.state.isAuthorized, props.mixtape]);

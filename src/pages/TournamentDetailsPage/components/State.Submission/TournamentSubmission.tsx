@@ -5,11 +5,11 @@ import styled from "styled-components";
 import FullScreenModal from "../../../../components/FullScreenModal";
 import SubmitSuccessModal from "./SubmitSuccessModal";
 import { AvailableRestrictions } from "../../../CreateTournamentPage/components/RestrictionSelector";
-import { AuthContext } from "../../../../App";
+import { MujikContext } from "../../../../App";
 import { toast } from "react-toastify";
 
 function TournamentSubmission(props: any) {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
 
   const [showEntryModal, setShowEntryModal] = useState(false);
   const [showSubmitSuccessModal, setShowSubmitSuccessModal] = useState(false);

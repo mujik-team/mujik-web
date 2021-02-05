@@ -4,7 +4,7 @@ import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 import ImageEditor from "../../../components/ImageEditor";
 import { Mixtape } from "../../../model/Mixtape";
 
@@ -13,7 +13,7 @@ function NewMixtapeModal(props: Props) {
   const [isPrivate, setIsPrivate] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const [mixtapeImage, setMixtapeImage] = useState("");
 
   const createNewMixtape = async () => {

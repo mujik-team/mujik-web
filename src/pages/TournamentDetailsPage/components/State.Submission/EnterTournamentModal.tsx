@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import TextInput from "../../../../components/Input/TextInput";
 import styles from "./EnterTournamentModal.module.css";
-import { AuthContext } from "../../../../App";
+import { MujikContext } from "../../../../App";
 import Button from "../../../../components/Button";
 import { Checkbox } from "primereact/checkbox";
 import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
 
 function EnterTournamentModal(props: Props) {
-  const { user, api } = useContext(AuthContext);
+  const { user, api } = useContext(MujikContext);
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [searchTerm, setSearchTerm] = useState("");
   const [mixtapesSelected, setMixtapesSelected] = useState([] as any[]);

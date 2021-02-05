@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 import Button from "../../../components/Button";
 
 import api from "../../../services/api/apiService";
 
 function FollowButton(props: Props) {
-  const { user, actions } = useContext(AuthContext);
+  const { user, actions } = useContext(MujikContext);
 
   const isFollowing = user.profile.following.has(props.username);
 

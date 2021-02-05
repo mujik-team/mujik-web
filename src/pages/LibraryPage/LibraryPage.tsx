@@ -10,14 +10,14 @@ import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../App";
+import { MujikContext } from "../../App";
 import api from "../../services/api/apiService";
 import { Mixtape } from "../../model/Mixtape";
 
 const tabs = ["All", "By Me", "By Others"];
 function LibraryPage() {
   const history = useHistory();
-  const { user, state } = useContext(AuthContext);
+  const { user, state } = useContext(MujikContext);
   const [sortBy, setSortBy] = useState("");
 
   const [mixtapes, setMixtapes] = useState([] as any[]);

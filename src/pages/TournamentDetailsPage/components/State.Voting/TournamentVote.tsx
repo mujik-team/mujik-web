@@ -10,12 +10,12 @@ import DropdownSelect from "../../../../components/Input/DropdownSelect";
 import TextInput from "../../../../components/Input/TextInput";
 import { toast } from "react-toastify";
 import MixtapeCard from "../../../../components/MixtapeBrowser/components/MixtapeCard";
-import { AuthContext } from "../../../../App";
+import { MujikContext } from "../../../../App";
 import { sleep } from "../../../../services/util";
 
 function TournamentVote(props: Props) {
   const history = useHistory();
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
 
   const [votingPhase, setVotingPhase] = useState(false);
   const [votesLeft, setVotesLeft] = useState(3);

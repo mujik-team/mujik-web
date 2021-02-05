@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 import { getImageToBase64 } from "../../../services/util";
 
 function YourTournamentsSidebar() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const [yourTournaments, setYourTournaments] = useState([] as any[]);
   const [filterBy, setFilterBy] = useState("All");
 

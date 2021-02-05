@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import styled from "styled-components";
-import { AuthContext, SpotifyContext } from "../App";
+import { MujikContext, SpotifyContext } from "../App";
 import Button from "./Button";
 
 function Navbar() {
   const history = useHistory();
   const location = useLocation();
-  const { actions } = useContext(AuthContext);
+  const { actions } = useContext(MujikContext);
   const spotifyContext = useContext(SpotifyContext);
   return (
     <Container>

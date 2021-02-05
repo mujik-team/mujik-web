@@ -1,7 +1,7 @@
 import { InputNumber } from "primereact/inputnumber";
 import React, { useContext, useReducer } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../App";
+import { MujikContext } from "../../App";
 import AvatarImage from "../../components/AvatarImage";
 import Button from "../../components/Button";
 import { Calendar } from "primereact/calendar";
@@ -15,7 +15,7 @@ import { useHistory } from "react-router-dom";
 
 function CreateTournamentPage() {
   const [tournamentForm, dispatch] = useReducer(reducer, FormState);
-  const { user, api } = useContext(AuthContext);
+  const { user, api } = useContext(MujikContext);
   const history = useHistory();
 
   const handleFieldUpdate = (key: string, value: any) => {

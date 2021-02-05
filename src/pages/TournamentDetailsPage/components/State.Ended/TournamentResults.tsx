@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { AuthContext } from "../../../../App";
+import { MujikContext } from "../../../../App";
 import AvatarImage from "../../../../components/AvatarImage";
 import TextInput from "../../../../components/Input/TextInput";
 import MixtapeBrowser from "../../../../components/MixtapeBrowser/MixtapeBrowser";
@@ -11,7 +11,7 @@ function TournamentResults(props: Props) {
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [userHasRedeemed, setUserHasRedeemed] = useState(false);
   const history = useHistory();
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
 
   useEffect(() => {
     if (props.tournament) {

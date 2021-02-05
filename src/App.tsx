@@ -24,7 +24,7 @@ import LandingPage from "./pages/WelcomePage/components/LandingPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 
 type AuthState = ReturnType<typeof useAuth>;
-export const AuthContext: React.Context<AuthState> = React.createContext(
+export const MujikContext: React.Context<AuthState> = React.createContext(
   {} as any
 );
 
@@ -34,7 +34,7 @@ export const SpotifyContext: React.Context<SpotifyState> = React.createContext(
 );
 
 function App() {
-  const authContext = useAuth();
+  const mujikContext = useAuth();
   const spotify = useSpotify();
 
   const app = (
@@ -45,7 +45,8 @@ function App() {
 
         <RouterContainer>
           <Navbar />
-          <div>
+
+          <div className="router">
             <AppHeader />
             <ProtectedRoute path="/home" exact component={HomePage} />
             <ProtectedRoute path="/library" component={LibraryPage} />
@@ -87,16 +88,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={authContext}>
+      <MujikContext.Provider value={mujikContext}>
         <SpotifyContext.Provider value={spotify}>
-          {authContext.state.isAuthenticating ? null : app}
+          {mujikContext.state.isAuthenticating ? null : app}
           <ToastContainer
             position={"bottom-right"}
             autoClose={2000}
             transition={Slide}
           />
         </SpotifyContext.Provider>
-      </AuthContext.Provider>
+      </MujikContext.Provider>
     </BrowserRouter>
   );
 }
@@ -106,10 +107,13 @@ export default App;
 const AppContainer = styled.div``;
 
 const RouterContainer = styled.div`
+  .router {
+    height: 100vh;
+    overflow-y: scroll;
+  }
   display: grid;
   grid-template-columns: 250px 1fr;
   grid-template-rows: calc(100vh - 120px) 120px;
-  overflow-y: scroll;
 `;
 
 const MusicPlayerContainer = styled.div`

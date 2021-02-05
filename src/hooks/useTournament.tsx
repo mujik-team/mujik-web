@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../App";
+import { MujikContext } from "../App";
 import { Tournament } from "../model/Tournament";
 import { getImageToBase64 } from "../services/util";
 
 function useTournament(id: string) {
-  const { api } = useContext(AuthContext);
+  const { api } = useContext(MujikContext);
   const [tournament, setTournament] = useState({} as Tournament);
   const [isLoading, setIsLoading] = useState(true);
 

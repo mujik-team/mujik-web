@@ -2,13 +2,13 @@ import { ProgressBar } from "primereact/progressbar";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { AuthContext, SpotifyContext } from "../App";
+import { MujikContext, SpotifyContext } from "../App";
 import Button from "./Button";
 import AvatarImage from "./AvatarImage";
 
 function AppHeader() {
   const history = useHistory();
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const spotifyContext = useContext(SpotifyContext);
 
   const username = user.username;
@@ -45,7 +45,7 @@ function AppHeader() {
           <span style={{ margin: "0 10px" }}>
             <img src="/icons/coin.svg" width="18px"></img>
           </span>
-          <UserCoinsText>{coins}</UserCoinsText>
+          <div>{coins}</div>
         </div>
 
         <AvatarImage size={50} username={username} />
@@ -85,8 +85,6 @@ function AppHeader() {
 }
 
 export default AppHeader;
-
-const UserCoinsText = styled.span``;
 
 const UserDetailsContainer = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../App";
+import { MujikContext } from "../../App";
 import Button from "../../components/Button";
 import styles from "./LoginPage.module.css";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import ResetCredentialsModal from "./components/ResetCredentialsModal";
 import { useHistory } from "react-router-dom";
 
 function LoginPage() {
-  const { actions } = useContext(AuthContext);
+  const { actions } = useContext(MujikContext);
   const history = useHistory();
 
   const handleLogin = async () => {

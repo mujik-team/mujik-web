@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../../App";
+import { MujikContext } from "../../App";
 import AvatarImage from "../../components/AvatarImage";
 import Loader from "../../components/Loader";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";

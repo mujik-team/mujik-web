@@ -3,10 +3,10 @@ import Button from "../../../components/Button";
 import styles from "./LandingPage.module.css";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 
 function LandingPage() {
-  const { state } = useContext(AuthContext);
+  const { state } = useContext(MujikContext);
   const history = useHistory();
 
   return (

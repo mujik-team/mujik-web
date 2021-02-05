@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Redirect, Route, RouteComponentProps } from "react-router-dom";
-import { AuthContext } from "../App";
+import { MujikContext } from "../App";
 
 function ProtectedRoute(props: Props) {
-  const { state } = useContext(AuthContext);
+  const { state } = useContext(MujikContext);
 
   const { isAuthenticating, isAuthenticated } = state;
 

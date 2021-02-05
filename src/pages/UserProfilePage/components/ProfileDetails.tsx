@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 import SideModal from "../../../components/SideModal";
 import { User } from "../../../model/User";
 import { getImageToBase64 } from "../../../services/util";
@@ -9,7 +9,7 @@ import FollowButton from "./FollowButton";
 import FollowersModal from "./FollowersModal";
 
 function ProfileDetails(props: Props) {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const [profilePicture, setProfilePicture] = useState("");
 
   const toggleEditProfile = () => {

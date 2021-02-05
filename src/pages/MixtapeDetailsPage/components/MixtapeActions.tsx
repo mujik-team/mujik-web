@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Button from "../../../components/Button";
 import { Menu } from "primereact/menu";
 import styled from "styled-components";
-import { AuthContext, SpotifyContext } from "../../../App";
+import { MujikContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
@@ -14,7 +14,7 @@ function MixtapeActions(props: Props) {
   const spotifyContext = useContext(SpotifyContext);
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
   const history = useHistory();
-  const { user, api } = useContext(AuthContext);
+  const { user, api } = useContext(MujikContext);
 
   const playMixtape = () => {
     if (spotifyContext.state.isAuthorized && props.mixtape.songs) {

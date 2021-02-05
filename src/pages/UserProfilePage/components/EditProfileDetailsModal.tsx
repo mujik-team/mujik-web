@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 import ImageEditor from "../../../components/ImageEditor";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
 import TextInput from "../../../components/Input/TextInput";
 
 function EditProfileDetailsModal(props: Props) {
-  const { user, actions, api } = useContext(AuthContext);
+  const { user, actions, api } = useContext(MujikContext);
 
   const [userProfile, setUserProfile] = useState(user.profile);
   const [userAvatar, setUserAvatar] = useState(null as any);

@@ -6,7 +6,7 @@ import TournamentVote from "./components/State.Voting/TournamentVote";
 import Button from "../../components/Button";
 import TournamentResults from "./components/State.Ended/TournamentResults";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../App";
+import { MujikContext } from "../../App";
 import useTournament from "../../hooks/useTournament";
 import SideModal from "../../components/SideModal";
 import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
@@ -23,7 +23,7 @@ function TournamentDetails() {
     updateTournament,
   } = useTournament(tournamentId);
   const [showEditTournamentModal, setShowEditTournamentModal] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(MujikContext);
   const history = useHistory();
 
   const bottomComponent = () => {

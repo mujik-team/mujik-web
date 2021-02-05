@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import TextInput from "../../../components/Input/TextInput";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../App";
+import { MujikContext } from "../../../App";
 
 function RegisterModal(props: Props) {
   const [activeStep, setActiveStep] = useState(0);
-  const { api } = useContext(AuthContext);
+  const { api } = useContext(MujikContext);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
