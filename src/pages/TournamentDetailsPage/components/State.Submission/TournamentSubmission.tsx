@@ -23,7 +23,7 @@ function TournamentSubmission(props: any) {
 
   const submitMixtape = async (mixtapeId: string) => {
     try {
-      await SubmitMixtapeToTournament(props.tournament._id, mixtapeId);
+      // await SubmitMixtapeToTournament(props.tournament._id, mixtapeId);
       toast.success("🙌 Successfully entered tournament.");
       toggleSubmitModal();
       toggleSubmitSuccessModal();

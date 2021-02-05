@@ -22,7 +22,7 @@ function EditTournamentDetailsModal(props: Props) {
     if (tournamentCoverImage) {
       // Upload new tournament cover image.
       // console.log(props.tournament);
-      await UploadTournamentImage(_id, tournamentCoverImage);
+      // await UploadTournamentImage(_id, tournamentCoverImage);
       toast.dark("✨ Updated tournament cover image.");
       setTournamentCoverImage(null);
     }

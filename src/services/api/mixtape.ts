@@ -37,7 +37,7 @@ export async function GetUserMixtapes(username: string): Promise<Mixtape[]> {
 
 interface Query {
   username?: string;
-  ids?: string;
+  ids?: string[];
 }
 
 export async function QueryMixtapes(query: Query): Promise<Mixtape[]> {

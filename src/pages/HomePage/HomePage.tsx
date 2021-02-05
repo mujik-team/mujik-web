@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import FeaturedTournaments from "./components/FeaturedTournaments";
 import styled from "styled-components";
-import { GetFeaturedMixtapes } from "../../services/mixtapeService";
 import MixtapeCard from "../../components/MixtapeBrowser/components/MixtapeCard";
-import { GetFeaturedUsers } from "../../services/userService";
 import AvatarImage from "../../components/AvatarImage";
 
 function HomePage() {

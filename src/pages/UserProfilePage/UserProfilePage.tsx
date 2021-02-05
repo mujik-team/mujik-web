@@ -7,7 +7,6 @@ import Loader from "../../components/Loader";
 import MixtapeBrowser from "../../components/MixtapeBrowser/MixtapeBrowser";
 import useUser from "../../hooks/useUser";
 import { User } from "../../model/User";
-import { GetSeveralMixtapes } from "../../services/mixtapeService";
 import { WinnerCard } from "../TournamentDetailsPage/components/State.Ended/TournamentResults";
 import ProfileDetails from "./components/ProfileDetails";
 

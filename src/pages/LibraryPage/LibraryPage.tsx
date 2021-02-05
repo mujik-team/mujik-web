@@ -30,36 +30,36 @@ function LibraryPage() {
     setMixtapes([...userMixtapes]);
   };
 
-  const filterTag = async (event: any) => {
-    const tag = event.target.id;
-    const mixtapeIDs = Array.from(user.profile.mixtapes.keys());
+  // const filterTag = async (event: any) => {
+  //   const tag = event.target.id;
+  //   const mixtapeIDs = Array.from(user.profile.mixtapes.keys());
 
-    const mixtapes = (
-      await mixtapeService.GetSeveralMixtapes(mixtapeIDs)
-    ).filter((m) => m !== null);
+  //   const mixtapes = (
+  //     await mixtapeService.GetSeveralMixtapes(mixtapeIDs)
+  //   ).filter((m) => m !== null);
 
-    let filteredMixtapes = [];
-    switch (tag) {
-      case "All":
-        setMixtapes([...mixtapes]);
-        setCurrentTab("All");
-        break;
-      case "By Me":
-        filteredMixtapes = mixtapes.filter(
-          (mixtape) => mixtape.createdBy === user.username
-        );
-        setMixtapes([...filteredMixtapes]);
-        setCurrentTab("By Me");
-        break;
-      case "By Others":
-        filteredMixtapes = mixtapes.filter(
-          (mixtape) => mixtape.createdBy !== user.username
-        );
-        setMixtapes([...filteredMixtapes]);
-        setCurrentTab("By Others");
-        break;
-    }
-  };
+  //   let filteredMixtapes = [];
+  //   switch (tag) {
+  //     case "All":
+  //       setMixtapes([...mixtapes]);
+  //       setCurrentTab("All");
+  //       break;
+  //     case "By Me":
+  //       filteredMixtapes = mixtapes.filter(
+  //         (mixtape) => mixtape.createdBy === user.username
+  //       );
+  //       setMixtapes([...filteredMixtapes]);
+  //       setCurrentTab("By Me");
+  //       break;
+  //     case "By Others":
+  //       filteredMixtapes = mixtapes.filter(
+  //         (mixtape) => mixtape.createdBy !== user.username
+  //       );
+  //       setMixtapes([...filteredMixtapes]);
+  //       setCurrentTab("By Others");
+  //       break;
+  //   }
+  // };
 
   const createNewMixtape = async (mixtape: Mixtape, imageBlob?: any) => {
     try {
@@ -98,7 +98,7 @@ function LibraryPage() {
               className={styles.tabTitle}
               id={t}
               onClick={(e) => {
-                filterTag(e);
+                // filterTag(e);
               }}
               style={{ color: "white" }}
             >
@@ -109,7 +109,7 @@ function LibraryPage() {
               className={styles.tabTitle}
               id={t}
               onClick={(e) => {
-                filterTag(e);
+                // filterTag(e);
               }}
             >
               {t}

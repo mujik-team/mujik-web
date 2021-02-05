@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import TextInput from "../../../components/Input/TextInput";
 import { toast } from "react-toastify";
-
-import { Steps } from "primereact/steps";
+import { AuthContext } from "../../../App";
 
 function RegisterModal(props: Props) {
   const [activeStep, setActiveStep] = useState(0);
+  const { api } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +23,12 @@ function RegisterModal(props: Props) {
       return;
     }
 
-    const user = await userService.register({ username, password, email });
+    const user = await api.user.RegisterUser({
+      username,
+      pass: password,
+      email,
+      profile: { bio: "" },
+    });
     if (user) {
       props.toggle();
       setUsername("");

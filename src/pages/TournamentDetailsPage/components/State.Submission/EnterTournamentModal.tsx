@@ -9,7 +9,7 @@ import { SpotifyContext } from "../../../../App";
 import { toast } from "react-toastify";
 
 function EnterTournamentModal(props: Props) {
-  const { user } = useContext(AuthContext);
+  const { user, api } = useContext(AuthContext);
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const [searchTerm, setSearchTerm] = useState("");
   const [mixtapesSelected, setMixtapesSelected] = useState([] as any[]);
@@ -172,15 +172,11 @@ function EnterTournamentModal(props: Props) {
 
   const getUserMixtapes = async () => {
     const mixtapeIDs = Array.from(user.profile.mixtapes.keys());
-    const userMixtapes = await mixtapeService.GetSeveralMixtapes(mixtapeIDs);
+    const userMixtapes = await api.mixtape.QueryMixtapes({ ids: mixtapeIDs });
 
     const { username } = user;
 
-    setMixtapes([
-      ...userMixtapes
-        .filter((m) => m !== null)
-        .filter((m) => m.createdBy === username),
-    ]);
+    setMixtapes([...userMixtapes.filter((m) => m.createdBy === username)]);
   };
 
   useEffect(() => {

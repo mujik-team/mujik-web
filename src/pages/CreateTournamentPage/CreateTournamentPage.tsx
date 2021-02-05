@@ -15,7 +15,7 @@ import { useHistory } from "react-router-dom";
 
 function CreateTournamentPage() {
   const [tournamentForm, dispatch] = useReducer(reducer, FormState);
-  const { user } = useContext(AuthContext);
+  const { user, api } = useContext(AuthContext);
   const history = useHistory();
 
   const handleFieldUpdate = (key: string, value: any) => {
@@ -37,16 +37,16 @@ function CreateTournamentPage() {
       dispatch({ type: "valid-form", payload: {} });
     }
 
-    const username = user.username;
-
     // Create tournament.
-    const tournament = await CreateNewTournament({
-      ...tournamentForm.form,
-      createdBy: username,
-    });
+    const tournament = await api.tournament.CreateTournament(
+      tournamentForm as any
+    );
 
     // Upload image for tournament.
-    await UploadTournamentImage(tournament._id, tournamentForm.tournamentImage);
+    await api.tournament.UploadTournamentImage(
+      tournament.id,
+      tournamentForm.tournamentImage
+    );
 
     toast.dark("Successfully created tournament!");
     history.push("/tournament");

@@ -1,3 +1,5 @@
+import { api } from "./api/apiService";
+
 export async function getImageToBase64(url: string) {
   try {
     const result = await api.get(url, {

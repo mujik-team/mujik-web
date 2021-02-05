@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import TextInput from "../../components/Input/TextInput";
 import TournamentBrowser from "./components/TournamentBrowser";
-import { GetAllActiveTournaments } from "../../services/tournamentService";
 import YourTournamentsSidebar from "./components/YourTournamentsSidebar";
 
 function TournamentPage() {

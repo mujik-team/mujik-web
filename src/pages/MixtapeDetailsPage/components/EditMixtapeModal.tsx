@@ -28,7 +28,7 @@ function EditMixtapeModal(props: Props) {
 
     if (mixtapeCoverImage) {
       // Clear current image.
-      await uploadMixtapeImage(mixtape._id, mixtapeCoverImage);
+      // uploadMixtapeImage(mixtape._id, mixtapeCoverImage);
       toast.dark("✨ Updated mixtape cover image.");
       setMixtapeCoverImage(null);
     }

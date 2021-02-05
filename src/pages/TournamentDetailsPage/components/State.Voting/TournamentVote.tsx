@@ -27,8 +27,8 @@ function TournamentVote(props: Props) {
   const numVotesByUser = useRef(3);
 
   const getSubmissions = async (ids: any) => {
-    const mixtapes = await MixtapeService.GetSeveralMixtapes(ids);
-    setSubmittedMixtapes(mixtapes.filter((m) => m !== null));
+    // const mixtapes = await MixtapeService.GetSeveralMixtapes(ids);
+    // setSubmittedMixtapes(mixtapes.filter((m) => m !== null));
   };
 
   useEffect(() => {
@@ -54,8 +54,7 @@ function TournamentVote(props: Props) {
 
   const submitVote = async () => {
     for (const i in selectedMixtapes) {
-      await VoteForMixtape(props.tournament._id, selectedMixtapes[i]);
-      await sleep(200);
+      // await VoteForMixtape(props.tournament._id, selectedMixtapes[i]);
     }
     // selectedMixtapes.forEach((id) => VoteForMixtape(props.tournament._id, id));
     numVotesByUser.current = votesLeft;

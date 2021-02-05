@@ -81,7 +81,7 @@ function TournamentResults(props: Props) {
         const handleClick = async () => {
           if (hasRedeemed) toast.dark("🤔 You already redeemed your rewards!");
           else {
-            const rewards = await RedeemRewards(props.tournament._id);
+            const rewards = {} as any;
 
             // TODO Update User
             // authContext.update();

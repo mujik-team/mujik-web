@@ -14,7 +14,7 @@ function MixtapeActions(props: Props) {
   const spotifyContext = useContext(SpotifyContext);
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
   const history = useHistory();
-  const { user } = useContext(AuthContext);
+  const { user, api } = useContext(AuthContext);
 
   const playMixtape = () => {
     if (spotifyContext.state.isAuthorized && props.mixtape.songs) {
@@ -30,7 +30,7 @@ function MixtapeActions(props: Props) {
   };
 
   const deleteMixtape = async () => {
-    await mixtapeService.deleteMixtape(props.mixtape._id);
+    await api.mixtape.DeleteMixtape(props.mixtape.id);
 
     // TODO User Update
     // await authContext.update();
@@ -50,20 +50,20 @@ function MixtapeActions(props: Props) {
     const follow = user.profile.mixtapes.has(props.mixtape._id);
 
     if (follow === true) {
-      await mixtapeService.followMixtape(
-        props.mixtape._id,
-        user.username,
-        false
-      );
+      // await api.mixtape.FollowMixtape(
+      //   props.mixtape._id,
+      //   user.username,
+      //   false
+      // );
       // TODO Update User
       // await authContext.update();
       toast.dark("👋 Unfollowed Mixtape!");
     } else {
-      await mixtapeService.followMixtape(
-        props.mixtape._id,
-        user.username,
-        true
-      );
+      // await mixtapeService.followMixtape(
+      //   props.mixtape._id,
+      //   user.username,
+      //   true
+      // );
       // TODO Update User
       // await authContext.update();
       toast.dark("🤟 Followed Mixtape!");

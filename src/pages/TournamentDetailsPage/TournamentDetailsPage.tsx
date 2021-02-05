@@ -12,7 +12,6 @@ import SideModal from "../../components/SideModal";
 import EditTournamentDetailsModal from "./components/EditTournamentDetailsModal";
 import TagInfo from "./TagInfo";
 import AvatarImage from "../../components/AvatarImage";
-import { FollowTournament } from "../../services/tournamentService";
 import Loader from "../../components/Loader";
 
 function TournamentDetails() {
@@ -29,8 +28,12 @@ function TournamentDetails() {
 
   const bottomComponent = () => {
     if (!isLoading && tournament) {
-      const submissionDate = Date.parse(tournament.SubmissionDate);
-      const voteDate = Date.parse(tournament.VoteDate);
+      const submissionDate = Date.parse(
+        tournament.SubmissionDate.toLocaleDateString("en-us")
+      );
+      const voteDate = Date.parse(
+        tournament.VoteDate.toLocaleDateString("en-us")
+      );
       const now = new Date().getTime();
 
       if (now < submissionDate)
@@ -38,7 +41,7 @@ function TournamentDetails() {
           <TournamentSubmission
             tournament={{ ...tournament, tournamentImage }}
             restrictions={tournament.Restrictions}
-            rules={tournament.additional_submission_criteria}
+            rules={{} as any}
           />
         );
       else if (now > submissionDate && now < voteDate)
@@ -49,8 +52,8 @@ function TournamentDetails() {
 
   const TournamentComponent = () => {
     if (tournament) {
-      const rewardAmount = tournament.Rewards ? tournament.Rewards[0].Value : 0;
-      const ownedByLoggedIn = tournament.CreatedBy === user.username;
+      const rewardAmount = 0;
+      const ownedByLoggedIn = tournament.createdBy === user.username;
 
       // const userIsFollowing = user.profile.tournamentsFollowing.has(
       //   tournament._id
@@ -80,18 +83,18 @@ function TournamentDetails() {
               />
             </SideModal>
             <DetailsContainer>
-              <div className="title">{tournament.Title}</div>
+              <div className="title">{tournament.title}</div>
 
               <DetailsBar>
                 <div className="created-by">
-                  <AvatarImage username={tournament.CreatedBy} size={50} />
+                  <AvatarImage username={tournament.createdBy} size={50} />
                   <div
                     onClick={() =>
-                      history.push(`/user/${tournament.CreatedBy}`)
+                      history.push(`/user/${tournament.createdBy}`)
                     }
                     className="username"
                   >
-                    {tournament.CreatedBy}
+                    {tournament.createdBy}
                   </div>
                 </div>
 
@@ -116,7 +119,7 @@ function TournamentDetails() {
               </DetailsBar>
 
               <Description style={{ marginBottom: "20px" }}>
-                {tournament.Description}
+                {tournament.description}
               </Description>
             </DetailsContainer>
           </Container>

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
-import { GetMultipleTournaments } from "../../../services/tournamentService";
 import { getImageToBase64 } from "../../../services/util";
 
 function YourTournamentsSidebar() {

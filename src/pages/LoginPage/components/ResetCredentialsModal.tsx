@@ -4,47 +4,6 @@ import TextInput from "../../../components/Input/TextInput";
 import { toast } from "react-toastify";
 import Button from "../../../components/Button";
 
-const Container = styled.div`
-  margin: 30px;
-`;
-
-const SubmitResetCredentials = styled.div`
-  user-select: none;
-  cursor: pointer;
-  text-align: center;
-  font-size: 30px;
-  font-weight: 500;
-  width: 100%;
-  padding: 30px 0;
-  background-color: var(--card-color);
-  position: absolute;
-  bottom: 0;
-  transition: 0.2s ease-in all;
-
-  &:hover {
-    background-color: var(--main-color);
-    color: black;
-  }
-`;
-
-const FormTitle = styled.div`
-  font-size: 25px;
-  color: var(--text-inactive);
-  font-weight: 500;
-  margin-bottom: 15px;
-`;
-
-const CustomFormInput = styled(TextInput)`
-  width: 100%;
-  height: 50px;
-  font-size: 20px;
-  margin-bottom: 20px;
-`;
-
-type Props = {
-  toggle: any;
-};
-
 function ResetCredentialsModal(props: Props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -57,9 +16,9 @@ function ResetCredentialsModal(props: Props) {
       return;
     }
 
-    const success = await authService.reset(username, password, resetCode);
+    // const success = await authService.reset(username, password, resetCode);
 
-    if (success) {
+    if (true) {
       setUsername("");
       setPassword("");
       setConfirmPassword("");
@@ -117,3 +76,44 @@ function ResetCredentialsModal(props: Props) {
 }
 
 export default ResetCredentialsModal;
+
+const Container = styled.div`
+  margin: 30px;
+`;
+
+const SubmitResetCredentials = styled.div`
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  width: 100%;
+  padding: 30px 0;
+  background-color: var(--card-color);
+  position: absolute;
+  bottom: 0;
+  transition: 0.2s ease-in all;
+
+  &:hover {
+    background-color: var(--main-color);
+    color: black;
+  }
+`;
+
+const FormTitle = styled.div`
+  font-size: 25px;
+  color: var(--text-inactive);
+  font-weight: 500;
+  margin-bottom: 15px;
+`;
+
+const CustomFormInput = styled(TextInput)`
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+type Props = {
+  toggle: any;
+};

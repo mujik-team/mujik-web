@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Carousel } from "primereact/carousel";
-import { GetFeaturedTournaments } from "../../../services/tournamentService";
 import TournamentCard from "../../TournamentPage/components/TournamentCard";
 
 function FeaturedTournaments() {
