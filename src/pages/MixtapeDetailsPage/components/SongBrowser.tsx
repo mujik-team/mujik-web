@@ -4,6 +4,7 @@ import { ContextMenu } from "primereact/contextmenu";
 import Button from "../../../components/Button";
 import { AuthContext, SpotifyContext } from "../../../App";
 import { toast } from "react-toastify";
+import { Mixtape } from "../../../model/Mixtape";
 
 function SongBrowser(props: Props) {
   const [contextMenu, setContextMenu] = useState(null as any);
@@ -20,17 +21,17 @@ function SongBrowser(props: Props) {
         spotifyContext.state.isAuthorized &&
         props.mixtape.songs.length !== 0
       ) {
-        spotifyContext.spotifyService.api
-          .getSeveralSongs(props.mixtape.songs)
-          .then((s) => {
-            const songs = s.map((s: any, i: number) => {
-              return {
-                ...s,
-                origIndex: i,
-              };
-            });
-            setSongs([...songs]);
-          });
+        // spotifyContext.spotifyService.api
+        //   .getSeveralSongs(props.mixtape.songs)
+        //   .then((s) => {
+        //     const songs = s.map((s: any, i: number) => {
+        //       return {
+        //         ...s,
+        //         origIndex: i,
+        //       };
+        //     });
+        //     setSongs([...songs]);
+        //   });
       }
     }
   }, [spotifyContext.state.isAuthorized, props.mixtape]);
@@ -238,7 +239,7 @@ export default SongBrowser;
 
 type Props = {
   mixtape: any;
-  updateMixtape: (newMixtape: any) => void;
+  updateMixtape: (newMixtape: Mixtape) => Promise<void>;
 };
 
 const Container = styled.div``;

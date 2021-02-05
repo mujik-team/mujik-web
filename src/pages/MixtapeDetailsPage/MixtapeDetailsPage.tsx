@@ -4,28 +4,37 @@ import styled from "styled-components";
 import useMixtape from "../../hooks/useMixtape";
 import MixtapeDetails from "./components/MixtapeDetails";
 import SongBrowser from "./components/SongBrowser";
-import { AuthContext, SpotifyContext } from "../../App";
+import { SpotifyContext } from "../../App";
 import Loader from "../../components/Loader";
+import { apiBaseUrl } from "../../services/api/apiService";
+import MixtapeNotFoundPage from "./components/MixtapeNotFoundPage";
+
+type MixtapeContextState = ReturnType<typeof useMixtape>;
+export const MixtapeContext: React.Context<MixtapeContextState> = React.createContext(
+  {} as any
+);
 
 function MixtapeDetailsPage() {
   const { mixtapeId } = useParams() as any;
-  const { mixtape, updateMixtape, isLoading } = useMixtape(mixtapeId);
+  const mixtapeContext = useMixtape(mixtapeId);
   const [sortBy, setSortBy] = useState("");
   const spotifyContext = useContext(SpotifyContext);
   const [songs, setSongs] = useState([] as any[]);
   const [asc, setAsc] = useState(true);
 
-  useEffect(() => {
-    if (mixtape?.songs) {
-      if (spotifyContext.state.isAuthorized && mixtape.songs.length !== 0) {
-        spotifyContext.spotifyService.api
-          .getSeveralSongs(mixtape.songs)
-          .then((songs) => {
-            setSongs(songs);
-          });
-      }
-    }
-  }, [spotifyContext.state.isAuthorized, mixtape?.songs]);
+  const { mixtape, isLoading, actions } = mixtapeContext;
+
+  // useEffect(() => {
+  // if (mixtape?.songs) {
+  // if (spotifyContext.state.isAuthorized && mixtape.songs.length !== 0) {
+  // spotifyContext.spotifyService.api
+  //   .getSeveralSongs(mixtape.songs)
+  //   .then((songs) => {
+  //     setSongs(songs);
+  //   });
+  // }
+  // }
+  // }, [spotifyContext.state.isAuthorized, mixtape?.songs]);
 
   // useEffect(() => {
   //   const newsongs = sortSongsBy(sortBy, songs);
@@ -33,43 +42,37 @@ function MixtapeDetailsPage() {
   //   setMixtape({ ...mixtape, songs: newsongs });
   // }, [sortBy, asc]);
 
-  const getNewSongsArr = (songsToSort: any) => {
-    const newOrder = Array();
-    songsToSort.map((s: any, i: any) => {
-      newOrder.push(s.id);
-    });
-    return newOrder;
-  };
+  // const getNewSongsArr = (songsToSort: any) => {
+  //   const newOrder = Array();
+  //   songsToSort.map((s: any, i: any) => {
+  //     newOrder.push(s.id);
+  //   });
+  //   return newOrder;
+  // };
+
+  const mixtapeImage = apiBaseUrl + `/mixtape/${mixtape.id}/cover`;
 
   const MixtapeDetailsComponent = () => {
     if (mixtape !== null) {
       return (
         <div>
-          <Container>
-            <DetailsContainer>
-              <MixtapeCoverImage image={mixtape.mixtapeCoverImage} />
-              <MixtapeDetails
-                isLoading={isLoading}
-                mixtape={mixtape}
-                updateMixtape={updateMixtape as any}
-              />
-            </DetailsContainer>
+          <MixtapeContext.Provider value={mixtapeContext}>
+            <Container>
+              <DetailsContainer>
+                <MixtapeCoverImage image={mixtapeImage} />
+                <MixtapeDetails />
+              </DetailsContainer>
 
-            <SongBrowser mixtape={mixtape} updateMixtape={updateMixtape} />
-          </Container>
+              <SongBrowser
+                mixtape={mixtape}
+                updateMixtape={actions.updateMixtape}
+              />
+            </Container>
+          </MixtapeContext.Provider>
         </div>
       );
     } else {
-      return (
-        <NotFound>
-          <div className="msg">Mixtape not found.</div>
-          <div className="sub-msg">
-            Looks like the mixtape with that ID doesn't exist. Maybe it was
-            deleted by it's creator?
-          </div>
-          <img height="400" src="/images/box_empty.svg" alt="not found image" />
-        </NotFound>
-      );
+      return <MixtapeNotFoundPage />;
     }
   };
 
@@ -102,30 +105,4 @@ const MixtapeCoverImage = styled.div`
   border-radius: 8px;
   background-image: ${(props: CoverImageProps) => `url(${props.image})` || ""};
   background-color: var(--card-color);
-`;
-
-const NotFound = styled.div`
-  user-select: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  .msg {
-    margin-top: 100px;
-    font-weight: 500;
-    font-size: 4rem;
-    color: var(--text-inactive);
-  }
-
-  .sub-msg {
-    font-family: var(--font-secondary);
-    margin-top: 20px;
-    font-weight: 500;
-    color: var(--text-inactive);
-  }
-
-  img {
-    margin-top: 60px;
-  }
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import TagInput from "../../../components/Input/TagInput";
 import TextArea from "../../../components/Input/TextArea";
@@ -6,13 +6,14 @@ import TextInput from "../../../components/Input/TextInput";
 import { Checkbox } from "primereact/checkbox";
 import ImageEditor from "../../../components/ImageEditor";
 import { toast } from "react-toastify";
+import { MixtapeContext } from "../MixtapeDetailsPage";
+import { apiBaseUrl } from "../../../services/api/apiService";
 
 function EditMixtapeModal(props: Props) {
-  const mixtape = props.mixtape;
-
-  const [tags, setTags] = useState(mixtape.tags);
+  const { mixtape, actions } = useContext(MixtapeContext);
+  // const [tags, setTags] = useState(mixtape.tags);
   const [isPrivate, setIsPrivate] = useState(mixtape.isPrivate);
-  const [mixtapeName, setMixtapeName] = useState(mixtape.mixtapeName);
+  const [title, setTitle] = useState(mixtape.title);
   const [description, setDescription] = useState(mixtape.description);
 
   const [mixtapeCoverImage, setMixtapeCoverImage] = useState(null as any);
@@ -20,20 +21,21 @@ function EditMixtapeModal(props: Props) {
   const updateMixtape = async () => {
     const updatedMixtape = {
       ...mixtape,
-      tags,
+      // tags,
       description,
-      mixtapeName,
+      title,
       isPrivate,
     };
 
     if (mixtapeCoverImage) {
       // Clear current image.
-      // uploadMixtapeImage(mixtape._id, mixtapeCoverImage);
+      actions.uploadMixtapeImage(mixtape.id, mixtapeCoverImage);
+
       toast.dark("✨ Updated mixtape cover image.");
       setMixtapeCoverImage(null);
     }
 
-    props.updateMixtape(updatedMixtape);
+    actions.updateMixtape(updatedMixtape);
     props.toggleModal();
   };
 
@@ -41,20 +43,19 @@ function EditMixtapeModal(props: Props) {
     setMixtapeCoverImage(blob);
   };
 
+  const mixtapeImage = apiBaseUrl + `/mixtape/${mixtape.id}/cover`;
+
   return (
     <div>
       <Container>
         {/* <MixtapeCoverImage /> */}
         <ImageEditor
-          imageUrl={mixtape.mixtapeCoverImage}
+          imageUrl={mixtapeImage}
           imageSelected={userAvatarChanged}
           editorType="mixtape_image"
         />
         <InputLabel>Title</InputLabel>
-        <Input
-          value={mixtapeName}
-          onChange={(e: any) => setMixtapeName(e.target.value)}
-        />
+        <Input value={title} onChange={(e: any) => setTitle(e.target.value)} />
 
         <InputLabel>Description</InputLabel>
         <InputArea
@@ -62,8 +63,8 @@ function EditMixtapeModal(props: Props) {
           onChange={(e: any) => setDescription(e.target.value)}
         />
 
-        <InputLabel>Tags</InputLabel>
-        <Tags value={tags} onChange={(e) => setTags(e.value)} />
+        {/* <InputLabel>Tags</InputLabel> */}
+        {/* <Tags value={tags} onChange={(e) => setTags(e.value)} /> */}
 
         <div style={{ display: "inline-block", marginTop: "20px" }}>
           <span style={{ marginRight: "10px" }}>Private</span>
@@ -84,8 +85,6 @@ function EditMixtapeModal(props: Props) {
 export default EditMixtapeModal;
 
 type Props = {
-  mixtape: any;
-  updateMixtape: (mixtape: any) => any;
   toggleModal: () => void;
 };
 

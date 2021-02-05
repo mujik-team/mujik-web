@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import AvatarImage from "../../../components/AvatarImage";
+import { apiBaseUrl } from "../../../services/api/apiService";
 import { getImageToBase64 } from "../../../services/util";
 
 function TournamentCard(props: Props) {
@@ -32,8 +33,7 @@ function TournamentCard(props: Props) {
     }
   };
 
-  const base = process.env.REACT_APP_API_URL || "http://localhost:3001";
-  const url = `${base}/tournament/${props.tournament._id}/cover`;
+  const url = `${apiBaseUrl}/tournament/${props.tournament._id}/cover`;
   return (
     <div className="tournament-card">
       <Card onClick={handleClick} base64image={url}>

@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import AvatarImage from "../../../components/AvatarImage";
 import SideModal from "../../../components/SideModal";
 import { Mixtape } from "../../../model/Mixtape";
+import { MixtapeContext } from "../MixtapeDetailsPage";
 import AddSongModal from "./AddSongModal";
 import EditMixtapeModal from "./EditMixtapeModal";
 import MixtapeActions from "./MixtapeActions";
 
-function MixtapeDetails(props: Props) {
+function MixtapeDetails() {
+  const { mixtape, isLoading, actions } = useContext(MixtapeContext);
   const [showModal, setShowModal] = useState(false);
   const [modalToShow, setModalToShow] = useState(0);
   const history = useHistory();
-  const mixtape = props.mixtape as Mixtape;
 
   const toggleAddSongsModal = () => {
     setModalToShow(0);
@@ -30,19 +31,15 @@ function MixtapeDetails(props: Props) {
 
   const addNewSongs = (newSongs: any[]) => {
     newSongs.forEach((s) => mixtape.songs.push(s.id));
-    props.updateMixtape(mixtape);
+    actions.updateMixtape(mixtape);
   };
 
   const modals = [
     <AddSongModal toggle={toggleAddSongsModal} addNewSongs={addNewSongs} />,
-    <EditMixtapeModal
-      mixtape={mixtape}
-      toggleModal={toggleEditMixtapeModal}
-      updateMixtape={props.updateMixtape}
-    />,
+    <EditMixtapeModal toggleModal={toggleEditMixtapeModal} />,
   ];
 
-  return props.isLoading ? (
+  return isLoading ? (
     <span>Loading</span>
   ) : (
     <Container>
@@ -77,12 +74,6 @@ function MixtapeDetails(props: Props) {
     </Container>
   );
 }
-
-type Props = {
-  mixtape: any;
-  isLoading: boolean;
-  updateMixtape: (newMixtape: any) => void;
-};
 
 export default MixtapeDetails;
 
