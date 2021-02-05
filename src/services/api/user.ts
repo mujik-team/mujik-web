@@ -1,4 +1,4 @@
-import { ParseUserFromJSON, User } from "../../model/User";
+import { ConvertUserToJSON, ParseUserFromJSON, User } from "../../model/User";
 import { api } from "./apiService";
 
 export async function RegisterUser(userDetails: RegisterUserDTO) {
@@ -16,7 +16,9 @@ export async function GetUser(username: string) {
 }
 
 export async function UpdateUser(username: string, user: User) {
-  await api.put(`/user/${username}`, user);
+  const userObj = ConvertUserToJSON(user);
+
+  await api.put(`/user/${username}`, userObj);
 }
 
 export async function FollowUser(usernameToFollow: string, toFollow: boolean) {
