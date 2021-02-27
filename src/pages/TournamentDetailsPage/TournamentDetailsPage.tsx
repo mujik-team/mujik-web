@@ -29,10 +29,10 @@ function TournamentDetails() {
   const bottomComponent = () => {
     if (!isLoading && tournament) {
       const submissionDate = Date.parse(
-        tournament.SubmissionDate.toLocaleDateString("en-us")
+        tournament.submissionDate.toLocaleDateString("en-us")
       );
       const voteDate = Date.parse(
-        tournament.VoteDate.toLocaleDateString("en-us")
+        tournament.voteDate.toLocaleDateString("en-us")
       );
       const now = new Date().getTime();
 
@@ -40,7 +40,7 @@ function TournamentDetails() {
         return (
           <TournamentSubmission
             tournament={{ ...tournament, tournamentImage }}
-            restrictions={tournament.Restrictions}
+            restrictions={tournament.restrictions}
             rules={{} as any}
           />
         );

@@ -59,14 +59,18 @@ function App() {
               path="/mixtape/:mixtapeId"
               component={MixtapeDetailsPage}
             />
+
             <ProtectedRoute
-              path="/tournament/new"
-              component={CreateTournamentPage}
-            />
-            <ProtectedRoute
-              path="/tournament/:tournamentId"
+              path="/tournament/details/:tournamentId"
               component={TournamentDetails}
             />
+
+            <ProtectedRoute
+              path="/tournament/new"
+              exact
+              component={CreateTournamentPage}
+            />
+
             <ProtectedRoute path="/rewards" component={RewardsPage} />
             <ProtectedRoute
               path="/user/:username"

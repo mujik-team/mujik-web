@@ -37,19 +37,36 @@ function CreateTournamentPage() {
       dispatch({ type: "valid-form", payload: {} });
     }
 
-    // Create tournament.
-    const tournament = await api.tournament.CreateTournament(
-      tournamentForm as any
-    );
+    const { voteDate, submissionDate, restrictions } = tournamentForm.form;
 
-    // Upload image for tournament.
-    await api.tournament.UploadTournamentImage(
-      tournament.id,
-      tournamentForm.tournamentImage
-    );
+    const convertedRestrictions = Object.keys(restrictions).map((rname) => {
+      return {
+        type: rname,
+        value: restrictions[rname],
+      };
+    });
+    const form: any = {
+      ...tournamentForm,
+      voteDate: voteDate.toISOString(),
+      submissionDate: submissionDate.toISOString(),
+      restrictions: convertedRestrictions,
+    };
+
+    console.log(form);
+
+    // Create tournament.
+    // const tournament = await api.tournament.CreateTournament(
+    //   tournamentForm as any
+    // );
+
+    // // Upload image for tournament.
+    // await api.tournament.UploadTournamentImage(
+    //   tournament.id,
+    //   tournamentForm.tournamentImage
+    // );
 
     toast.dark("Successfully created tournament!");
-    history.push("/tournament");
+    // history.push("/tournament");
   };
 
   const handleTournamentImageChanged = (image: any) => {

@@ -11,20 +11,16 @@ import { WinnerCard } from "../TournamentDetailsPage/components/State.Ended/Tour
 import ProfileDetails from "./components/ProfileDetails";
 
 function UserProfileScreen() {
+  const { api } = useContext(MujikContext);
   const { username } = useParams() as any;
   const [mixtapes, setMixtapes] = useState([] as any[]);
   const { user, isLoading } = useUser(username);
 
   useEffect(() => {
-    // if (user && user.profile.mixtapes.size !== 0) {
-    // GetSeveralMixtapes(user.profile.mixtapes).then((userMixtapes) => {
-    //   const mixtapesToShow = userMixtapes
-    //     .filter((m) => m !== null)
-    //     .filter((m) => !m.isPrivate && m.createdBy === user.username);
-    //   setMixtapes([...mixtapesToShow]);
-    // });
-    // }
-  }, [user]);
+    if (!isLoading && user?.profile.mixtapes.size > 0) {
+      api.mixtape.GetUserMixtapes(username).then((m) => setMixtapes([...m]));
+    }
+  }, [isLoading]);
 
   // const winnerCards = useMemo(() => {
   //   if (user) {
@@ -108,7 +104,7 @@ const Container = styled.div`
 
 const UserContentContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 450px;
+  grid-template-columns: 4fr 1fr;
   margin-top: 40px;
   gap: 50px;
 `;

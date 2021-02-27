@@ -37,6 +37,12 @@ export async function UploadUserProfilePicture(image: Blob) {
   });
 }
 
+export async function GetFeaturedUsers() {
+  const { data } = await api.get("/user/featured");
+  const users: User[] = data.payload.map((u: any) => ParseUserFromJSON(u));
+  return users;
+}
+
 interface RegisterUserDTO {
   username: string;
   email: string;

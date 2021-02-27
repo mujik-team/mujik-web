@@ -1,25 +1,25 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import FeaturedTournaments from "./components/FeaturedTournaments";
 import styled from "styled-components";
 import MixtapeCard from "../../components/MixtapeBrowser/components/MixtapeCard";
 import AvatarImage from "../../components/AvatarImage";
+import { MujikContext } from "../../App";
+import { User } from "../../model/User";
+import { Mixtape } from "../../model/Mixtape";
 
 function HomePage() {
-  const [featuredMixtapes, setFeaturedMixtapes] = useState([] as any[]);
-  const [featuredUsers, setFeaturedUsers] = useState([] as any[]);
+  const { api } = useContext(MujikContext);
+  const [featuredMixtapes, setFeaturedMixtapes] = useState([] as Mixtape[]);
+  const [featuredUsers, setFeaturedUsers] = useState([] as User[]);
 
   useEffect(() => {
-    // GetFeaturedMixtapes().then((m) =>
-    //   setFeaturedMixtapes([...m.filter((m: any) => m !== null)])
-    // );
-    // GetFeaturedUsers().then((u) =>
-    //   setFeaturedUsers([...u.filter((u: any) => u !== null)])
-    // );
+    api.mixtape.GetFeaturedMixtapes().then((m) => setFeaturedMixtapes([...m]));
+    api.user.GetFeaturedUsers().then((u) => setFeaturedUsers([...u]));
   }, []);
 
   const mixtapeCards = useMemo(() => {
     return featuredMixtapes.map((m) => {
-      return <MixtapeCard mixtapeId={m._id} mixtapeName={m.mixtapeName} />;
+      return <MixtapeCard mixtapeId={m.id} mixtapeName={m.title} />;
     });
   }, [featuredMixtapes]);
 

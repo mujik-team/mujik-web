@@ -57,7 +57,7 @@ function RewardsPage() {
           reward_details={Rewards[selectedReward]}
         />
       </SideModal>
-      <Title>Redeem Rewards</Title>
+      <Title>Connect Services</Title>
       <Description>
         Use those hard earned coins to buy more months on your favorite music
         service! Currently we are only supporting <Bold>Spotify </Bold>and{" "}

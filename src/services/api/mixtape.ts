@@ -31,7 +31,7 @@ export async function DeleteMixtape(id: string): Promise<void> {
 }
 
 export async function GetUserMixtapes(username: string): Promise<Mixtape[]> {
-  const { data } = await api.get(`/user/${username}/mixtape`);
+  const { data } = await api.get(`/user/${username}/mixtapes`);
   return data.payload;
 }
 
@@ -43,4 +43,10 @@ interface Query {
 export async function QueryMixtapes(query: Query): Promise<Mixtape[]> {
   const { data } = await api.post(`/mixtape/query`, query);
   return data.payload;
+}
+
+export async function GetFeaturedMixtapes() {
+  const { data } = await api.get("/mixtape/featured");
+
+  return data.payload as Mixtape[];
 }

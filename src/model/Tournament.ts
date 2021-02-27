@@ -6,19 +6,19 @@ export interface Tournament {
 
   winnerBy: string;
   rewards: Map<RewardType, Reward>;
-  NumWinners: number;
+  numWinners: number;
 
-  VoteDate: Date;
-  SubmissionDate: Date;
+  voteDate: Date;
+  submissionDate: Date;
 
-  Restrictions: Map<string, Restriction>;
-  Voters: Map<string, boolean>;
-  Submissions: Map<string, Submission>;
+  restrictions: Restriction[];
+  voters: Map<string, boolean>;
+  submissions: Map<string, Submission>;
 }
 
 enum RewardType {
-  Coin = "coin",
-  Xp = "xp",
+  coin = "coin",
+  xp = "xp",
 }
 
 interface Reward {
